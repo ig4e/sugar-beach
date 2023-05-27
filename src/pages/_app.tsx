@@ -2,10 +2,15 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { api } from "~/utils/api";
-import "~/styles/globals.css";
+import {
+  ChakraProvider,
+  extendTheme,
+  withDefaultColorScheme,
+  type ThemeConfig,
+  baseTheme,
+} from "@chakra-ui/react";
 import { Inter } from "next/font/google";
-
-import Navbar from "~/components/layout/Navbar";
+import "~/styles/globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,14 +22,13 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
-      <div className={inter.className + " min-h-screen"}>
-        <Navbar></Navbar>
-        <div className="container mx-auto h-full py-4 mb-auto">
+    <div className={inter.className}>
+      <ChakraProvider>
+        <SessionProvider session={session}>
           <Component {...pageProps} />
-        </div>
-      </div>
-    </SessionProvider>
+        </SessionProvider>
+      </ChakraProvider>
+    </div>
   );
 };
 

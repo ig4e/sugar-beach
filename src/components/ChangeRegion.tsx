@@ -1,10 +1,11 @@
 import Image from "next/image";
 import React from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import { Button } from "@chakra-ui/react";
 
 function ChangeRegion() {
   return (
-    <button className="flex items-center gap-2 rounded-md p-1 hover:bg-zinc-200 select-none">
+    <Button className="flex items-center gap-2" size={"sm"}>
       <img
         src={`https://flagcdn.com/w40/sa.webp`}
         alt=""
@@ -16,7 +17,7 @@ function ChangeRegion() {
         <span className="font-semibold">SAR</span>
       </div>
       <ChevronDownIcon className="h-5 w-5 text-zinc-900" />
-    </button>
+    </Button>
   );
 }
 
