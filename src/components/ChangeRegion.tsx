@@ -5,7 +5,7 @@ import { Button } from "@chakra-ui/react";
 
 function ChangeRegion() {
   return (
-    <Button className="flex items-center gap-2" size={"sm"}>
+    <Button colorScheme="gray" className="flex items-center gap-2" size={"sm"}>
       <img
         src={`https://flagcdn.com/w40/sa.webp`}
         alt=""

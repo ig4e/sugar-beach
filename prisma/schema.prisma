@@ -15,67 +15,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Category {
-    id       String    @id @default(uuid()) @map("_id")
-    name     Name
-    products Product[] @relation(references: [id], fields: [productIDs])
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    productIDs String[]
-}
-
-model Product {
-    id         String         @id @default(uuid()) @map("_id")
-    image       String
-    name       Name
-    price      Float
-    quantity   Int
-    feedback   UserFeedback[]
-    orders     Order[]
-    categories Category[]     @relation(references: [id], fields: [categoryIDs])
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    categoryIDs String[]
-}
-
-type Name {
-    ar String
-    en String
-}
-
-model Order {
-    id              String              @id @default(uuid()) @map("_id")
-    status          OrderStatus
-    product         Product             @relation(fields: [productId], references: [id])
-    user            User                @relation(fields: [userId], references: [id])
-    shippingAddress UserShippingAddress @relation(fields: [userShippingAddressId], references: [id])
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    productId             String
-    userId                String
-    userShippingAddressId String
-}
-
-model UserFeedback {
-    id      String  @id @default(uuid()) @map("_id")
-    text    String
-    score   Float
-    user    User    @relation(fields: [userId], references: [id])
-    product Product @relation(fields: [productId], references: [id])
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    userId    String
-    productId String
-}
-
 // Necessary for Next auth
 model Account {
     id                String  @id @default(uuid()) @map("_id")
@@ -108,18 +47,76 @@ model Session {
 
 model User {
     id              String                @id @default(uuid()) @map("_id")
-    name            String?
-    email           String?               @unique
-    emailVerified   DateTime?
     image           String?
+    name            String                @default("SweetUser")
+    email           String                @unique
+    emailVerified   DateTime?
     accounts        Account[]
     sessions        Session[]
     feedbacks       UserFeedback[]
     orders          Order[]
     shippingAddress UserShippingAddress[]
+    role            UserRole              @default(USER)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model Category {
+    id       String    @id @default(uuid()) @map("_id")
+    name     Name
+    products Product[] @relation(references: [id], fields: [productIDs])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    productIDs String[]
+}
+
+model Product {
+    id         String         @id @default(uuid()) @map("_id")
+    media      String[]
+    name       Name
+    price      Float
+    quantity   Int
+    status     ProductStatus
+    feedback   UserFeedback[]
+    orders     Order[]
+    categories Category[]     @relation(references: [id], fields: [categoryIDs])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    categoryIDs String[]
+}
+
+model Order {
+    id              String              @id @default(uuid()) @map("_id")
+    status          OrderStatus
+    product         Product             @relation(fields: [productId], references: [id])
+    user            User                @relation(fields: [userId], references: [id])
+    shippingAddress UserShippingAddress @relation(fields: [userShippingAddressId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    productId             String
+    userId                String
+    userShippingAddressId String
+}
+
+model UserFeedback {
+    id      String  @id @default(uuid()) @map("_id")
+    text    String
+    score   Float
+    user    User    @relation(fields: [userId], references: [id])
+    product Product @relation(fields: [productId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    userId    String
+    productId String
 }
 
 model UserShippingAddress {
@@ -144,6 +141,16 @@ model UserShippingAddress {
     userId String
 }
 
+model Coupon {
+    id                 String @id @default(uuid()) @map("_id")
+    code               String @unique
+    discountPrecentage Float
+
+    expiersAt DateTime
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
 model VerificationToken {
     id         String   @id @default(uuid()) @map("_id")
     identifier String
@@ -151,6 +158,11 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+type Name {
+    ar String
+    en String
 }
 
 enum OrderStatus {
@@ -175,4 +187,15 @@ enum Countries {
     QA
     SA
     AE
+}
+
+enum UserRole {
+    ADMIN
+    STAFF
+    USER
+}
+
+enum ProductStatus {
+    ACTIVE
+    DRAFT
 }

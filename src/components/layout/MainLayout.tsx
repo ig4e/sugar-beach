@@ -5,7 +5,7 @@ function MainLayout({ children }: { children: any }) {
   return (
     <div className={"min-h-screen"}>
       <Navbar></Navbar>
-      <div className="container mx-auto h-full flex-grow">{children}</div>
+      <div className="container mx-auto mt-2 h-full flex-grow">{children}</div>
     </div>
   );
 }

@@ -7,6 +7,7 @@ import Auth from "~/components/Auth";
 
 import Link from "next/link";
 import { Button } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 
 function Navbar() {
   return (
@@ -26,11 +27,7 @@ function Navbar() {
         <div className="flex items-center gap-4">
           <Cart></Cart>
 
-          <Link href={"/auth/login"}>
-            <Button>
-              <span className="text-sm font-semibold">Sign In / Sign up</span>
-            </Button>
-          </Link>
+          <Auth></Auth>
         </div>
       </div>
     </nav>
