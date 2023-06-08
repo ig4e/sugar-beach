@@ -20,7 +20,7 @@ const config = {
   },
 
   images: {
-    domains: ["flagsapi.com"],
+    domains: ["flagsapi.com", "uploadthing.com"],
   },
   
   experimental: {

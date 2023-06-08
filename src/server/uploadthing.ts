@@ -1,29 +1,33 @@
-import { getServerSession } from "next-auth";
+/** server/uploadthing.ts */
+import type { NextApiRequest, NextApiResponse } from "next";
 import { createUploadthing, type FileRouter } from "uploadthing/next-legacy";
-import { authOptions } from "./auth";
+import { getServerAuthSession } from "./auth";
+
 const f = createUploadthing();
 
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
-  productMedia: f
+  productMedia: f({
+    image: { maxFileSize: "16MB" },
+    video: { maxFileSize: "256MB" },
+    "image/gif": { maxFileSize: "16MB" },
+  })
     // Set permissions and file types for this FileRoute
-    .fileTypes(["image", "video"])
-    .maxSize("256MB")
     .middleware(async (req, res) => {
-      const session = await getServerSession(req, res, authOptions);
-
       // This code runs on your server before upload
+      const session = await getServerAuthSession({ req, res });
+      const user = session?.user;
 
       // If you throw, the user will not be able to upload
-      if (!session) throw new Error("Unauthorized");
+      if (!user) throw new Error("Unauthorized");
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { user: session.user };
+      return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
-      console.log("Upload complete for userId:", metadata.user);
+      console.log("Upload complete for userId:", metadata.userId);
 
       console.log("file url", file.url);
     }),

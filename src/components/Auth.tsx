@@ -55,7 +55,12 @@ function Auth() {
       <div className="z-50">
         <Popover placement="bottom-start">
           <PopoverTrigger>
-            <Button variant="outline" p={0} borderRadius={"full"}>
+            <Button
+              variant="outline"
+              p={0}
+              borderRadius={"full"}
+              colorScheme="gray"
+            >
               <Avatar
                 name={user.name!}
                 src={user.image!}
@@ -117,7 +122,7 @@ function Auth() {
 
   if (status === "loading")
     return (
-      <Button variant="outline" p={0} borderRadius={"full"}>
+      <Button variant="outline" p={0} borderRadius={"full"} colorScheme="gray">
         <Spinner size="md"></Spinner>
       </Button>
     );

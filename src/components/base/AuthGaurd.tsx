@@ -10,27 +10,27 @@ function AuthGaurd({
   children: any;
   allowedLevel?: UserRole;
 }) {
-  const levels = ["NONE", "USER", "STAFF", "ADMIN"];
+  // const levels = ["NONE", "USER", "STAFF", "ADMIN"];
 
-  const router = useRouter();
-  const { data, status } = useSession({
-    required: true,
-    onUnauthenticated: () => {
-      return router.push(
-        "/auth/login?redirect=" + encodeURIComponent(router.asPath)
-      );
-    },
-  });
+  // const router = useRouter();
+  // const { data, status } = useSession({
+  //   required: true,
+  //   onUnauthenticated: () => {
+  //     return router.push(
+  //       "/auth/login?redirect=" + encodeURIComponent(router.asPath)
+  //     );
+  //   },
+  // });
 
-  useEffect(() => {
-    if (status === "loading") return;
-    const userRole = (data?.user as User)?.role;
-    const allowedLevelIndex = levels.indexOf(allowedLevel);
-    const userLevelIndex = levels.indexOf(userRole);
-    if (userLevelIndex < allowedLevelIndex) {
-      router.push("/auth/login");
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (status === "loading") return;
+  //   const userRole = (data?.user as User)?.role;
+  //   const allowedLevelIndex = levels.indexOf(allowedLevel);
+  //   const userLevelIndex = levels.indexOf(userRole);
+  //   if (userLevelIndex < allowedLevelIndex) {
+  //     router.push("/auth/login");
+  //   }
+  // }, [data]);
 
   return children;
 }

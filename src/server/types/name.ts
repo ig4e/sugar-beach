@@ -1,3 +1,6 @@
 import { z } from "zod";
 
-export const zodName = z.object({ ar: z.string(), en: z.string() });
+export const zodName = z.object({
+  ar: z.string().min(1),
+  en: z.string().min(1),
+});

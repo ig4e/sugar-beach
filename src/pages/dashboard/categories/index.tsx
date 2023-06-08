@@ -13,6 +13,7 @@ import {
   Progress,
   HStack,
   IconButton,
+  useToast,
 } from "@chakra-ui/react";
 import {
   PencilSquareIcon,
@@ -21,13 +22,30 @@ import {
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import React from "react";
-import CreateCategory from "~/components/CreateCategory";
+import ManageCategory from "~/components/ManageCategory";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/layout/AdminLayout";
 import { api } from "~/utils/api";
 
 function index() {
+  const toast = useToast();
   const allCategoriesQuery = api.category.getAll.useQuery();
+  const deleteCategoryHook = api.category.delete.useMutation();
+
+  function deleteCategory(id: string) {
+    deleteCategoryHook.mutate(
+      { id },
+      {
+        onSuccess: ({ name }) => {
+          allCategoriesQuery.refetch();
+          toast({
+            status: "success",
+            title: `Deleted ${name.en} successfully`,
+          });
+        },
+      }
+    );
+  }
 
   return (
     <AuthGaurd allowedLevel="STAFF">
@@ -36,9 +54,10 @@ function index() {
           <div className="flex items-center justify-between">
             <Heading size={"md"}>Categories</Heading>
 
-            <CreateCategory
+            <ManageCategory
               onRefetch={() => allCategoriesQuery.refetch()}
-            ></CreateCategory>
+              action="create"
+            ></ManageCategory>
           </div>
 
           <div className="relative">
@@ -62,24 +81,25 @@ function index() {
                       (category) =>
                         category && (
                           <Tr key={category.id}>
-                            <Td isTruncated className="flex flex-col gap-2">
+                            <Td isTruncated>
                               <span>{category.name.en}</span>
+                              <br />
                               <span>{category.name.ar}</span>
                             </Td>
                             <Td>
                               <HStack className="justify-end">
+                                <ManageCategory
+                                  action="edit"
+                                  category={category}
+                                  onRefetch={() => allCategoriesQuery.refetch()}
+                                ></ManageCategory>
                                 <IconButton
+                                  onClick={() => deleteCategory(category.id)}
                                   aria-label="Delete category"
                                   icon={
                                     <TrashIcon className="h-5 w-5"></TrashIcon>
                                   }
                                   colorScheme={"red"}
-                                ></IconButton>
-                                <IconButton
-                                  aria-label="Edit category"
-                                  icon={
-                                    <PencilSquareIcon className="h-5 w-5"></PencilSquareIcon>
-                                  }
                                 ></IconButton>
                               </HStack>
                             </Td>

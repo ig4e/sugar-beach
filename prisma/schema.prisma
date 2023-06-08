@@ -74,15 +74,17 @@ model Category {
 }
 
 model Product {
-    id         String         @id @default(uuid()) @map("_id")
-    media      String[]
-    name       Name
-    price      Float
-    quantity   Int
-    status     ProductStatus
-    feedback   UserFeedback[]
-    orders     Order[]
-    categories Category[]     @relation(references: [id], fields: [categoryIDs])
+    id             String         @id @default(uuid()) @map("_id")
+    media          String[]
+    name           Name
+    description    Description
+    price          Float
+    compareAtPrice Float?
+    quantity       Int
+    status         ProductStatus
+    feedback       UserFeedback[]
+    orders         Order[]
+    categories     Category[]     @relation(references: [id], fields: [categoryIDs])
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -163,6 +165,11 @@ model VerificationToken {
 type Name {
     ar String
     en String
+}
+
+type Description {
+    ar String?
+    en String?
 }
 
 enum OrderStatus {

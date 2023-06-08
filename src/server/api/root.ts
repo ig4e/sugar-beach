@@ -1,5 +1,7 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import { categoryRouter } from "./routers/category";
+import { productRouter } from "./routers/product";
+import { mediaRouter } from "./routers/media";
 
 /**
  * This is the primary router for your server.
@@ -7,7 +9,9 @@ import { categoryRouter } from "./routers/category";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  category: categoryRouter
+  category: categoryRouter,
+  product: productRouter,
+  media: mediaRouter
 });
 
 // export type definition of API

@@ -22,14 +22,18 @@ const adminManagmentRoutesDefault = [
   { name: "Orders", href: "/dashboard/orders", Icon: InboxStackIcon },
   { name: "Featured", href: "/dashboard/featured", Icon: SparklesIcon },
   { name: "Discounts", href: "/dashboard/discounts", Icon: DiscountIcon },
-  { name: "Categories", href: "/dashboard/categories", Icon: RectangleGroupIcon },
+  {
+    name: "Categories",
+    href: "/dashboard/categories",
+    Icon: RectangleGroupIcon,
+  },
 ];
 
 function AdminSidebar() {
   const router = useRouter();
   const adminManagmentRoutes = useMemo(() => {
     return adminManagmentRoutesDefault.map((route) => {
-      if (route.href === router.pathname) {
+      if (router.pathname.includes(route.href)) {
         return {
           ...route,
           active: true,
@@ -44,37 +48,43 @@ function AdminSidebar() {
   }, [router]);
 
   return (
-    <div className="h-full min-h-screen min-w-[15rem] border-r bg-white">
-      <header className="px-6 py-3">
-        <Link href={"/"}>
-          <Image src={Logo} alt="logo" width={100} height={100}></Image>
-        </Link>
-      </header>
-      <div className="h-full space-y-8 p-6">
-        <div className="space-y-4">
-          <div className="flex flex-col gap-2">
-            <h1 className="text-xs font-semibold uppercase text-pink-500">
-              Home
-            </h1>
-            <Link href={"/dashboard"}>
-              <MenuItem size="sm" name="Home" Icon={HomeModernIcon}></MenuItem>
-            </Link>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <h1 className="text-xs font-semibold uppercase text-pink-500">
-              Management
-            </h1>
-            {adminManagmentRoutes.map((route) => (
-              <Link href={route.href} key={route.name}>
+    <div className="relative hidden h-full min-w-[15rem] md:block">
+      <div className="fixed bottom-0 top-0 min-h-screen min-w-[15rem] border-r bg-white">
+        <header className="px-6 py-3">
+          <Link href={"/"}>
+            <Image src={Logo} alt="logo" width={100} height={100}></Image>
+          </Link>
+        </header>
+        <div className="h-full space-y-8 p-6">
+          <div className="space-y-4">
+            <div className="flex flex-col gap-2">
+              <h1 className="text-xs font-semibold uppercase text-pink-500">
+                Home
+              </h1>
+              <Link href={"/dashboard"}>
                 <MenuItem
                   size="sm"
-                  name={route.name}
-                  Icon={route.Icon}
-                  active={route.active}
+                  name="Home"
+                  Icon={HomeModernIcon}
                 ></MenuItem>
               </Link>
-            ))}
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <h1 className="text-xs font-semibold uppercase text-pink-500">
+                Management
+              </h1>
+              {adminManagmentRoutes.map((route) => (
+                <Link href={route.href} key={route.name}>
+                  <MenuItem
+                    size="sm"
+                    name={route.name}
+                    Icon={route.Icon}
+                    active={route.active}
+                  ></MenuItem>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </div>
