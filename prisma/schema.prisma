@@ -85,6 +85,7 @@ model Product {
     feedback       UserFeedback[]
     orders         Order[]
     categories     Category[]     @relation(references: [id], fields: [categoryIDs])
+    type           String
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -143,14 +144,16 @@ model UserShippingAddress {
     userId String
 }
 
-model Coupon {
-    id                 String @id @default(uuid()) @map("_id")
-    code               String @unique
-    discountPrecentage Float
-
-    expiersAt DateTime
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model Discount {
+    id          String       @id @default(uuid()) @map("_id")
+    code        String       @unique
+    type        DiscountType @default(AMOUNT_OFF_ORDER)
+    precentage  Float?
+    fixedAmount Float?
+    uses        Int          @default(0)
+    expiresAt   DateTime
+    createdAt   DateTime     @default(now())
+    updatedAt   DateTime     @updatedAt
 }
 
 model VerificationToken {
@@ -160,6 +163,10 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+enum DiscountType {
+    AMOUNT_OFF_ORDER
 }
 
 type Name {

@@ -12,6 +12,15 @@ import {
 import { DiscountIcon } from "./base/Icons";
 import MenuItem from "./base/MenuItem";
 import { useRouter } from "next/router";
+import {
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+} from "@chakra-ui/react";
 
 const adminHomeRoutes = [
   { name: "Home", href: "/dashboard", Icon: HomeModernIcon },
@@ -29,7 +38,13 @@ const adminManagmentRoutesDefault = [
   },
 ];
 
-function AdminSidebar() {
+function AdminSidebar({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) {
   const router = useRouter();
   const adminManagmentRoutes = useMemo(() => {
     return adminManagmentRoutesDefault.map((route) => {
@@ -48,47 +63,56 @@ function AdminSidebar() {
   }, [router]);
 
   return (
-    <div className="relative hidden h-full min-w-[15rem] md:block">
-      <div className="fixed bottom-0 top-0 min-h-screen min-w-[15rem] border-r bg-white">
-        <header className="px-6 py-3">
-          <Link href={"/"}>
-            <Image src={Logo} alt="logo" width={100} height={100}></Image>
-          </Link>
-        </header>
-        <div className="h-full space-y-8 p-6">
-          <div className="space-y-4">
-            <div className="flex flex-col gap-2">
-              <h1 className="text-xs font-semibold uppercase text-pink-500">
-                Home
-              </h1>
-              <Link href={"/dashboard"}>
-                <MenuItem
-                  size="sm"
-                  name="Home"
-                  Icon={HomeModernIcon}
-                ></MenuItem>
-              </Link>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <h1 className="text-xs font-semibold uppercase text-pink-500">
-                Management
-              </h1>
-              {adminManagmentRoutes.map((route) => (
-                <Link href={route.href} key={route.name}>
-                  <MenuItem
-                    size="sm"
-                    name={route.name}
-                    Icon={route.Icon}
-                    active={route.active}
-                  ></MenuItem>
+    <Drawer placement="left" isOpen={isOpen} onClose={onClose}>
+      <DrawerOverlay />
+      <DrawerContent>
+        <DrawerBody p={0}>
+          <div className="relative">
+            <div className="fixed bottom-0 top-0 min-h-screen w-full border-r bg-white">
+              <header className="flex justify-between items-start px-4 py-6">
+                <Link href={"/"}>
+                  <Image src={Logo} alt="logo" width={100} height={100}></Image>
                 </Link>
-              ))}
+
+                <DrawerCloseButton position={"inherit"} />
+              </header>
+              <div className="h-full space-y-8 p-4">
+                <div className="space-y-4">
+                  <div className="flex flex-col gap-2">
+                    <h1 className="text-xs font-semibold uppercase text-pink-500">
+                      Home
+                    </h1>
+                    <Link href={"/dashboard"}>
+                      <MenuItem
+                        size="sm"
+                        name="Home"
+                        Icon={HomeModernIcon}
+                      ></MenuItem>
+                    </Link>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <h1 className="text-xs font-semibold uppercase text-pink-500">
+                      Management
+                    </h1>
+                    {adminManagmentRoutes.map((route) => (
+                      <Link href={route.href} key={route.name}>
+                        <MenuItem
+                          size="sm"
+                          name={route.name}
+                          Icon={route.Icon}
+                          active={route.active}
+                        ></MenuItem>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </DrawerBody>
+      </DrawerContent>
+    </Drawer>
   );
 }
 

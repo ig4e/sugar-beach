@@ -50,6 +50,7 @@ export const productRouter = createTRPCRouter({
           media: input.media,
           categoryIDs: input.categoryIDs,
           status: input.status,
+          type: input.type,
         },
       });
     }),

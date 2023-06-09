@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { nameValidation } from "./common";
+import { descriptionValidation, nameValidation } from "./common";
 
 export const productSchema = z.object({
   name: nameValidation,
-  description: nameValidation,
+  description: descriptionValidation,
   media: z.string().min(1).array().min(1),
   status: z.enum(["ACTIVE", "DRAFT"]),
   price: z.number().positive(),

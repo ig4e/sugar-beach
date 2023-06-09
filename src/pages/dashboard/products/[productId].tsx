@@ -15,7 +15,6 @@ import {
   InputGroup,
   InputLeftAddon,
   useToast,
-  Stack,
 } from "@chakra-ui/react";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
@@ -25,12 +24,12 @@ import Input from "~/components/base/Input";
 import AdminLayout from "~/components/layout/AdminLayout";
 import UploadProductMedia, { type File } from "~/components/UploadProductMedia";
 import { api } from "~/utils/api";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { productSchema } from "~/validations/productSchema";
 import { Description, Name } from "@prisma/client";
 import { MultiSelect, NumberInput, Select } from "@mantine/core";
-import { DevTool } from "@hookform/devtools";
+import { useRouter } from "next/router";
 
 interface ProductFormValues {
   media: string[];
@@ -44,10 +43,15 @@ interface ProductFormValues {
   type: string;
 }
 
-function create() {
+function AdminPageProduct() {
+  const router = useRouter();
   const toast = useToast();
-  const createProductHook = api.product.create.useMutation();
+  const productId = router.query.productId as string;
+
+  const editProductHook = api.product.edit.useMutation();
   const allCategoriesQuery = api.category.getAll.useQuery();
+  const productQuery = api.product.get.useQuery({ id: productId });
+
   const categoriesData = useMemo(() => {
     if (!allCategoriesQuery.data) return [];
     return allCategoriesQuery.data.map((category) => ({
@@ -67,13 +71,25 @@ function create() {
   } = useForm<ProductFormValues>({
     mode: "onChange",
     resolver: zodResolver(productSchema),
+    defaultValues: {
+      type: productQuery.data?.type,
+      status: productQuery.data?.status,
+      compareAtPrice: productQuery.data?.compareAtPrice || undefined,
+      quantity: productQuery.data?.quantity,
+      price: productQuery.data?.price,
+      name: productQuery.data?.name,
+      description: productQuery.data?.description,
+      categories: productQuery.data?.categoryIDs,
+      media: productQuery.data?.media,
+    },
   });
 
-  console.log(errors);
+  console.log(getValues());
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await createProductHook.mutateAsync({
+      await editProductHook.mutateAsync({
+        id: productId,
         media: data.media,
         name: data.name,
         description: {
@@ -89,9 +105,9 @@ function create() {
       });
 
       toast({
-        title: "Product created",
+        title: "Product edited successfully",
         status: "success",
-        description: `Created ${data.name.en} successfully`,
+        description: `Edited ${data.name.en} successfully`,
       });
     } catch (error) {
       console.log(error);
@@ -101,7 +117,6 @@ function create() {
   return (
     <AuthGaurd allowedLevel="STAFF">
       <AdminLayout>
-        <DevTool control={control}></DevTool>
         <div className="space-y-4">
           <div className="flex items-center gap-4">
             <Link href={"/dashboard/products"}>
@@ -131,12 +146,10 @@ function create() {
                 >
                   <HStack>
                     <AlertIcon />
-                    <Stack direction={["column", "row"]}>
-                      <AlertTitle>Warning</AlertTitle>
-                      <AlertDescription>
-                        You have unsaved changes!
-                      </AlertDescription>
-                    </Stack>
+                    <AlertTitle>Warning</AlertTitle>
+                    <AlertDescription>
+                      You have unsaved changes!
+                    </AlertDescription>
                   </HStack>
 
                   <HStack>
@@ -208,49 +221,33 @@ function create() {
               <div className="z-40 h-max rounded-md bg-white p-4 drop-shadow-md">
                 <FormControl isRequired>
                   <FormLabel>Status</FormLabel>
-                  <Controller
-                    control={control}
+                  <Select
                     name="status"
-                    render={({ field, fieldState }) => (
-                      <Select
-                        {...field}
-                        defaultValue={"ACTIVE"}
-                        defaultChecked
-                        data={[
-                          { value: "ACTIVE", label: "Active" },
-                          { value: "DRAFT", label: "Draft" },
-                        ]}
-                        error={fieldState.invalid}
-                      ></Select>
-                    )}
-                  ></Controller>
-
+                    defaultValue={"ACTIVE"}
+                    defaultChecked
+                    data={[
+                      { value: "ACTIVE", label: "Active" },
+                      { value: "DRAFT", label: "Draft" },
+                    ]}
+                  ></Select>
                   <FormHelperText>The product listing status.</FormHelperText>
                 </FormControl>
               </div>
 
               <div className="z-30 h-max rounded-md bg-white p-4 drop-shadow-md">
-                <FormControl isRequired isInvalid={!!errors.categories}>
+                <FormControl isRequired>
                   <FormLabel>Categories</FormLabel>
 
-                  <Controller
-                    control={control}
+                  <MultiSelect
                     name="categories"
-                    render={({ field, fieldState }) => (
-                      <MultiSelect
-                        {...field}
-                        disabled={allCategoriesQuery.isLoading}
-                        searchable
-                        data={categoriesData}
-                        zIndex={1000}
-                        error={fieldState.invalid}
-                      ></MultiSelect>
-                    )}
-                  ></Controller>
-
+                    disabled={allCategoriesQuery.isLoading}
+                    searchable
+                    data={categoriesData}
+                    zIndex={1000}
+                  ></MultiSelect>
                   <FormHelperText>The product categories.</FormHelperText>
                   <FormErrorMessage>
-                    {errors.categories && errors.categories.message}
+                    The product must have at least one category.
                   </FormErrorMessage>
                 </FormControl>
               </div>
@@ -274,23 +271,14 @@ function create() {
               <div className="h-max rounded-md bg-white p-4 drop-shadow-md">
                 <FormControl isRequired isInvalid={!!errors.quantity}>
                   <FormLabel>Quantity</FormLabel>
-
-                  <Controller
-                    control={control}
+                  <NumberInput
+                    className="w-full"
+                    width={"100%"}
                     name="quantity"
-                    render={({ field, fieldState }) => (
-                      <NumberInput
-                        {...field}
-                        className="w-full"
-                        width={"100%"}
-                        name="quantity"
-                        min={0}
-                        placeholder="10"
-                        error={fieldState.invalid}
-                      ></NumberInput>
-                    )}
-                  ></Controller>
-
+                    min={0}
+                    placeholder="10"
+                    error=""
+                  ></NumberInput>
                   <FormHelperText>The product quantity.</FormHelperText>
                   {errors.quantity && (
                     <FormErrorMessage>
@@ -321,20 +309,13 @@ function create() {
                 <FormLabel>Price</FormLabel>
                 <InputGroup w="full">
                   <InputLeftAddon children="SAR" />
-                  <Controller
-                    control={control}
+                  <NumberInput
+                    className="w-full"
                     name="price"
-                    render={({ field, fieldState }) => (
-                      <NumberInput
-                        {...field}
-                        className="w-full"
-                        width={"100%"}
-                        min={0}
-                        placeholder="10"
-                        error={fieldState.invalid}
-                      ></NumberInput>
-                    )}
-                  ></Controller>
+                    min={0}
+                    placeholder="899"
+                    error=""
+                  ></NumberInput>
                 </InputGroup>
 
                 <FormHelperText>The product price.</FormHelperText>
@@ -351,21 +332,14 @@ function create() {
                 <InputGroup w="full">
                   <InputLeftAddon children="SAR" />
 
-                  <Controller
-                    control={control}
+                  <NumberInput
+                    className="h-full w-full"
                     name="compareAtPrice"
-                    rules={{ required: false }}
-                    render={({ field, fieldState }) => (
-                      <NumberInput
-                        {...field}
-                        className="w-full"
-                        width={"100%"}
-                        min={0}
-                        placeholder="10"
-                        error={fieldState.invalid}
-                      ></NumberInput>
-                    )}
-                  ></Controller>
+                    min={0}
+                    placeholder="999"
+                    required={false}
+                    error=""
+                  ></NumberInput>
                 </InputGroup>
 
                 {errors.compareAtPrice && (
@@ -388,4 +362,4 @@ function create() {
   );
 }
 
-export default create;
+export default AdminPageProduct;

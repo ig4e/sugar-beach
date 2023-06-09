@@ -23,10 +23,11 @@ import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/layout/AdminLayout";
 import { api } from "~/utils/api";
 import Logo from "public/logo-full-transparent.png";
+import { useRouter } from "next/router";
 
 function index() {
   const getAllProductsQuery = api.product.getAll.useQuery();
-
+  const router = useRouter();
   return (
     <AuthGaurd allowedLevel="STAFF">
       <AdminLayout>
@@ -43,39 +44,48 @@ function index() {
 
             <TableContainer>
               <Table
-                size="md"
+                className="drop-shadow-lg"
+                size="sm"
                 colorScheme="pink"
                 bg={"white"}
                 borderRadius={"md"}
               >
                 <Thead>
                   <Tr>
-                    <Th>Image</Th>
-                    <Th isTruncated>Name</Th>
+                    <Th>Product</Th>
                     <Th>Status</Th>
+                    <Th>Price</Th>
                     <Th isNumeric>Quantity</Th>
-                    <Th isNumeric>Price</Th>
-                    <Th isNumeric>Compare At Price</Th>
-                    <Th isNumeric>Actions</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
                   {getAllProductsQuery.data
                     ? getAllProductsQuery.data.map((product) => {
                         return (
-                          <Tr key={product.id}>
+                          <Tr
+                            onClick={() =>
+                              router.push(`/dashboard/products/${product.id}`)
+                            }
+                            className="transition hover:bg-gray-100"
+                          >
                             <Td>
-                              <Image
-                                src={product.media[0] || Logo}
-                                alt={product.name.en}
-                                width={100}
-                                height={100}
-                              ></Image>
-                            </Td>
-                            <Td>
-                              <span>{product.name.en}</span>
-                              <br />
-                              <span>{product.name.ar}</span>
+                              <div className="flex items-center gap-2">
+                                <div className="h-10 w-10 rounded-md border">
+                                  <Image
+                                    className=" rounded-md object-cover"
+                                    src={product.media[0] || Logo}
+                                    alt={product.name.en}
+                                    width={100}
+                                    height={100}
+                                  ></Image>
+                                </div>
+
+                                <div>
+                                  <span>{product.name.en}</span>
+                                  <br />
+                                  <span>{product.name.ar}</span>
+                                </div>
+                              </div>
                             </Td>
                             <Td isTruncated>
                               <Badge
@@ -86,27 +96,8 @@ function index() {
                                 {product.status}
                               </Badge>
                             </Td>
+                            <Td>{product.price} SAR</Td>
                             <Td isNumeric>{product.quantity}</Td>
-                            <Td isNumeric>{product.price} SAR</Td>
-                            <Td isNumeric>{product.compareAtPrice} SAR</Td>
-                            <Td>
-                              <HStack className="justify-end">
-                                <IconButton
-                                  aria-label="Edit product"
-                                  icon={
-                                    <PencilIcon className="h-5 w-5"></PencilIcon>
-                                  }
-                                  colorScheme={"pink"}
-                                ></IconButton>
-                                <IconButton
-                                  aria-label="Delete product"
-                                  icon={
-                                    <TrashIcon className="h-5 w-5"></TrashIcon>
-                                  }
-                                  colorScheme={"red"}
-                                ></IconButton>
-                              </HStack>
-                            </Td>
                           </Tr>
                         );
                       })
