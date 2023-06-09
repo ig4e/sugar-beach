@@ -9,14 +9,8 @@ import {
   type ThemeConfig,
   baseTheme,
 } from "@chakra-ui/react";
-import { Inter } from "next/font/google";
 import "~/styles/globals.css";
 import { MantineProvider, MantineThemeOverride } from "@mantine/core";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-});
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -60,7 +54,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   };
 
   return (
-    <div className={inter.className}>
+    <div className="!font-inter">
       <MantineProvider
         withGlobalStyles
         withNormalizeCSS
