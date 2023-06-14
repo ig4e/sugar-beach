@@ -72,8 +72,8 @@ function index() {
                               <div className="flex items-center gap-2">
                                 <div className="h-10 w-10 rounded-md border">
                                   <Image
-                                    className=" rounded-md object-cover"
-                                    src={product.media[0] || Logo}
+                                    className="h-full w-full rounded-md object-cover"
+                                    src={product.media[0]?.url || Logo}
                                     alt={product.name.en}
                                     width={100}
                                     height={100}

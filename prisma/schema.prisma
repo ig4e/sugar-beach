@@ -75,7 +75,7 @@ model Category {
 
 model Product {
     id             String         @id @default(uuid()) @map("_id")
-    media          String[]
+    media          Media[]
     name           Name
     description    Description
     price          Float
@@ -167,6 +167,12 @@ model VerificationToken {
 
 enum DiscountType {
     AMOUNT_OFF_ORDER
+}
+
+type Media {
+    url String
+    key String
+    isVideo Boolean @default(false)
 }
 
 type Name {

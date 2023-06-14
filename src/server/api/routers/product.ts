@@ -8,7 +8,12 @@ import {
 import { zodName } from "~/server/types/name";
 
 const productInput = z.object({
-  media: z.string().array(),
+  media: z
+    .object({
+      url: z.string(),
+      key: z.string(),
+    })
+    .array(),
   name: zodName,
   description: z.object({
     ar: z.string().optional(),

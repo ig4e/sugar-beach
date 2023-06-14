@@ -15,6 +15,7 @@ import {
   InputGroup,
   InputLeftAddon,
   useToast,
+  Stack,
 } from "@chakra-ui/react";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
@@ -22,18 +23,21 @@ import React, { useMemo } from "react";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import Input from "~/components/base/Input";
 import AdminLayout from "~/components/layout/AdminLayout";
-import UploadProductMedia, { type File } from "~/components/UploadProductMedia";
+import ManageProductMedia from "~/components/ManageProductMedia";
 import { api } from "~/utils/api";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { productSchema } from "~/validations/productSchema";
-import { Description, Name } from "@prisma/client";
+import { Description, Media, Name } from "@prisma/client";
 import { MultiSelect, NumberInput, Select } from "@mantine/core";
 import { useRouter } from "next/router";
+import { DevTool } from "@hookform/devtools";
+import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
+import SkeletonInput from "~/components/base/SkeletonInput";
 
 interface ProductFormValues {
-  media: string[];
   name: Name;
+  media: Media[];
   description: Description;
   categories: string[];
   quantity: number;
@@ -71,20 +75,20 @@ function AdminPageProduct() {
   } = useForm<ProductFormValues>({
     mode: "onChange",
     resolver: zodResolver(productSchema),
-    defaultValues: {
-      type: productQuery.data?.type,
-      status: productQuery.data?.status,
-      compareAtPrice: productQuery.data?.compareAtPrice || undefined,
-      quantity: productQuery.data?.quantity,
-      price: productQuery.data?.price,
-      name: productQuery.data?.name,
-      description: productQuery.data?.description,
-      categories: productQuery.data?.categoryIDs,
-      media: productQuery.data?.media,
-    },
+    values: productQuery.data
+      ? {
+          name: productQuery.data.name,
+          description: productQuery.data.description,
+          categories: productQuery.data.categoryIDs,
+          media: productQuery.data.media,
+          quantity: productQuery.data.quantity,
+          price: productQuery.data.price,
+          compareAtPrice: productQuery.data.compareAtPrice || undefined,
+          status: productQuery.data.status,
+          type: productQuery.data.type,
+        }
+      : undefined,
   });
-
-  console.log(getValues());
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -117,6 +121,7 @@ function AdminPageProduct() {
   return (
     <AuthGaurd allowedLevel="STAFF">
       <AdminLayout>
+        <DevTool control={control}></DevTool>
         <div className="space-y-4">
           <div className="flex items-center gap-4">
             <Link href={"/dashboard/products"}>
@@ -146,10 +151,12 @@ function AdminPageProduct() {
                 >
                   <HStack>
                     <AlertIcon />
-                    <AlertTitle>Warning</AlertTitle>
-                    <AlertDescription>
-                      You have unsaved changes!
-                    </AlertDescription>
+                    <Stack direction={["column", "row"]}>
+                      <AlertTitle>Warning</AlertTitle>
+                      <AlertDescription>
+                        You have unsaved changes!
+                      </AlertDescription>
+                    </Stack>
                   </HStack>
 
                   <HStack>
@@ -221,33 +228,49 @@ function AdminPageProduct() {
               <div className="z-40 h-max rounded-md bg-white p-4 drop-shadow-md">
                 <FormControl isRequired>
                   <FormLabel>Status</FormLabel>
-                  <Select
+                  <Controller
+                    control={control}
                     name="status"
-                    defaultValue={"ACTIVE"}
-                    defaultChecked
-                    data={[
-                      { value: "ACTIVE", label: "Active" },
-                      { value: "DRAFT", label: "Draft" },
-                    ]}
-                  ></Select>
+                    render={({ field, fieldState }) => (
+                      <Select
+                        {...field}
+                        defaultValue={"ACTIVE"}
+                        defaultChecked
+                        data={[
+                          { value: "ACTIVE", label: "Active" },
+                          { value: "DRAFT", label: "Draft" },
+                        ]}
+                        error={fieldState.invalid}
+                      ></Select>
+                    )}
+                  ></Controller>
+
                   <FormHelperText>The product listing status.</FormHelperText>
                 </FormControl>
               </div>
 
               <div className="z-30 h-max rounded-md bg-white p-4 drop-shadow-md">
-                <FormControl isRequired>
+                <FormControl isRequired isInvalid={!!errors.categories}>
                   <FormLabel>Categories</FormLabel>
 
-                  <MultiSelect
+                  <Controller
+                    control={control}
                     name="categories"
-                    disabled={allCategoriesQuery.isLoading}
-                    searchable
-                    data={categoriesData}
-                    zIndex={1000}
-                  ></MultiSelect>
+                    render={({ field, fieldState }) => (
+                      <MultiSelect
+                        {...field}
+                        disabled={allCategoriesQuery.isLoading}
+                        searchable
+                        data={categoriesData}
+                        zIndex={1000}
+                        error={fieldState.invalid}
+                      ></MultiSelect>
+                    )}
+                  ></Controller>
+
                   <FormHelperText>The product categories.</FormHelperText>
                   <FormErrorMessage>
-                    The product must have at least one category.
+                    {errors.categories && errors.categories.message}
                   </FormErrorMessage>
                 </FormControl>
               </div>
@@ -271,14 +294,23 @@ function AdminPageProduct() {
               <div className="h-max rounded-md bg-white p-4 drop-shadow-md">
                 <FormControl isRequired isInvalid={!!errors.quantity}>
                   <FormLabel>Quantity</FormLabel>
-                  <NumberInput
-                    className="w-full"
-                    width={"100%"}
+
+                  <Controller
+                    control={control}
                     name="quantity"
-                    min={0}
-                    placeholder="10"
-                    error=""
-                  ></NumberInput>
+                    render={({ field, fieldState }) => (
+                      <NumberInput
+                        {...field}
+                        className="w-full"
+                        width={"100%"}
+                        name="quantity"
+                        min={0}
+                        placeholder="10"
+                        error={fieldState.invalid}
+                      ></NumberInput>
+                    )}
+                  ></Controller>
+
                   <FormHelperText>The product quantity.</FormHelperText>
                   {errors.quantity && (
                     <FormErrorMessage>
@@ -289,18 +321,22 @@ function AdminPageProduct() {
               </div>
             </div>
 
-            <div className="col-span-4 flex min-h-[16rem] w-full flex-col gap-4 rounded-md bg-white p-4 drop-shadow-md">
+            <div className="col-span-4 flex h-full w-full flex-col gap-4 rounded-md bg-white p-4 drop-shadow-md">
               <FormControl isRequired isInvalid={!!errors.media}>
                 <FormLabel>Media</FormLabel>
-                <div>
-                  <UploadProductMedia
-                    onChange={(fileURLs) => {
-                      setValue("media", fileURLs);
-                    }}
-                  ></UploadProductMedia>
-                </div>
-                <FormHelperText>The product title media.</FormHelperText>
-                <FormErrorMessage>Product media is required.</FormErrorMessage>
+                <Controller
+                  control={control}
+                  name="media"
+                  render={({ field }) => (
+                    <ManageProductMedia
+                      onChange={field.onChange}
+                      value={field.value}
+                    />
+                  )}
+                ></Controller>
+
+                <FormHelperText>The product media.</FormHelperText>
+                <FormErrorMessage>{errors.media?.message}</FormErrorMessage>
               </FormControl>
             </div>
 
@@ -309,13 +345,20 @@ function AdminPageProduct() {
                 <FormLabel>Price</FormLabel>
                 <InputGroup w="full">
                   <InputLeftAddon children="SAR" />
-                  <NumberInput
-                    className="w-full"
+                  <Controller
+                    control={control}
                     name="price"
-                    min={0}
-                    placeholder="899"
-                    error=""
-                  ></NumberInput>
+                    render={({ field, fieldState }) => (
+                      <NumberInput
+                        {...field}
+                        className="w-full"
+                        width={"100%"}
+                        min={0}
+                        placeholder="10"
+                        error={fieldState.invalid}
+                      ></NumberInput>
+                    )}
+                  ></Controller>
                 </InputGroup>
 
                 <FormHelperText>The product price.</FormHelperText>
@@ -332,14 +375,21 @@ function AdminPageProduct() {
                 <InputGroup w="full">
                   <InputLeftAddon children="SAR" />
 
-                  <NumberInput
-                    className="h-full w-full"
+                  <Controller
+                    control={control}
                     name="compareAtPrice"
-                    min={0}
-                    placeholder="999"
-                    required={false}
-                    error=""
-                  ></NumberInput>
+                    rules={{ required: false }}
+                    render={({ field, fieldState }) => (
+                      <NumberInput
+                        {...field}
+                        className="w-full"
+                        width={"100%"}
+                        min={0}
+                        placeholder="10"
+                        error={fieldState.invalid}
+                      ></NumberInput>
+                    )}
+                  ></Controller>
                 </InputGroup>
 
                 {errors.compareAtPrice && (

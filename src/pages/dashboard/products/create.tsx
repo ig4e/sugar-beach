@@ -23,17 +23,17 @@ import React, { useMemo } from "react";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import Input from "~/components/base/Input";
 import AdminLayout from "~/components/layout/AdminLayout";
-import UploadProductMedia, { type File } from "~/components/UploadProductMedia";
+import ManageProductMedia from "~/components/ManageProductMedia";
 import { api } from "~/utils/api";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { productSchema } from "~/validations/productSchema";
-import { Description, Name } from "@prisma/client";
+import { Description, Media, Name } from "@prisma/client";
 import { MultiSelect, NumberInput, Select } from "@mantine/core";
 import { DevTool } from "@hookform/devtools";
 
 interface ProductFormValues {
-  media: string[];
+  media: Media[];
   name: Name;
   description: Description;
   categories: string[];
@@ -301,18 +301,22 @@ function create() {
               </div>
             </div>
 
-            <div className="col-span-4 flex min-h-[16rem] w-full flex-col gap-4 rounded-md bg-white p-4 drop-shadow-md">
+            <div className="col-span-4 flex h-full w-full flex-col gap-4 rounded-md bg-white p-4 drop-shadow-md">
               <FormControl isRequired isInvalid={!!errors.media}>
                 <FormLabel>Media</FormLabel>
-                <div>
-                  <UploadProductMedia
-                    onChange={(fileURLs) => {
-                      setValue("media", fileURLs);
-                    }}
-                  ></UploadProductMedia>
-                </div>
-                <FormHelperText>The product title media.</FormHelperText>
-                <FormErrorMessage>Product media is required.</FormErrorMessage>
+                <Controller
+                  control={control}
+                  name="media"
+                  render={({ field }) => (
+                    <ManageProductMedia
+                      onChange={field.onChange}
+                      value={field.value}
+                    />
+                  )}
+                ></Controller>
+
+                <FormHelperText>The product media.</FormHelperText>
+                <FormErrorMessage>{errors.media?.message}</FormErrorMessage>
               </FormControl>
             </div>
 

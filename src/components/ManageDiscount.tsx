@@ -73,7 +73,11 @@ function ManageDiscount({
     resolver: zodResolver(discountSchema),
     defaultValues: {
       ...discount,
-      amount: (discount?.fixedAmount || discount?.precentage) as number | undefined,
+      amount: (discount?.fixedAmount || discount?.precentage) as
+        | number
+        | undefined,
+
+      expiresAt: new Date(discount?.expiresAt || ""),
     },
   });
 
@@ -222,7 +226,11 @@ function ManageDiscount({
                   type="date"
                   min={0}
                   {...register("expiresAt", { valueAsDate: true })}
-                  value={getValues("expiresAt")?.toISOString().split("T")[0]}
+                  value={
+                    dateIsValid(getValues("expiresAt"))
+                      ? getValues("expiresAt")?.toISOString().split("T")[0]
+                      : undefined
+                  }
                 />
 
                 {/* <div className="flex w-full flex-col items-center">  <Controller
@@ -272,6 +280,10 @@ function ManageDiscount({
       </Modal>
     </div>
   );
+}
+
+function dateIsValid(date: Date) {
+  return !Number.isNaN(new Date(date).getTime());
 }
 
 export default ManageDiscount;
