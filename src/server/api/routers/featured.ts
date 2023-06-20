@@ -5,9 +5,10 @@ import {
   protectedProcedure,
   protectedAdminProcedure,
 } from "~/server/api/trpc";
+import { mediaSchema } from "~/server/commonZod";
 import { zodName } from "~/server/types/name";
 
-export const categoryRouter = createTRPCRouter({
+export const featuredRouter = createTRPCRouter({
   getAll: publicProcedure
     .input(
       z.object({
@@ -19,12 +20,13 @@ export const categoryRouter = createTRPCRouter({
       const limit = input.limit ?? 50;
       const { cursor } = input;
 
-      const items = await ctx.prisma.category.findMany({
+      const items = await ctx.prisma.featured.findMany({
         take: limit + 1, // get an extra item at the end which we'll use as next cursor
         cursor: cursor ? { id: cursor } : undefined,
         orderBy: {
           id: "asc",
         },
+        include: { product: true },
       });
 
       let nextCursor: typeof cursor | undefined = undefined;
@@ -46,18 +48,22 @@ export const categoryRouter = createTRPCRouter({
       })
     )
     .query(({ ctx, input }) => {
-      return ctx.prisma.category.findUnique({ where: { id: input.id } });
+      return ctx.prisma.featured.findUnique({
+        where: { id: input.id },
+        include: { product: true },
+      });
     }),
 
   create: protectedAdminProcedure
     .input(
       z.object({
-        name: zodName,
+        productId: z.string().uuid(),
+        media: mediaSchema.array().min(1),
       })
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.category.create({
-        data: { name: input.name },
+      return ctx.prisma.featured.create({
+        data: { productId: input.productId, media: input.media },
       });
     }),
 
@@ -65,13 +71,14 @@ export const categoryRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string().uuid(),
-        name: zodName,
+        productId: z.string().uuid(),
+        media: mediaSchema.array().min(1),
       })
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.category.update({
+      return ctx.prisma.featured.update({
         where: { id: input.id },
-        data: { name: input.name },
+        data: { productId: input.productId, media: input.media },
       });
     }),
 
@@ -82,6 +89,6 @@ export const categoryRouter = createTRPCRouter({
       })
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.category.delete({ where: { id: input.id } });
+      return ctx.prisma.featured.delete({ where: { id: input.id } });
     }),
 });

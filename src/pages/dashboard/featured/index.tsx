@@ -24,33 +24,32 @@ import AdminLayout from "~/components/layout/AdminLayout";
 import { api } from "~/utils/api";
 import Logo from "public/logo-full-transparent.png";
 import { useRouter } from "next/router";
+import ManageFeatured from "~/components/ManageFeatured";
 
 function index() {
-  const utils = api.useContext();
-
-  const getAllProductsQuery = api.product.getAll.useInfiniteQuery(
+  const getAllFeaturedQuery = api.featured.getAll.useInfiniteQuery(
     { limit: 50 },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
     }
   );
 
-  utils.product.getAll.getInfiniteData();
-
   const router = useRouter();
+
   return (
     <AuthGaurd allowedLevel="STAFF">
       <AdminLayout>
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <Heading size={"md"}>Products</Heading>
-            <Link href={"/dashboard/products/create"}>
-              <Button colorScheme="pink">Add product</Button>
-            </Link>
+            <Heading size={"md"}>Featured</Heading>
+            <ManageFeatured
+              onRefetch={getAllFeaturedQuery.refetch}
+              action="create"
+            ></ManageFeatured>
           </div>
 
           <div>
-            {getAllProductsQuery.isLoading && <Progress isIndeterminate />}
+            {getAllFeaturedQuery.isLoading && <Progress isIndeterminate />}
 
             <TableContainer>
               <Table
@@ -64,22 +63,20 @@ function index() {
                   <Tr>
                     <Th>Product</Th>
                     <Th>Status</Th>
-                    <Th>Price</Th>
-                    <Th isNumeric>Quantity</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {getAllProductsQuery.data
-                    ? getAllProductsQuery.data.pages.map((productPage) => {
+                  {getAllFeaturedQuery.data
+                    ? getAllFeaturedQuery.data.pages.map((featuredPage) => {
                         return (
-                          <Fragment key={productPage.nextCursor}>
-                            {productPage.items.map((product) => {
+                          <Fragment key={featuredPage.nextCursor}>
+                            {featuredPage.items.map((featured) => {
                               return (
                                 <Tr
-                                  key={product.id}
+                                  key={featured.id}
                                   onClick={() =>
                                     router.push(
-                                      `/dashboard/products/${product.id}`
+                                      `/dashboard/featured/${featured.id}`
                                     )
                                   }
                                   className="transition hover:bg-gray-100"
@@ -89,33 +86,31 @@ function index() {
                                       <div className="h-10 w-10 rounded-md border">
                                         <Image
                                           className="h-full w-full rounded-md object-cover"
-                                          src={product.media[0]?.url || Logo}
-                                          alt={product.name.en}
+                                          src={featured.media[0]?.url || Logo}
+                                          alt={featured.product.name.en}
                                           width={100}
                                           height={100}
                                         ></Image>
                                       </div>
 
                                       <div>
-                                        <span>{product.name.en}</span>
+                                        <span>{featured.product.name.en}</span>
                                         <br />
-                                        <span>{product.name.ar}</span>
+                                        <span>{featured.product.name.ar}</span>
                                       </div>
                                     </div>
                                   </Td>
                                   <Td isTruncated>
                                     <Badge
                                       colorScheme={
-                                        product.status === "ACTIVE"
+                                        featured.status === "ACTIVE"
                                           ? "green"
                                           : "red"
                                       }
                                     >
-                                      {product.status}
+                                      {featured.status}
                                     </Badge>
                                   </Td>
-                                  <Td>{product.price} SAR</Td>
-                                  <Td isNumeric>{product.quantity}</Td>
                                 </Tr>
                               );
                             })}
@@ -123,31 +118,29 @@ function index() {
                         );
                       })
                     : null}
-                  <Tr>
-                    <Button
-                      onClick={() => getAllProductsQuery.fetchNextPage()}
-                      disabled={getAllProductsQuery.hasNextPage}
-                    >
-                      Fetch more
-                    </Button>
-                  </Tr>
                 </Tbody>
                 <Tfoot>
                   <Tr>
                     <Th>
-                      {getAllProductsQuery.data
-                        ? getAllProductsQuery.data.pages.reduce(
+                      {getAllFeaturedQuery.data
+                        ? getAllFeaturedQuery.data.pages.reduce(
                             (total, current) => (total += current.items.length),
                             0
                           )
                         : "0"}
-                      {" Products"}
+                      {" Featured"}
                     </Th>
                   </Tr>
                 </Tfoot>
               </Table>
             </TableContainer>
           </div>
+          <Button
+            onClick={() => getAllFeaturedQuery.fetchNextPage()}
+            disabled={getAllFeaturedQuery.hasNextPage}
+          >
+            Fetch
+          </Button>
         </div>
       </AdminLayout>
     </AuthGaurd>

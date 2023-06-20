@@ -9,15 +9,15 @@ import {
   ModalCloseButton,
   Button,
   Avatar,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverHeader,
-  PopoverBody,
   Divider,
   Spinner,
+  Text,
+  PopoverTrigger,
+  Popover,
+  PopoverContent,
+  PopoverArrow,
+  PopoverHeader,
+  PopoverBody,
 } from "@chakra-ui/react";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
@@ -30,7 +30,7 @@ import {
   HomeModernIcon,
   ShoppingBagIcon,
 } from "@heroicons/react/24/solid";
-import MenuItem from "./base/MenuItem";
+import MenuItem from "../base/MenuItem";
 import { User } from "@prisma/client";
 
 function Auth() {
@@ -51,8 +51,9 @@ function Auth() {
   ];
 
   if (status === "authenticated") {
+
     return (
-      <div className="z-50">
+      <div className="!z-[1000]">
         <Popover placement="bottom-start">
           <PopoverTrigger>
             <Button
@@ -69,10 +70,10 @@ function Auth() {
               ></Avatar>
             </Button>
           </PopoverTrigger>
-          <PopoverContent p={4} w={"full"} maxW={"2xl"}>
+          <PopoverContent p={4} w={"full"} maxW={"2xl"} zIndex={"modal"}>
             <PopoverArrow />
             <PopoverHeader>
-              <div className="mb-2 flex items-center gap-4">
+              <div className="z-50 mb-2 flex items-center gap-4">
                 <Avatar
                   name={user.name!}
                   src={user.image!}
@@ -86,7 +87,7 @@ function Auth() {
                 </div>
               </div>
             </PopoverHeader>
-            <PopoverBody className="z-50 space-y-4">
+            <PopoverBody className=" z-50 space-y-4" zIndex={1000}>
               <div className="grid grid-cols-2 gap-4">
                 {accountOptions.map((option) => {
                   if (option.admin && user.role !== "ADMIN") return null;

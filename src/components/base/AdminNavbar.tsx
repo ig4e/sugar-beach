@@ -1,9 +1,9 @@
 import Image from "next/image";
 import React from "react";
 import Logo from "public/transparent-logo.png";
-import ChangeRegion from "~/components/ChangeRegion";
-import Cart from "~/components/Cart";
-import Auth from "~/components/Auth";
+import ChangeRegion from "~/components/Navbar/ChangeRegion";
+import Cart from "~/components/Navbar/Cart";
+import Auth from "~/components/Navbar/Auth";
 
 import Link from "next/link";
 import { Button, HStack, IconButton } from "@chakra-ui/react";

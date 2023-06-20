@@ -23,14 +23,16 @@ import React, { useMemo } from "react";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import Input from "~/components/base/Input";
 import AdminLayout from "~/components/layout/AdminLayout";
-import ManageProductMedia from "~/components/ManageProductMedia";
+import ManageProductMedia from "~/components/ManageMedia";
 import { api } from "~/utils/api";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { productSchema } from "~/validations/productSchema";
-import { Description, Media, Name } from "@prisma/client";
+import { Description, Media, Name, ProductStatus } from "@prisma/client";
 import { MultiSelect, NumberInput, Select } from "@mantine/core";
 import { DevTool } from "@hookform/devtools";
+import { PRODUCT_STATUS } from "~/config/productConfig";
+import { useRouter } from "next/router";
 
 interface ProductFormValues {
   media: Media[];
@@ -40,17 +42,18 @@ interface ProductFormValues {
   quantity: number;
   price: number;
   compareAtPrice?: number;
-  status: "ACTIVE" | "DRAFT";
+  status: ProductStatus;
   type: string;
 }
 
 function create() {
   const toast = useToast();
+  const router = useRouter();
   const createProductHook = api.product.create.useMutation();
-  const allCategoriesQuery = api.category.getAll.useQuery();
+  const allCategoriesQuery = api.category.getAll.useQuery({});
   const categoriesData = useMemo(() => {
     if (!allCategoriesQuery.data) return [];
-    return allCategoriesQuery.data.map((category) => ({
+    return allCategoriesQuery.data.items.map((category) => ({
       value: category.id,
       label: category.name.en,
     }));
@@ -72,27 +75,42 @@ function create() {
   console.log(errors);
 
   const onSubmit = handleSubmit(async (data) => {
-    try {
-      await createProductHook.mutateAsync({
-        media: data.media,
-        name: data.name,
-        description: {
-          ar: data.description.ar || undefined,
-          en: data.description.en || undefined,
-        },
-        categoryIDs: data.categories,
-        price: data.price,
-        compareAtPrice: data.compareAtPrice,
-        quantity: data.quantity,
-        status: data.status,
-        type: data.type,
-      });
+    console.log(data);
 
-      toast({
-        title: "Product created",
-        status: "success",
-        description: `Created ${data.name.en} successfully`,
-      });
+    try {
+      createProductHook.mutate(
+        {
+          name: data.name,
+          media: data.media,
+          description: {
+            ar: data.description.ar || undefined,
+            en: data.description.en || undefined,
+          },
+          categoryIDs: data.categories,
+          price: data.price,
+          compareAtPrice: data.compareAtPrice,
+          quantity: data.quantity,
+          status: data.status,
+          type: data.type,
+        },
+        {
+          onError(error, variables, context) {
+            toast({
+              title: "Failed to create product",
+              status: "error",
+              description: error.message,
+            });
+          },
+          onSuccess(data, variables, context) {
+            router.push(`/dashboard/products/${data.id}`);
+            toast({
+              title: "Product created",
+              status: "success",
+              description: `Created ${data.name.en} successfully`,
+            });
+          },
+        }
+      );
     } catch (error) {
       console.log(error);
     }
@@ -143,10 +161,11 @@ function create() {
                     <Button type="submit" form="new-product">
                       Save
                     </Button>
-
-                    <Button type="button" colorScheme="gray">
-                      Discard
-                    </Button>
+                    <Link href={"/dashboard/products"} onClick={() => reset()}>
+                      <Button type="button" colorScheme="gray">
+                        Discard
+                      </Button>
+                    </Link>
                   </HStack>
                 </Alert>
               </div>
@@ -206,7 +225,7 @@ function create() {
 
             <div className="col-span-2 flex flex-col gap-4">
               <div className="z-40 h-max rounded-md bg-white p-4 drop-shadow-md">
-                <FormControl isRequired>
+                <FormControl isRequired isInvalid={!!errors.status}>
                   <FormLabel>Status</FormLabel>
                   <Controller
                     control={control}
@@ -216,16 +235,14 @@ function create() {
                         {...field}
                         defaultValue={"ACTIVE"}
                         defaultChecked
-                        data={[
-                          { value: "ACTIVE", label: "Active" },
-                          { value: "DRAFT", label: "Draft" },
-                        ]}
+                        data={PRODUCT_STATUS}
                         error={fieldState.invalid}
                       ></Select>
                     )}
                   ></Controller>
 
                   <FormHelperText>The product listing status.</FormHelperText>
+                  <FormErrorMessage>{errors.status?.message}</FormErrorMessage>
                 </FormControl>
               </div>
 
@@ -250,7 +267,7 @@ function create() {
 
                   <FormHelperText>The product categories.</FormHelperText>
                   <FormErrorMessage>
-                    {errors.categories && errors.categories.message}
+                    {errors.categories?.message}
                   </FormErrorMessage>
                 </FormControl>
               </div>
@@ -265,9 +282,7 @@ function create() {
                     {...register("type")}
                   ></Input>
                   <FormHelperText>The product type.</FormHelperText>
-                  {errors.type && (
-                    <FormErrorMessage>{errors.type.message}</FormErrorMessage>
-                  )}
+                  <FormErrorMessage>{errors.type?.message}</FormErrorMessage>
                 </FormControl>
               </div>
 
@@ -292,11 +307,9 @@ function create() {
                   ></Controller>
 
                   <FormHelperText>The product quantity.</FormHelperText>
-                  {errors.quantity && (
-                    <FormErrorMessage>
-                      {errors.quantity.message}
-                    </FormErrorMessage>
-                  )}
+                  <FormErrorMessage>
+                    {errors.quantity?.message}
+                  </FormErrorMessage>
                 </FormControl>
               </div>
             </div>
@@ -309,6 +322,7 @@ function create() {
                   name="media"
                   render={({ field }) => (
                     <ManageProductMedia
+                      endpoint="productMedia"
                       onChange={field.onChange}
                       value={field.value}
                     />
@@ -342,9 +356,7 @@ function create() {
                 </InputGroup>
 
                 <FormHelperText>The product price.</FormHelperText>
-                {errors.price && (
-                  <FormErrorMessage>{errors.price?.message}</FormErrorMessage>
-                )}
+                <FormErrorMessage>{errors.price?.message}</FormErrorMessage>
               </FormControl>
 
               <FormControl
@@ -372,11 +384,9 @@ function create() {
                   ></Controller>
                 </InputGroup>
 
-                {errors.compareAtPrice && (
-                  <FormErrorMessage>
-                    {errors.compareAtPrice?.message}
-                  </FormErrorMessage>
-                )}
+                <FormErrorMessage>
+                  {errors.compareAtPrice?.message}
+                </FormErrorMessage>
 
                 <FormHelperText>
                   To display a markdown, enter a value higher than your price.

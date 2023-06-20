@@ -20,7 +20,7 @@ const config = {
   },
 
   images: {
-    domains: ["flagsapi.com", "uploadthing.com"],
+    domains: ["flagsapi.com", "uploadthing.com", "cdn.discordapp.com"],
   },
   
   experimental: {

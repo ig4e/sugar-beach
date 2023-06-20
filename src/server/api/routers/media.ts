@@ -12,6 +12,26 @@ export const mediaRouter = createTRPCRouter({
   deleteMany: protectedAdminProcedure
     .input(z.object({ fileKeys: z.string().array() }))
     .mutation(async ({ input }) => {
-      utapi.deleteFiles(input.fileKeys);
+      try {
+        const { success: isDeleted } = await utapi.deleteFiles(input.fileKeys);
+        if (!isDeleted) {
+          try {
+            const urls = await utapi.getFileUrls(input.fileKeys);
+            console.log(urls);
+            if (urls.length > 0) {
+              return { success: false };
+            }
+          } catch (error) {
+            console.log(error);
+            return { success: true };
+          }
+        }
+        return { success: isDeleted };
+      } catch {
+        return {
+          success: true,
+        };
+      }
     }),
+  findMany: protectedAdminProcedure.query(async ({ input }) => {}),
 });

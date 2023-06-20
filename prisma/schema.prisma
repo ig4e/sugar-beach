@@ -86,11 +86,21 @@ model Product {
     orders         Order[]
     categories     Category[]     @relation(references: [id], fields: [categoryIDs])
     type           String
+    visits         Int            @default(0)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     categoryIDs String[]
+    featured    Featured[]
+}
+
+model Featured {
+    id        String         @id @default(uuid()) @map("_id")
+    media     Media[]
+    product   Product        @relation(fields: [productId], references: [id])
+    status    FeaturedStatus @default(ACTIVE)
+    productId String
 }
 
 model Order {
@@ -170,9 +180,12 @@ enum DiscountType {
 }
 
 type Media {
-    url String
-    key String
-    isVideo Boolean @default(false)
+    url       String
+    key       String
+    name      String
+    size      Int
+    isVideo   Boolean  @default(false)
+    createdAt DateTime @default(now())
 }
 
 type Name {
@@ -218,4 +231,11 @@ enum UserRole {
 enum ProductStatus {
     ACTIVE
     DRAFT
+    ARCHIVED
+}
+
+enum FeaturedStatus {
+    ACTIVE
+    DRAFT
+    ARCHIVED
 }

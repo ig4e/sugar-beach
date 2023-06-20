@@ -29,7 +29,7 @@ import { api } from "~/utils/api";
 
 function index() {
   const toast = useToast();
-  const allCategoriesQuery = api.category.getAll.useQuery();
+  const allCategoriesQuery = api.category.getAll.useQuery({});
   const deleteCategoryHook = api.category.delete.useMutation();
 
   function deleteCategory(id: string) {
@@ -77,7 +77,7 @@ function index() {
                 </Thead>
                 <Tbody>
                   {allCategoriesQuery.data &&
-                    allCategoriesQuery.data.map(
+                    allCategoriesQuery.data.items.map(
                       (category) =>
                         category && (
                           <Tr key={category.id}>
@@ -109,7 +109,7 @@ function index() {
                 </Tbody>
                 <Tfoot>
                   <Tr>
-                    <Th>{allCategoriesQuery.data?.length || 0} Categories</Th>
+                    <Th>{allCategoriesQuery.data?.items.length || 0} Categories</Th>
                   </Tr>
                 </Tfoot>
               </Table>
