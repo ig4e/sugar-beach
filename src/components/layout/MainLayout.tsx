@@ -4,9 +4,13 @@ import Footer from "~/components/base/Footer";
 
 function MainLayout({ children }: { children: any }) {
   return (
-    <div className={"min-h-screen flex flex-col justify-between max-w-[100vw] overflow-hidden"}>
+    <div
+      className={
+        "flex min-h-screen max-w-[100vw] flex-col justify-between overflow-hidden"
+      }
+    >
       <Navbar></Navbar>
-      <div className="container mx-auto mt-2 h-full flex-grow">{children}</div>
+      <div className="container mx-auto h-full flex-grow">{children}</div>
       <Footer></Footer>
     </div>
   );

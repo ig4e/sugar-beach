@@ -8,8 +8,8 @@ export const productSchema = z.object({
   media: mediaSchema.array().min(1),
   status: z.enum(["ACTIVE", "DRAFT", "ARCHIVED"]),
   price: z.number().positive(),
-  compareAtPrice: z.number().positive(),
-  quantity: z.number().positive(),
+  compareAtPrice: z.number().optional(),
+  quantity: z.number().min(0),
   type: z.string().min(1),
   categories: z.string().uuid().array(),
 });

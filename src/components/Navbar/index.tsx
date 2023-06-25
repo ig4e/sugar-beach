@@ -55,20 +55,26 @@ function Navbar() {
           <div className="hidden items-center gap-4 md:flex">
             {categories.data &&
               categories.data.items.map((category) => (
-                <Tag
+                <Link
                   key={category.id}
-                  colorScheme="gray"
-                  p={"2"}
-                  px={"3"}
-                  borderRadius={"full"}
+                  href={`/search?query=&categories=${category.id}`}
                 >
-                  {category.name.en}
-                </Tag>
+                  <Tag
+                    colorScheme="gray"
+                    p={"2"}
+                    px={"3"}
+                    borderRadius={"full"}
+                  >
+                    {category.name.en}
+                  </Tag>
+                </Link>
               ))}
 
-            <Tag p={"2"} px={"3"} borderRadius={"full"}>
-              Explore
-            </Tag>
+            <Link href={"/search?query=&categories="}>
+              <Tag p={"2"} px={"3"} borderRadius={"full"}>
+                Explore
+              </Tag>
+            </Link>
           </div>
         </div>
 

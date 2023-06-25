@@ -4,3 +4,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .bullet-active-swiper {
+    @apply !bg-pink-500 !opacity-100 !w-10 !transition-all;
+  }
+
+  :root {
+    --swiper-pagination-bullet-border-radius: 0.25rem !important;
+    --swiper-pagination-bullet-inactive-color: #ffffff !important;
+    --swiper-pagination-bullet-inactive-opacity: 0.8 !important;
+    --swiper-pagination-bullet-size: 6px;
+    --swiper-pagination-bullet-width: 1.5rem;
+  }
+}

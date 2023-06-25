@@ -21,7 +21,7 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import React from "react";
+import React, { Fragment } from "react";
 import ManageCategory from "~/components/ManageCategory";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/layout/AdminLayout";
@@ -29,7 +29,9 @@ import { api } from "~/utils/api";
 
 function index() {
   const toast = useToast();
-  const allCategoriesQuery = api.category.getAll.useQuery({});
+  const allCategoriesQuery = api.category.getAll.useInfiniteQuery({
+    limit: 100,
+  });
   const deleteCategoryHook = api.category.delete.useMutation();
 
   function deleteCategory(id: string) {
@@ -77,39 +79,67 @@ function index() {
                 </Thead>
                 <Tbody>
                   {allCategoriesQuery.data &&
-                    allCategoriesQuery.data.items.map(
-                      (category) =>
-                        category && (
-                          <Tr key={category.id}>
-                            <Td isTruncated>
-                              <span>{category.name.en}</span>
-                              <br />
-                              <span>{category.name.ar}</span>
-                            </Td>
-                            <Td>
-                              <HStack className="justify-end">
-                                <ManageCategory
-                                  action="edit"
-                                  category={category}
-                                  onRefetch={() => allCategoriesQuery.refetch()}
-                                ></ManageCategory>
-                                <IconButton
-                                  onClick={() => deleteCategory(category.id)}
-                                  aria-label="Delete category"
-                                  icon={
-                                    <TrashIcon className="h-5 w-5"></TrashIcon>
-                                  }
-                                  colorScheme={"red"}
-                                ></IconButton>
-                              </HStack>
-                            </Td>
-                          </Tr>
-                        )
-                    )}
+                    allCategoriesQuery.data.pages.map((categoryPage) => {
+                      return (
+                        <Fragment key={categoryPage.nextCursor}>
+                          {categoryPage.items.map((category) => (
+                            <Tr key={category.id}>
+                              <Td isTruncated>
+                                <span>{category.name.en}</span>
+                                <br />
+                                <span>{category.name.ar}</span>
+                              </Td>
+                              <Td>
+                                <HStack className="justify-end">
+                                  <ManageCategory
+                                    action="edit"
+                                    category={category}
+                                    onRefetch={() =>
+                                      allCategoriesQuery.refetch()
+                                    }
+                                  ></ManageCategory>
+                                  <IconButton
+                                    onClick={() => deleteCategory(category.id)}
+                                    aria-label="Delete category"
+                                    icon={
+                                      <TrashIcon className="h-5 w-5"></TrashIcon>
+                                    }
+                                    colorScheme={"red"}
+                                  ></IconButton>
+                                </HStack>
+                              </Td>
+                            </Tr>
+                          ))}
+                        </Fragment>
+                      );
+                    })}
+
+                  {allCategoriesQuery.hasNextPage && (
+                    <Tr>
+                      <Td colSpan={4}>
+                        <div className="flex items-center justify-center">
+                          <Button
+                            onClick={() => allCategoriesQuery.fetchNextPage()}
+                            size="sm"
+                          >
+                            Fetch categories
+                          </Button>
+                        </div>
+                      </Td>
+                    </Tr>
+                  )}
                 </Tbody>
                 <Tfoot>
                   <Tr>
-                    <Th>{allCategoriesQuery.data?.items.length || 0} Categories</Th>
+                    <Th>
+                      {allCategoriesQuery.data
+                        ? allCategoriesQuery.data.pages.reduce(
+                            (total, current) => (total += current.items.length),
+                            0
+                          )
+                        : 0}{" "}
+                      Categories
+                    </Th>
                   </Tr>
                 </Tfoot>
               </Table>

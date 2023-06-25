@@ -13,7 +13,7 @@ export const ourFileRouter = {
     video: { maxFileSize: "256MB", maxFileCount: 5 },
   })
     // Set permissions and file types for this FileRoute
-    .middleware(async (req, res) => {
+    .middleware(async ({ req, res }) => {
       // This code runs on your server before upload
       const session = await getServerAuthSession({ req, res });
       const user = session?.user;
@@ -35,7 +35,7 @@ export const ourFileRouter = {
     image: { maxFileSize: "64MB", maxFileCount: 2 },
   })
     // Set permissions and file types for this FileRoute
-    .middleware(async (req, res) => {
+    .middleware(async ({ req, res }) => {
       // This code runs on your server before upload
       const session = await getServerAuthSession({ req, res });
       const user = session?.user;

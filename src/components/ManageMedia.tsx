@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
+  useReducer,
   useState,
 } from "react";
 import { useUploadThing } from "~/utils/uploadthing";
@@ -26,6 +27,56 @@ import { Media } from "@prisma/client";
 import Image from "next/image";
 import * as _ from "lodash";
 import { OurFileRouter } from "~/server/uploadthing";
+import { useDebounce } from "usehooks-ts";
+import { useController } from "react-hook-form";
+
+interface State {
+  media: Media[];
+}
+
+enum MediaActionType {
+  DELETE = "DELETE",
+  ADD = "ADD",
+  SET = "SET",
+}
+
+interface MediaAction {
+  type: MediaActionType;
+  payload: Media[];
+  onChange: (state: Media[]) => void;
+}
+
+function reducer(state: State, action: MediaAction) {
+  let newState: State = { media: [] };
+  if (action.type === MediaActionType.ADD) {
+    newState = {
+      media: [...state.media, ...action.payload],
+    };
+  } else if (action.type === MediaActionType.DELETE) {
+    const payloadMediaKeys = action.payload.map((media) => media.key);
+    newState = {
+      media: state.media.filter(
+        (media) => !payloadMediaKeys.includes(media.key)
+      ),
+    };
+  } else if (action.type === MediaActionType.SET) {
+    if (_.isEqual(state.media.sort(), action.payload.sort())) {
+      return state;
+    }
+
+    newState = {
+      media: action.payload,
+    };
+  }
+
+  if (newState) {
+    console.log("changed");
+    action.onChange(newState.media);
+    return newState;
+  }
+
+  throw Error("Unknown action.");
+}
 
 const ManageMedia = forwardRef(
   (
@@ -33,46 +84,31 @@ const ManageMedia = forwardRef(
       value,
       onChange,
       endpoint,
+      max = 10,
     }: {
       endpoint: keyof OurFileRouter;
       value?: Media[];
-      onChange?: (fileURLs: Media[]) => void;
+      max?: number;
+      onChange: (fileURLs: Media[]) => void;
     },
     ref
   ) => {
-    const [uploadedFiles, setUploadedFiles] = useState<Media[]>([]);
-    const [uploadingFilesCount, setUploadingFilesCount] = useState(0);
-
     const toast = useToast({ duration: 3000 });
     const deleteMedia = api.media.deleteMany.useMutation();
+    const [uploadingFilesCount, setUploadingFilesCount] = useState(0);
+    const [state, dispatch] = useReducer(reducer, { media: [] });
 
     useEffect(() => {
-      if (value) {
-        setUploadedFiles(value);
+      if (value && value.length > 0) {
+        dispatch({ type: MediaActionType.SET, payload: value, onChange });
       }
     }, [value]);
 
-    // useEffect(() => {
-    //   if (onChange) {
-    //     if (!_.isEqual(uploadedFiles.sort(), value?.sort())) {
-    //       onChange(uploadedFiles);
-    //     }
-    //   }
-    // }, [uploadedFiles, onChange]);
-
-    function handleChange(newState: Media[]) {
-      setUploadedFiles(newState);
-      if (onChange) {
-        if (!_.isEqual(newState.sort(), value?.sort())) {
-          onChange(newState);
-        }
-      }
-    }
-
     function onMediaDelete(key: string) {
-      const media = uploadedFiles.find((media) => media.key === key);
+      const media = state.media.find((media) => media.key === key);
       if (media) {
-        handleChange(uploadedFiles.filter((media) => media.key !== key));
+        dispatch({ payload: [media], type: MediaActionType.DELETE, onChange });
+
         deleteMedia.mutate(
           { fileKeys: [key] },
           {
@@ -83,9 +119,11 @@ const ManageMedia = forwardRef(
                 description: error.message,
               });
 
-              handleChange([...uploadedFiles, media]);
-
-              // setUploadedFiles((state) => [...state, media]);
+              dispatch({
+                payload: [media],
+                type: MediaActionType.ADD,
+                onChange,
+              });
             },
             onSuccess(data, variables, context) {
               toast({
@@ -111,9 +149,18 @@ const ManageMedia = forwardRef(
         if (result) {
           setUploadingFilesCount((state) => state - result.length);
 
-          handleChange([
-            ...uploadedFiles,
-            ...result.map((file, index) => {
+          if (state.media.length + result.length > max) {
+            toast({
+              title: `Maximum number of media (${max}) reached`,
+              status: "error",
+            });
+
+            return;
+          }
+
+          dispatch({
+            type: MediaActionType.ADD,
+            payload: result.map((file, index) => {
               return {
                 key: file.fileKey,
                 isVideo: acceptedFilesWithType[index]?.isVideo || false,
@@ -122,20 +169,8 @@ const ManageMedia = forwardRef(
                 size: acceptedFilesWithType[index]?.file.size,
               } as Media;
             }),
-          ]);
-
-          // setUploadedFiles((state) => [
-          //   ...state,
-          //   ...result.map((file, index) => {
-          //     return {
-          //       key: file.fileKey,
-          //       isVideo: acceptedFilesWithType[index]?.isVideo || false,
-          //       url: file.fileUrl,
-          //       name: acceptedFilesWithType[index]?.file.name,
-          //       size: acceptedFilesWithType[index]?.file.size,
-          //     } as Media;
-          //   }),
-          // ]);
+            onChange,
+          });
 
           toast({ title: "Media uploaded successfully", status: "success" });
         } else {
@@ -161,8 +196,7 @@ const ManageMedia = forwardRef(
       accept: generateClientDropzoneAccept(["image", "video"]),
     });
 
-    const { startUpload } = useUploadThing({
-      endpoint: endpoint,
+    const { startUpload } = useUploadThing(endpoint, {
       onClientUploadComplete: (res = []) => {
         console.log("uploaded successfully!");
       },
@@ -171,17 +205,20 @@ const ManageMedia = forwardRef(
       },
     });
 
-    if (uploadedFiles.length > 0 || uploadingFilesCount > 0)
+    if (state.media.length > 0 || uploadingFilesCount > 0)
       return (
         <div className="grid grid-flow-row gap-2 rounded-md border-2 border-dashed p-4 [grid-template-columns:_repeat(4,_minmax(0,_1fr));]">
-          {uploadedFiles.map((media, index) => (
-            <MediaItem
-              key={media.key}
-              media={media}
-              onDelete={() => onMediaDelete(media.key)}
-              big={index === 0}
-            />
-          ))}
+          {state.media.map(
+            (media, index) =>
+              media && (
+                <MediaItem
+                  key={media.key}
+                  media={media}
+                  onDelete={() => onMediaDelete(media.key)}
+                  big={index === 0}
+                />
+              )
+          )}
 
           {Array.from({ length: uploadingFilesCount })
             .fill("d")
@@ -198,15 +235,32 @@ const ManageMedia = forwardRef(
             ))}
 
           <div
-            className="flex aspect-square flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed p-2 text-center"
+            className={clsx(
+              "flex aspect-square flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed p-2 text-center",
+              {
+                "pointer-events-none cursor-not-allowed bg-zinc-200":
+                  state.media.length >= max,
+              }
+            )}
             {...getRootProps()}
           >
-            <input
-              {...getInputProps()}
-              ref={ref as LegacyRef<HTMLInputElement>}
-            />
-            <Badge>ADD</Badge>
-            <span className="text-xs">Images, or videos</span>
+            {state.media.length >= max ? (
+              <>
+                <Badge>Maxed</Badge>
+                <span className="text-xs">Max number of media reached</span>
+
+              </>
+            ) : (
+              <>
+                <input
+                  {...getInputProps()}
+                  ref={ref as LegacyRef<HTMLInputElement>}
+                  disabled={state.media.length >= max}
+                />
+                <Badge>ADD</Badge>
+                <span className="text-xs">Images, or videos</span>
+              </>
+            )}
           </div>
         </div>
       );

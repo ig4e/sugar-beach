@@ -29,7 +29,7 @@ function index() {
   const utils = api.useContext();
 
   const getAllProductsQuery = api.product.getAll.useInfiniteQuery(
-    { limit: 50 },
+    { limit: 100 },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
     }
@@ -123,14 +123,21 @@ function index() {
                         );
                       })
                     : null}
-                  <Tr>
-                    <Button
-                      onClick={() => getAllProductsQuery.fetchNextPage()}
-                      disabled={getAllProductsQuery.hasNextPage}
-                    >
-                      Fetch more
-                    </Button>
-                  </Tr>
+
+                  {getAllProductsQuery.hasNextPage && (
+                    <Tr>
+                      <Td colSpan={4}>
+                        <div className="flex items-center justify-center">
+                          <Button
+                            onClick={() => getAllProductsQuery.fetchNextPage()}
+                            size="sm"
+                          >
+                            Fetch products
+                          </Button>
+                        </div>
+                      </Td>
+                    </Tr>
+                  )}
                 </Tbody>
                 <Tfoot>
                   <Tr>

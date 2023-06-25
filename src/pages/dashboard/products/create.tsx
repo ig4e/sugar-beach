@@ -34,7 +34,7 @@ import { DevTool } from "@hookform/devtools";
 import { PRODUCT_STATUS } from "~/config/productConfig";
 import { useRouter } from "next/router";
 
-interface ProductFormValues {
+export interface ProductFormValues {
   media: Media[];
   name: Name;
   description: Description;
@@ -71,6 +71,8 @@ function create() {
     mode: "onChange",
     resolver: zodResolver(productSchema),
   });
+
+  control;
 
   console.log(errors);
 
@@ -232,7 +234,15 @@ function create() {
                     name="status"
                     render={({ field, fieldState }) => (
                       <Select
-                        {...field}
+                        ref={field.ref}
+                        onChange={(value) =>
+                          field.onChange(value as ProductStatus)
+                        }
+                        onBlur={field.onBlur}
+                        value={field.value}
+                        name={field.name}
+                        placeholder="ACTIVE"
+                        disabled={allCategoriesQuery.isLoading}
                         defaultValue={"ACTIVE"}
                         defaultChecked
                         data={PRODUCT_STATUS}
@@ -295,10 +305,13 @@ function create() {
                     name="quantity"
                     render={({ field, fieldState }) => (
                       <NumberInput
-                        {...field}
+                        ref={field.ref}
+                        onChange={(value) => field.onChange(Number(value))}
+                        onBlur={field.onBlur}
+                        value={field.value}
+                        name={field.name}
                         className="w-full"
                         width={"100%"}
-                        name="quantity"
                         min={0}
                         placeholder="10"
                         error={fieldState.invalid}
@@ -344,12 +357,17 @@ function create() {
                     name="price"
                     render={({ field, fieldState }) => (
                       <NumberInput
-                        {...field}
+                        ref={field.ref}
+                        onChange={(value) => field.onChange(Number(value))}
+                        onBlur={field.onBlur}
+                        value={field.value}
+                        name={field.name}
                         className="w-full"
                         width={"100%"}
                         min={0}
                         placeholder="10"
                         error={fieldState.invalid}
+                        precision={2}
                       ></NumberInput>
                     )}
                   ></Controller>
@@ -373,11 +391,17 @@ function create() {
                     rules={{ required: false }}
                     render={({ field, fieldState }) => (
                       <NumberInput
-                        {...field}
+                        ref={field.ref}
+                        onChange={(value) => field.onChange(Number(value))}
+                        onBlur={field.onBlur}
+                        value={field.value}
+                        name={field.name}
                         className="w-full"
                         width={"100%"}
                         min={0}
                         placeholder="10"
+                        precision={2}
+
                         error={fieldState.invalid}
                       ></NumberInput>
                     )}

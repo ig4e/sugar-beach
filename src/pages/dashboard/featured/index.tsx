@@ -14,6 +14,7 @@ import {
   Badge,
   HStack,
   IconButton,
+  useToast,
 } from "@chakra-ui/react";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
@@ -27,12 +28,31 @@ import { useRouter } from "next/router";
 import ManageFeatured from "~/components/ManageFeatured";
 
 function index() {
+  const toast = useToast();
+
   const getAllFeaturedQuery = api.featured.getAll.useInfiniteQuery(
     { limit: 50 },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
     }
   );
+
+  const deleteFeaturedHook = api.featured.delete.useMutation();
+
+  function deleteFeatured(id: string) {
+    deleteFeaturedHook.mutate(
+      { id },
+      {
+        onSuccess: ({}) => {
+          getAllFeaturedQuery.refetch();
+          toast({
+            status: "success",
+            title: `Deleted featured successfully`,
+          });
+        },
+      }
+    );
+  }
 
   const router = useRouter();
 
@@ -63,6 +83,7 @@ function index() {
                   <Tr>
                     <Th>Product</Th>
                     <Th>Status</Th>
+                    <Th isNumeric>Actions</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -74,11 +95,6 @@ function index() {
                               return (
                                 <Tr
                                   key={featured.id}
-                                  onClick={() =>
-                                    router.push(
-                                      `/dashboard/featured/${featured.id}`
-                                    )
-                                  }
                                   className="transition hover:bg-gray-100"
                                 >
                                   <Td>
@@ -111,6 +127,25 @@ function index() {
                                       {featured.status}
                                     </Badge>
                                   </Td>
+                                  <Td isNumeric>
+                                    <HStack className="justify-end">
+                                      <ManageFeatured
+                                        onRefetch={getAllFeaturedQuery.refetch}
+                                        action="edit"
+                                        featured={featured}
+                                      ></ManageFeatured>
+                                      <IconButton
+                                        onClick={() =>
+                                          deleteFeatured(featured.id)
+                                        }
+                                        aria-label="Delete category"
+                                        icon={
+                                          <TrashIcon className="h-5 w-5"></TrashIcon>
+                                        }
+                                        colorScheme={"red"}
+                                      ></IconButton>
+                                    </HStack>
+                                  </Td>
                                 </Tr>
                               );
                             })}
@@ -118,6 +153,21 @@ function index() {
                         );
                       })
                     : null}
+
+                  {getAllFeaturedQuery.hasNextPage && (
+                    <Tr>
+                      <Td colSpan={4}>
+                        <div className="flex items-center justify-center">
+                          <Button
+                            onClick={() => getAllFeaturedQuery.fetchNextPage()}
+                            size="sm"
+                          >
+                            Fetch featureds
+                          </Button>
+                        </div>
+                      </Td>
+                    </Tr>
+                  )}
                 </Tbody>
                 <Tfoot>
                   <Tr>

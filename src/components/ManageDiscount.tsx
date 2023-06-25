@@ -205,7 +205,11 @@ function ManageDiscount({
                       name="amount"
                       render={({ field }) => (
                         <NumberInput
-                          {...field}
+                          ref={field.ref}
+                          onChange={(value) => field.onChange(Number(value))}
+                          onBlur={field.onBlur}
+                          value={field.value}
+                          name={field.name}
                           min={0}
                           max={isPrecentage ? 100 : undefined}
                           className="w-full"

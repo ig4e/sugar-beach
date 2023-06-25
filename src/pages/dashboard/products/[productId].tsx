@@ -26,7 +26,7 @@ import Input from "~/components/base/Input";
 import AdminLayout from "~/components/layout/AdminLayout";
 import ManageProductMedia from "~/components/ManageMedia";
 import { api } from "~/utils/api";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { productSchema } from "~/validations/productSchema";
 import { Description, Media, Name, ProductStatus } from "@prisma/client";
@@ -57,9 +57,10 @@ function AdminPageProduct() {
   const toast = useToast();
   const productId = router.query.productId as string;
 
+  const productQuery = api.product.get.useQuery({ id: productId });
+
   const editProductHook = api.product.edit.useMutation();
   const allCategoriesQuery = api.category.getAll.useQuery({});
-  const productQuery = api.product.get.useQuery({ id: productId });
   const deleteProduct = api.product.delete.useMutation();
 
   const [isChanged, setIsChanged] = useState(false);
@@ -82,22 +83,24 @@ function AdminPageProduct() {
     setValue,
   } = useForm<ProductFormValues>({
     mode: "onChange",
-
     resolver: zodResolver(productSchema),
-    values: productQuery.data
-      ? {
-          name: productQuery.data.name,
-          description: productQuery.data.description,
-          categories: productQuery.data.categoryIDs,
-          media: productQuery.data.media,
-          quantity: productQuery.data.quantity,
-          price: productQuery.data.price,
-          compareAtPrice: productQuery.data.compareAtPrice || undefined,
-          status: productQuery.data.status,
-          type: productQuery.data.type,
-        }
-      : undefined,
+    async defaultValues(payload) {
+      const productData = (await productQuery.refetch()).data!;
+      return {
+        name: productData.name,
+        description: productData.description,
+        categories: productData.categoryIDs,
+        media: productData.media,
+        quantity: productData.quantity,
+        price: productData.price,
+        compareAtPrice: productData.compareAtPrice || undefined,
+        status: productData.status,
+        type: productData.type,
+      };
+    },
   });
+
+  const mediaValue = useWatch({ control, name: "media" });
 
   useEffect(() => {
     if (!productQuery.isFetched) reset();
@@ -321,7 +324,13 @@ function AdminPageProduct() {
                         name="status"
                         render={({ field, fieldState }) => (
                           <Select
-                            {...field}
+                            ref={field.ref}
+                            onChange={(value) =>
+                              field.onChange(value as ProductStatus)
+                            }
+                            onBlur={field.onBlur}
+                            value={field.value}
+                            name={field.name}
                             defaultValue={"ACTIVE"}
                             defaultChecked
                             data={PRODUCT_STATUS}
@@ -390,10 +399,13 @@ function AdminPageProduct() {
                         name="quantity"
                         render={({ field, fieldState }) => (
                           <NumberInput
-                            {...field}
+                            ref={field.ref}
+                            onChange={(value) => field.onChange(Number(value))}
+                            onBlur={field.onBlur}
+                            value={field.value}
+                            name={field.name}
                             className="w-full"
                             width={"100%"}
-                            name="quantity"
                             min={0}
                             placeholder="10"
                             error={fieldState.invalid}
@@ -418,20 +430,11 @@ function AdminPageProduct() {
 
                   <SkeletonWrap>
                     <div>
-                      {productQuery.data?.media && (
-                        <Controller
-                          control={control}
-                          name="media"
-                          render={({ field }) => (
-                            <ManageMedia
-                              endpoint="productMedia"
-                              onChange={field.onChange}
-                              value={field.value}
-                              ref={field.ref}
-                            />
-                          )}
-                        ></Controller>
-                      )}
+                      <ManageMedia
+                        endpoint="productMedia"
+                        value={mediaValue}
+                        onChange={(value) => setValue("media", value)}
+                      />
                     </div>
                   </SkeletonWrap>
 
@@ -451,12 +454,17 @@ function AdminPageProduct() {
                         name="price"
                         render={({ field, fieldState }) => (
                           <NumberInput
-                            {...field}
+                            ref={field.ref}
+                            onChange={(value) => field.onChange(Number(value))}
+                            onBlur={field.onBlur}
+                            value={field.value}
+                            name={field.name}
                             className="w-full"
                             width={"100%"}
                             min={0}
                             placeholder="10"
                             error={fieldState.invalid}
+                            precision={2}
                           ></NumberInput>
                         )}
                       ></Controller>
@@ -483,12 +491,22 @@ function AdminPageProduct() {
                         rules={{ required: false }}
                         render={({ field, fieldState }) => (
                           <NumberInput
-                            {...field}
+                            ref={field.ref}
+                            onChange={(value) =>
+                              value === ""
+                                ? field.onChange(0)
+                                : field.onChange(Number(value))
+                            }
+                            onBlur={field.onBlur}
+                            value={field.value}
+                            name={field.name}
                             className="w-full"
                             width={"100%"}
                             min={0}
                             placeholder="10"
+                            precision={2}
                             error={fieldState.invalid}
+                            required={false}
                           ></NumberInput>
                         )}
                       ></Controller>

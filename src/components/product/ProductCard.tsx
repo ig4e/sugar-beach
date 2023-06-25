@@ -1,32 +1,85 @@
-import { VStack } from "@chakra-ui/react";
-import { Product } from "@prisma/client";
+import {
+  VStack,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Heading,
+  Divider,
+  ButtonGroup,
+  Button,
+  Stack,
+  Text,
+  Badge,
+  HStack,
+} from "@chakra-ui/react";
+import { Category, Product } from "@prisma/client";
 import Image from "next/image";
 import React from "react";
+import Logo from "public/logo.png";
+import Link from "next/link";
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({
+  product,
+}: {
+  product: Product & { categories: Category[] };
+}) {
+  const productImage = product.media[0]?.url || Logo;
+
   return (
-    <div>
-      <div className="aspect-square rounded-md">
-        {product.media[0] ? (
-          <Image
-            src={product.media[0]?.url}
-            alt={product.name.en}
-            width={256}
-            height={256}
-            className="rounded-md"
-          ></Image>
-        ) : (
-          <svg
-            viewBox="0 0 20 20"
-            className="h-full w-full rounded-md"
-            focusable="false"
-            aria-hidden="true"
+    <Card>
+      <CardBody
+        display={"flex"}
+        flexDirection={"column"}
+        justifyContent={"space-between"}
+        gap={2}
+        p={3}
+      >
+        <Link href={`/products/${product.id}`} className="flex flex-col gap-2">
+          <VStack
+            justifyItems={"start"}
+            justifyContent={"start"}
+            alignItems={"start"}
           >
-            <path d="M2.5 1a1.5 1.5 0 0 0-1.5 1.5v15a1.5 1.5 0 0 0 1.5 1.5h15a1.5 1.5 0 0 0 1.5-1.5v-15a1.5 1.5 0 0 0-1.5-1.5h-15zm5 3.5c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm8.999 12.5h-13.002c-.41 0-.64-.46-.4-.79l3.553-4.051c.19-.21.52-.21.72-.01l1.63 1.851 3.06-4.781a.5.5 0 0 1 .84.02l4.039 7.011c.18.34-.06.75-.44.75z"></path>
-          </svg>
-        )}
-      </div>
-    </div>
+            <Image
+              src={productImage}
+              width={256}
+              height={256}
+              alt={product.name.en}
+              className="max-h-40 w-full rounded-md object-cover"
+            />
+            <Heading size="md">{product.name.en}</Heading>
+            <HStack flexWrap={"wrap"}>
+              {product.compareAtPrice && <Badge colorScheme="red">Sale</Badge>}
+              {product.categories.map((category) => (
+                <Badge>{category.name.en}</Badge>
+              ))}
+            </HStack>
+          </VStack>
+          <Text className="line-clamp-2">{product.description.en}</Text>
+          <VStack alignItems={"start"} spacing={0}>
+            {product.compareAtPrice && (
+              <span className="text-xs text-red-500 line-through">
+                {product.compareAtPrice} <span className="text-sm">SAR</span>
+              </span>
+            )}
+
+            <Text color="pink.600" fontSize="xl" fontWeight={"semibold"}>
+              {product.price} <span className="text-sm">SAR</span>
+            </Text>
+          </VStack>
+        </Link>
+
+        <VStack>
+          <Button variant="outline" w={"full"}>
+            Add to cart
+          </Button>
+          <Button variant="solid" w={"full"}>
+            Buy now
+          </Button>
+        </VStack>
+      </CardBody>
+    </Card>
   );
 }
 

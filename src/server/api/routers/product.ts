@@ -19,7 +19,7 @@ const productInput = z.object({
   price: z.number(),
   compareAtPrice: z.number().optional(),
   quantity: z.number(),
-  categoryIDs: z.string().array(),
+  categoryIDs: z.string().uuid().array(),
   status: z.enum(["ACTIVE", "DRAFT", "ARCHIVED"]),
   type: z.string(),
 });
@@ -31,6 +31,14 @@ export const productRouter = createTRPCRouter({
         cursor: z.string().uuid().optional(),
         limit: z.number().min(1).max(100).nullish(),
         searchQuery: z.string().nullish(),
+        categoryIDs: z.string().uuid().array().nullish(),
+        status: z.enum(["ACTIVE", "DRAFT", "ARCHIVED"]).nullish(),
+        orderBy: z
+          .object({
+            key: z.enum(["name", "price", "createdAt", "editedAt"]),
+            type: z.enum(["asc", "desc"]),
+          })
+          .nullish(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -46,6 +54,7 @@ export const productRouter = createTRPCRouter({
                   text: {
                     query: input.searchQuery,
                     path: { wildcard: "*" },
+                    fuzzy: {},
                   },
                 },
               },
@@ -60,12 +69,23 @@ export const productRouter = createTRPCRouter({
       let items = await ctx.prisma.product.findMany({
         take: limit + 1, // get an extra item at the end which we'll use as next cursor
         cursor: cursor ? { id: cursor } : undefined,
-        orderBy: {
-          id: "asc",
+        orderBy: input.orderBy
+          ? {
+              [input.orderBy.key]: input.orderBy.type,
+            }
+          : {
+              id: "asc",
+            },
+        where: {
+          id: query ? { in: query.map((item) => item._id) } : undefined,
+          categoryIDs: input.categoryIDs
+            ? { hasEvery: input.categoryIDs }
+            : undefined,
+          status: input.status ? { equals: input.status } : undefined,
         },
-        where: query
-          ? { id: { in: query?.map((item) => item._id) } }
-          : undefined,
+        include: {
+          categories: true,
+        },
       });
 
       if (query) {
@@ -94,7 +114,12 @@ export const productRouter = createTRPCRouter({
       })
     )
     .query(({ ctx, input }) => {
-      return ctx.prisma.product.findUnique({ where: { id: input.id } });
+      return ctx.prisma.product.findUnique({
+        where: { id: input.id },
+        include: {
+          categories: true,
+        },
+      });
     }),
 
   visit: publicProcedure

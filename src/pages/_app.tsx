@@ -12,6 +12,10 @@ import {
 import "~/styles/globals.css";
 import { MantineProvider, MantineThemeOverride } from "@mantine/core";
 
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css";
+
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },

@@ -21,9 +21,11 @@ import {
   InputGroup,
   InputLeftAddon,
   InputRightAddon,
+  Spinner,
+  useRadio,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
-import { useForm, Resolver, Controller } from "react-hook-form";
+import React, { useEffect, useMemo, useState } from "react";
+import { useForm, Resolver, Controller, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -35,10 +37,18 @@ import Input from "./base/Input";
 import { api } from "~/utils/api";
 import { PencilIcon } from "@heroicons/react/24/solid";
 import { Featured, Media } from "@prisma/client";
-import { NumberInput } from "@mantine/core";
+import {
+  Autocomplete,
+  AutocompleteItem,
+  LoadingOverlay,
+  NumberInput,
+} from "@mantine/core";
 //import { featuredSchema } from "~/validations/featuredSchema";
 import { DevTool } from "@hookform/devtools";
 import ManageProductMedia from "./ManageMedia";
+import Image from "next/image";
+import clsx from "clsx";
+import { featuredSchema } from "~/validations/featuredSchema";
 
 type FeaturedFormValues = {
   media: Media[];
@@ -57,7 +67,10 @@ function ManageFeatured({
   const toast = useToast({});
   const createFeaturedHook = api.featured.create.useMutation();
   const editFeaturedHook = api.featured.edit.useMutation();
-  const productsQuery = api.product.getAll.useQuery({ });
+  const [searchQuery, setSearchQuery] = useState("");
+  const productsQuery = api.product.getAll.useQuery({
+    searchQuery: searchQuery.length > 0 ? searchQuery : undefined,
+  });
 
   const {
     register,
@@ -69,12 +82,17 @@ function ManageFeatured({
     getValues,
   } = useForm<FeaturedFormValues>({
     mode: "onChange",
-    // resolver: zodResolver(featuredSchema),
+    resolver: zodResolver(featuredSchema),
+    defaultValues: {
+      productId: featured?.productId || "",
+      media: featured?.media || [],
+    },
   });
 
   const { isOpen, onOpen, onClose } = useDisclosure({
     onClose() {
       reset();
+      setSearchQuery("");
     },
   });
 
@@ -114,9 +132,10 @@ function ManageFeatured({
     return "";
   });
 
+  const productIdValue = useWatch({ control, name: "productId" });
+
   return (
     <div>
-      <DevTool control={control} />
       {action === "create" ? (
         <Button onClick={onOpen}>Add featured</Button>
       ) : (
@@ -128,6 +147,8 @@ function ManageFeatured({
       )}
 
       <Modal isCentered isOpen={isOpen} onClose={onClose}>
+        <DevTool control={control} />
+
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
@@ -141,8 +162,63 @@ function ManageFeatured({
               onSubmit={onSubmit}
               className="space-y-4"
             >
-              <FormControl isRequired isInvalid={!!errors.productId}>
+              <FormControl
+                isRequired
+                isInvalid={!!errors.productId}
+                display={"flex"}
+                flexDirection={"column"}
+                gap={2}
+              >
                 <FormLabel>Featured Product</FormLabel>
+                <Input
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  value={searchQuery}
+                  type="search"
+                  placeholder="Search products"
+                />
+
+                <div className="relative grid min-h-[5rem] grid-cols-2 gap-2 rounded border border-dashed p-2">
+                  <LoadingOverlay
+                    visible={productsQuery.isLoading}
+                    overlayBlur={2}
+                  />
+
+                  {productsQuery.data?.items.map((product) => (
+                    <button
+                      onClick={() =>
+                        setValue("productId", product.id, {
+                          shouldValidate: true,
+                          shouldTouch: true,
+                        })
+                      }
+                      type="button"
+                      key={product.id}
+                      className={clsx(
+                        "flex flex-col gap-2 rounded-md border-2  bg-zinc-50 p-2 shadow ",
+                        {
+                          "border-pink-600 shadow-pink-500/50":
+                            productIdValue === product.id,
+                        }
+                      )}
+                    >
+                      <Image
+                        src={product.media[0]?.url || ""}
+                        width={100}
+                        height={40}
+                        className="aspect-[100/40] h-full w-full rounded-md object-cover object-center"
+                        alt={product.name.en}
+                      ></Image>
+                      <div>
+                        <h2 className="text-lg font-semibold">
+                          {product.name.en}
+                        </h2>
+                        <h1 className="text-base font-bold text-pink-600">
+                          {product.price} SAR
+                        </h1>
+                      </div>
+                    </button>
+                  ))}
+                </div>
 
                 <FormHelperText>The featured product.</FormHelperText>
                 <FormErrorMessage>{errors.productId?.message}</FormErrorMessage>
@@ -159,6 +235,7 @@ function ManageFeatured({
                       endpoint="featuredMedia"
                       onChange={field.onChange}
                       value={field.value}
+                      max={1}
                     />
                   )}
                 ></Controller>

@@ -25,6 +25,7 @@ export const categoryRouter = createTRPCRouter({
         orderBy: {
           id: "asc",
         },
+        include: { _count: { select: { products: true } } },
       });
 
       let nextCursor: typeof cursor | undefined = undefined;
@@ -46,7 +47,10 @@ export const categoryRouter = createTRPCRouter({
       })
     )
     .query(({ ctx, input }) => {
-      return ctx.prisma.category.findUnique({ where: { id: input.id } });
+      return ctx.prisma.category.findUnique({
+        where: { id: input.id },
+        include: { _count: { select: { products: true } } },
+      });
     }),
 
   create: protectedAdminProcedure

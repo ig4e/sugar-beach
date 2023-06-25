@@ -53,7 +53,7 @@ function Footer() {
 
         <Divider></Divider>
 
-        <div className="flex items-start gap-x-8 md:gap-x-16 lg:gap-x-24 gap-y-2">
+        <div className="flex items-start gap-x-8 gap-y-2 md:gap-x-16 lg:gap-x-24">
           <div className="flex flex-col gap-2">
             <span className=" font-semibold">About Us</span>
             <span className="text-sm">About Us</span>
@@ -77,7 +77,7 @@ function Footer() {
           justifyContent={"end"}
         >
           <Heading size={"xs"} className="whitespace-nowrap">
-            Stay updated with us on
+            Stay updated with us
           </Heading>
           <div className="flex flex-wrap items-center gap-3 text-xs">
             <svg
