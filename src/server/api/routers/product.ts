@@ -25,6 +25,15 @@ const productInput = z.object({
 });
 
 export const productRouter = createTRPCRouter({
+  getCart: protectedProcedure
+    .input(z.object({ productIDs: z.string().uuid().array() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.prisma.product.findMany({
+        where: { id: { in: input.productIDs } },
+        take: 1000,
+      });
+    }),
+
   getAll: publicProcedure
     .input(
       z.object({
@@ -39,6 +48,7 @@ export const productRouter = createTRPCRouter({
             type: z.enum(["asc", "desc"]),
           })
           .nullish(),
+        productIDs: z.string().uuid().array().nullish(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -77,7 +87,11 @@ export const productRouter = createTRPCRouter({
               id: "asc",
             },
         where: {
-          id: query ? { in: query.map((item) => item._id) } : undefined,
+          id: query
+            ? { in: query.map((item) => item._id) }
+            : input.productIDs
+            ? { in: input.productIDs }
+            : undefined,
           categoryIDs: input.categoryIDs
             ? { hasEvery: input.categoryIDs }
             : undefined,

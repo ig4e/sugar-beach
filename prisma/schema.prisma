@@ -138,7 +138,7 @@ model UserFeedback {
 
 model UserShippingAddress {
     id              String              @id @default(uuid()) @map("_id")
-    country         String
+    country         Countries
     fullName        String
     phoneNumber     String
     streetName      String

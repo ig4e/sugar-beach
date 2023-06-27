@@ -15,6 +15,7 @@ import { MantineProvider, MantineThemeOverride } from "@mantine/core";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css";
+import { CurrencyContext } from "~/hooks/useCurrency";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -59,17 +60,19 @@ const MyApp: AppType<{ session: Session | null }> = ({
 
   return (
     <div className="!font-inter">
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={customMantineTheme}
-      >
-        <ChakraProvider theme={customChakraTheme}>
-          <SessionProvider session={session}>
-            <Component {...pageProps} />
-          </SessionProvider>
-        </ChakraProvider>
-      </MantineProvider>
+      <CurrencyContext.Provider value={{ country: "SA" }}>
+        <MantineProvider
+          withGlobalStyles
+          withNormalizeCSS
+          theme={customMantineTheme}
+        >
+          <ChakraProvider theme={customChakraTheme}>
+            <SessionProvider session={session}>
+              <Component {...pageProps} />
+            </SessionProvider>
+          </ChakraProvider>
+        </MantineProvider>
+      </CurrencyContext.Provider>
     </div>
   );
 };

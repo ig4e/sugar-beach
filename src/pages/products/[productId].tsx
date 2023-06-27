@@ -29,6 +29,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Input from "~/components/base/Input";
 import MainLayout from "~/components/layout/MainLayout";
 import ProductFeedback from "~/components/product/ProductFeedback";
+import useCurrency from "~/hooks/useCurrency";
 import { useCartStore } from "~/store/cart";
 import { api } from "~/utils/api";
 
@@ -43,6 +44,8 @@ function ProductPage() {
   const { data, isLoading } = productQuery;
   const [quantity, setQuantity] = React.useState(1);
   const cartStore = useCartStore();
+
+  const currency = useCurrency();
 
   const cartQuantity =
     cartStore.items.find((item) => item.id === data?.id)?.quantity ?? 0;
@@ -61,7 +64,7 @@ function ProductPage() {
   }, [cartQuantity, quantity, data?.quantity, data?.id, cartStore]);
 
   if (isLoading) {
-    return <div>Err... Loading...</div>;
+    return <div>Loading...</div>;
   }
 
   if (!data) {
@@ -178,10 +181,10 @@ function ProductPage() {
                 <FormControl>
                   <FormLabel fontWeight={"semibold"}>Quantity</FormLabel>
                   <NumberInput
-                    min={1}
                     defaultValue={1}
                     placeholder="Quantity"
                     w={"100%"}
+                    min={1}
                     max={data.quantity}
                     disabled={isOutOfStock}
                     value={quantity}
@@ -204,8 +207,7 @@ function ProductPage() {
                 <HStack justifyContent={"space-between"}>
                   <Heading size={"lg"}>Total</Heading>
                   <Text color="pink.600" fontSize="2xl" fontWeight={"semibold"}>
-                    {(data.price * 100 * quantity) / 100}{" "}
-                    <span className="text-sm">SAR</span>
+                    {currency(data.price).multiply(quantity).format()}
                   </Text>
                 </HStack>
 

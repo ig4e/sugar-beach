@@ -5,6 +5,7 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  Divider,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -168,6 +169,8 @@ function ProductFeedback({ productId }: { productId: string }) {
           <Heading size="md">Customer Feedbacks</Heading>
         </CardHeader>
 
+        <Divider></Divider>
+
         <CardBody>
           <VStack alignItems={"start"}>
             <form
@@ -207,7 +210,7 @@ function ProductFeedback({ productId }: { productId: string }) {
                       })}
                       minH={"12"}
                       width={"full"}
-                      placeholder="What did you like or dislike? What did you use this product for?"
+                      placeholder="What did you like or dislike? What did it taste like?"
                       focusBorderColor="pink.500"
                     ></Textarea>
                     <Controller
@@ -281,6 +284,9 @@ function ProductFeedback({ productId }: { productId: string }) {
             </form>
           </VStack>
         </CardBody>
+        
+        <Divider></Divider>
+
         <CardFooter position={"relative"}>
           <LoadingOverlay
             visible={productFeedbacksQuery.isLoading}

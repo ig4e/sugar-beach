@@ -9,7 +9,7 @@ import "swiper/css";
 import Image from "next/image";
 import clsx from "clsx";
 import { forwardRef } from "react";
-import { A11y, Keyboard, Mousewheel, Navigation, Pagination } from "swiper";
+import { A11y, Autoplay, Keyboard, Mousewheel, Navigation, Pagination } from "swiper";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 
 const index: NextPage = () => {
@@ -44,7 +44,7 @@ const index: NextPage = () => {
           mousewheel={true}
           keyboard={true}
           a11y={{ enabled: true }}
-          modules={[Navigation, Pagination, Mousewheel, A11y, Keyboard]}
+          modules={[Navigation, Pagination, Mousewheel, A11y, Keyboard, Autoplay]}
         >
           {featuredProducts.data?.items.map((item) => (
             <SwiperSlide>

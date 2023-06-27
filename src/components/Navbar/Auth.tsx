@@ -32,10 +32,12 @@ import {
 } from "@heroicons/react/24/solid";
 import MenuItem from "../base/MenuItem";
 import { User } from "@prisma/client";
+import { useRouter } from "next/router";
 
 function Auth() {
   const { status, data } = useSession();
   const user = data?.user as User;
+  const router = useRouter();
 
   const accountOptions = [
     { name: "My Account", href: "/@me", Icon: Cog6ToothIcon },
@@ -51,7 +53,6 @@ function Auth() {
   ];
 
   if (status === "authenticated") {
-
     return (
       <div className="!z-[1000]">
         <Popover placement="bottom-start">
@@ -97,6 +98,8 @@ function Auth() {
                       <MenuItem
                         Icon={option.Icon}
                         name={option.name}
+                        active={router.pathname === option.href}
+                        variant="ghost"
                       ></MenuItem>
                     </Link>
                   );
