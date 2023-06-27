@@ -1,24 +1,34 @@
 import {
+  Avatar,
   Badge,
   Button,
   Card,
   CardBody,
+  CardFooter,
+  CardHeader,
   Divider,
   FormControl,
+  FormErrorMessage,
   FormHelperText,
   FormLabel,
   HStack,
   Heading,
   Text,
+  Textarea,
   VStack,
 } from "@chakra-ui/react";
-import { NumberInput, Spoiler } from "@mantine/core";
+import { DevTool } from "@hookform/devtools";
+import { NumberInput, Rating, Spoiler } from "@mantine/core";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { A11y, Keyboard, Mousewheel, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Input from "~/components/base/Input";
 import MainLayout from "~/components/layout/MainLayout";
+import ProductFeedback from "~/components/product/ProductFeedback";
 import { useCartStore } from "~/store/cart";
 import { api } from "~/utils/api";
 
@@ -26,6 +36,10 @@ function ProductPage() {
   const router = useRouter();
   const productId = router.query.productId as string;
   const productQuery = api.product.get.useQuery({ id: productId });
+  const relatedProductsQuery = api.product.getAll.useQuery({
+    categoryIDs: productQuery.data?.categoryIDs,
+    limit: 8,
+  });
   const { data, isLoading } = productQuery;
   const [quantity, setQuantity] = React.useState(1);
   const cartStore = useCartStore();
@@ -58,7 +72,7 @@ function ProductPage() {
 
   return (
     <MainLayout>
-      <div className="relative my-8">
+      <div className="relative my-8 space-y-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
           <div className="flex h-fit flex-col-reverse gap-4 md:flex-row">
             <div className="flex min-w-fit items-center gap-2 md:flex-col">
@@ -221,6 +235,9 @@ function ProductPage() {
               </CardBody>
             </Card>
           </div>
+        </div>
+        <div>
+          <ProductFeedback productId={productId}></ProductFeedback>
         </div>
       </div>
     </MainLayout>

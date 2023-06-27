@@ -124,7 +124,7 @@ model Order {
 
 model UserFeedback {
     id      String  @id @default(uuid()) @map("_id")
-    text    String
+    content String
     score   Float
     user    User    @relation(fields: [userId], references: [id])
     product Product @relation(fields: [productId], references: [id])
