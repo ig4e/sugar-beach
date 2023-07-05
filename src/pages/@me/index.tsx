@@ -82,7 +82,7 @@ function MyAccount() {
                 <FormControl>
                   <FormLabel>Phone</FormLabel>
                   <HStack>
-                    <Input value={user.email} isReadOnly />
+                    <Input value={""} isReadOnly />
                   </HStack>
                 </FormControl>
               </Stack>
