@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import MenuItem from "../base/MenuItem";
 import Layout from "./Layout";
+import AuthGaurd from "../base/AuthGaurd";
 
 function UserDashboardLayout({ children }: { children: any }) {
   const accountOptions = [
@@ -19,24 +20,26 @@ function UserDashboardLayout({ children }: { children: any }) {
 
   return (
     <Layout>
-      <div className="my-8 grid gap-8 md:[grid-template-columns:_clamp(15rem,20%,25em)_1fr;]">
-        <div className="hidden h-fit flex-col gap-2 rounded-md bg-white p-4 drop-shadow md:flex">
-          {accountOptions.map((option) => {
-            return (
-              <Link href={option.href} key={option.name}>
-                <MenuItem
-                  name={option.name}
-                  Icon={option.Icon}
-                  variant="ghost"
-                  size="md"
-                  active={router.pathname === option.href}
-                ></MenuItem>
-              </Link>
-            );
-          })}
+      <AuthGaurd>
+        <div className="my-8 grid gap-8 md:[grid-template-columns:_clamp(15rem,20%,25em)_1fr;]">
+          <div className="hidden h-fit flex-col gap-2 rounded-md bg-white p-4 drop-shadow md:flex">
+            {accountOptions.map((option) => {
+              return (
+                <Link href={option.href} key={option.name}>
+                  <MenuItem
+                    name={option.name}
+                    Icon={option.Icon}
+                    variant="ghost"
+                    size="md"
+                    active={router.pathname === option.href}
+                  ></MenuItem>
+                </Link>
+              );
+            })}
+          </div>
+          <div>{children}</div>
         </div>
-        <div>{children}</div>
-      </div>
+      </AuthGaurd>
     </Layout>
   );
 }

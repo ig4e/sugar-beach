@@ -292,7 +292,7 @@ function ProductFeedback({ productId }: { productId: string }) {
             overlayBlur={2}
           ></LoadingOverlay>
 
-          <VStack alignItems={"start"}>
+          <VStack alignItems={"start"} spacing={4}>
             {productFeedbacksQuery.data &&
               productFeedbacksQuery.data.pages.map((page) => {
                 return (
