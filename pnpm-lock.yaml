@@ -106,6 +106,9 @@ dependencies:
   '@trpc/server':
     specifier: ^10.31.0
     version: 10.31.0
+  '@types/lodash':
+    specifier: ^4.14.195
+    version: 4.14.195
   '@uploadthing/react':
     specifier: ^5.0.0
     version: 5.0.0(react-dropzone@14.2.3)(react@18.2.0)(uploadthing@5.0.0)(zod@3.21.4)

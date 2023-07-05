@@ -45,6 +45,7 @@
     "@trpc/next": "^10.31.0",
     "@trpc/react-query": "^10.31.0",
     "@trpc/server": "^10.31.0",
+    "@types/lodash": "^4.14.195",
     "@uploadthing/react": "^5.0.0",
     "clsx": "^1.2.1",
     "currency.js": "^2.0.4",
