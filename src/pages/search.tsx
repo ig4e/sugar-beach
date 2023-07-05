@@ -26,6 +26,7 @@ function SearchPage() {
     limit: 100,
     searchQuery: debouncedSearchQuery,
     categoryIDs: selectedCategories,
+    status: "ACTIVE",
   });
 
   useEffect(() => {
