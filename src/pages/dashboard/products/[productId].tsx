@@ -533,9 +533,6 @@ function AdminPageProduct() {
 
             <Divider></Divider>
             <HStack justifyContent={"end"}>
-              <Button colorScheme="blackAlpha" variant={"outline"}>
-                Archive Product
-              </Button>
               <Button colorScheme="red" variant={"outline"} onClick={onDelete}>
                 Delete Product
               </Button>
