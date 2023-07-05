@@ -1,5 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import { Media } from "@prisma/client";
+import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ManageProductMedia from "~/components/ManageMedia";
@@ -9,25 +10,25 @@ interface MediaForm {
 }
 
 function Test() {
-  useEffect(() => {
-    if (window) {
-      const moyasar = window.Moyasar;
+  // useEffect(() => {
+  //   if (window) {
+  //     const moyasar = window.Moyasar;
 
-      moyasar.init({
-        element: "#my-form",
-        amount: 1000,
-        currency: "SAR",
-        description: "Coffee Order #1",
-        publishable_api_key: "pk_test_AQpxBV31a29qhkhUYFYUFjhwllaDVrxSq5ydVNui",
-        callback_url: "https://moyasar.com/thanks",
-        methods: ["creditcard"],
-      });
-    }
-  }, []);
+  //     moyasar.init({
+  //       element: "#my-form",
+  //       amount: 1000,
+  //       currency: "SAR",
+  //       description: "Coffee Order #1",
+  //       publishable_api_key: "pk_test_AQpxBV31a29qhkhUYFYUFjhwllaDVrxSq5ydVNui",
+  //       callback_url: "https://moyasar.com/thanks",
+  //       methods: ["creditcard"],
+  //     });
+  //   }
+  // }, []);
 
   return (
     <>
-    <Head></Head>
+      {/* <Head></Head> */}
       <div id={"my-form"}></div>
     </>
   );
