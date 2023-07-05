@@ -145,20 +145,25 @@ function Create() {
                 >
                   <HStack>
                     <AlertIcon />
-                    <Stack direction={["column", "row"]}>
-                      <AlertTitle>Warning</AlertTitle>
-                      <AlertDescription>
+                    <Stack direction={["column", "row"]} spacing={0}>
+                      <AlertTitle
+                        fontSize={{ base: "sm", md: "md" }}
+                        display={{ base: "none", md: "block" }}
+                      >
+                        Warning
+                      </AlertTitle>
+                      <AlertDescription fontSize={{ base: "sm", md: "md" }}>
                         You have unsaved changes!
                       </AlertDescription>
                     </Stack>
                   </HStack>
 
                   <HStack>
-                    <Button type="submit" form="new-product">
+                    <Button type="submit" form="new-product" size={"sm"}>
                       Save
                     </Button>
                     <Link href={"/dashboard/products"} onClick={() => reset()}>
-                      <Button type="button" colorScheme="gray">
+                      <Button type="button" colorScheme="gray" size={"sm"}>
                         Discard
                       </Button>
                     </Link>

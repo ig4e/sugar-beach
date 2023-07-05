@@ -263,7 +263,7 @@ const ManageMedia = forwardRef(
         {...getRootProps()}
         className="flex flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed p-4"
       >
-        <input {...getInputProps()} ref={ref as LegacyRef<HTMLInputElement>} />
+        <input {...getInputProps()} ref={ref as LegacyRef<HTMLInputElement>} className="w-full h-full" />
         <Badge>ADD MEDIA</Badge>
         <span className="text-sm">Accepts images, or videos</span>
       </div>
