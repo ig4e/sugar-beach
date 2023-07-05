@@ -20,7 +20,7 @@ import {
 import { Fragment } from "react";
 import ManageCategory from "~/components/ManageCategory";
 import AuthGaurd from "~/components/base/AuthGaurd";
-import AdminLayout from "~/components/Layout/AdminLayout";
+import AdminLayout from "~/components/layout/AdminLayout";
 import { api } from "~/utils/api";
 
 function Index() {

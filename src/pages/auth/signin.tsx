@@ -23,7 +23,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Auth0Icon, DiscordIcon, GoogleIcon } from "~/components/base/Icons";
 import Input from "~/components/base/Input";
-import CenteredLayout from "~/components/Layout/CenteredLayout";
+import CenteredLayout from "~/components/layout/CenteredLayout";
 
 /*
 OAuthSignin: Error in constructing an authorization URL (1, 2, 3),

@@ -17,7 +17,7 @@ import { signIn, useSession } from "next-auth/react";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import { Auth0Icon, DiscordIcon, GoogleIcon } from "~/components/base/Icons";
 import Input from "~/components/base/Input";
-import UserDashboardLayout from "~/components/Layout/UserDashboardLayout";
+import UserDashboardLayout from "~/components/layout/UserDashboardLayout";
 import { api } from "~/utils/api";
 
 function MyAccount() {

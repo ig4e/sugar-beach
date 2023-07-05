@@ -13,14 +13,14 @@ import {
 } from "swiper";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
-import MainLayout from "~/components/Layout/Layout";
+import Layout from "~/components/layout/Layout";
 import { api } from "~/utils/api";
 
 const HomePage: NextPage = () => {
   const featuredProducts = api.featured.getAll.useQuery({});
 
   return (
-    <MainLayout>
+    <Layout>
       <div className="relative my-8">
         <Swiper
           spaceBetween={26}
@@ -96,7 +96,7 @@ const HomePage: NextPage = () => {
           <div id="swiper-pages"></div>
         </Swiper>
       </div>
-    </MainLayout>
+    </Layout>
   );
 };
 

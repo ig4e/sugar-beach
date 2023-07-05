@@ -29,7 +29,7 @@ import { Controller, useForm } from "react-hook-form";
 import ManageProductMedia from "~/components/ManageMedia";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import Input from "~/components/base/Input";
-import AdminLayout from "~/components/Layout/AdminLayout";
+import AdminLayout from "~/components/layout/AdminLayout";
 import { PRODUCT_STATUS } from "~/config/productConfig";
 import { api } from "~/utils/api";
 import { productSchema } from "~/validations/productSchema";

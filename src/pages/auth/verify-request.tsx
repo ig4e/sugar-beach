@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Logo from "public/transparent-logo.png";
 import { useEffect } from "react";
-import CenteredLayout from "~/components/Layout/CenteredLayout";
+import CenteredLayout from "~/components/layout/CenteredLayout";
 
 function VerifyRequest() {
   const session = useSession();

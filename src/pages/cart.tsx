@@ -15,7 +15,7 @@ import Link from "next/link";
 import { useEffect, useMemo } from "react";
 import AddToCart from "~/components/base/AddToCart";
 import { paymentOptionLogos } from "~/components/base/Footer";
-import MainLayout from "~/components/Layout/Layout";
+import Layout from "~/components/layout/Layout";
 import useCurrency from "~/hooks/useCurrency";
 import { useCartStore } from "~/store/cart";
 import { api } from "~/utils/api";
@@ -85,7 +85,7 @@ function Cart() {
   const isCartEmpty = (dataWithCartQuantity?.length ?? 0) <= 0;
 
   return (
-    <MainLayout>
+    <Layout>
       {dataWithCartQuantity && !isLoading && userAddresses.data ? (
         <>
           <div className="relative my-8 grid gap-8 md:grid-cols-2">
@@ -192,7 +192,7 @@ function Cart() {
       ) : (
         <LoadingOverlay visible overlayBlur={2}></LoadingOverlay>
       )}
-    </MainLayout>
+    </Layout>
   );
 }
 

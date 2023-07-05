@@ -15,7 +15,7 @@ import {
 import { PlusIcon } from "@heroicons/react/24/solid";
 import ManageAddress from "~/components/Address/ManageAddress";
 import AuthGaurd from "~/components/base/AuthGaurd";
-import UserDashboardLayout from "~/components/Layout/UserDashboardLayout";
+import UserDashboardLayout from "~/components/layout/UserDashboardLayout";
 import { COUNTRIES_NAME } from "~/config/commonConfig";
 import { api } from "~/utils/api";
 

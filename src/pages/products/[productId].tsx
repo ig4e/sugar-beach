@@ -18,7 +18,7 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { A11y, Keyboard, Mousewheel, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import MainLayout from "~/components/Layout/Layout";
+import Layout from "~/components/layout/Layout";
 import ProductFeedback from "~/components/Product/ProductFeedback";
 import useCurrency from "~/hooks/useCurrency";
 import { useCartStore } from "~/store/cart";
@@ -71,7 +71,7 @@ function ProductPage() {
   const isOutOfStock = data.quantity <= 0;
 
   return (
-    <MainLayout>
+    <Layout>
       <div className="relative my-8 space-y-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
           <div className="flex h-fit flex-col-reverse gap-4 md:flex-row">
@@ -254,7 +254,7 @@ function ProductPage() {
           <ProductFeedback productId={productId}></ProductFeedback>
         </div>
       </div>
-    </MainLayout>
+    </Layout>
   );
 }
 

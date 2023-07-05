@@ -10,7 +10,7 @@ import { LoadingOverlay } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDebounce } from "usehooks-ts";
-import MainLayout from "~/components/Layout/Layout";
+import Layout from "~/components/layout/Layout";
 import ProductCard from "~/components/Product/ProductCard";
 import { api } from "~/utils/api";
 
@@ -57,7 +57,7 @@ function SearchPage() {
   }, [debouncedSearchQuery, selectedCategories]);
 
   return (
-    <MainLayout>
+    <Layout>
       <div className="my-4 grid gap-8 md:my-10 md:[grid-template-columns:15rem_1fr] lg:[grid-template-columns:18rem_1fr]">
         <div className="flex h-full flex-col gap-4 border-b pb-6 md:border-e md:pe-6">
           <div className="">
@@ -150,7 +150,7 @@ function SearchPage() {
           </div>
         </div>
       </div>
-    </MainLayout>
+    </Layout>
   );
 }
 
