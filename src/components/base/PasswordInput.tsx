@@ -6,7 +6,7 @@ import {
 } from "@chakra-ui/react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
-import Input from "~/components/Base/Input";
+import Input from "~/components/base/Input";
 
 export default function PasswordInput({ ...args }: InputProps) {
   const [show, setShow] = useState(false);

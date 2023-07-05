@@ -1,4 +1,4 @@
-import AuthGaurd from "~/components/Base/AuthGaurd";
+import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/Layout/AdminLayout";
 
 function DashboardHome() {

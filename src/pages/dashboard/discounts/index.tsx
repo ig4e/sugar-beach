@@ -18,7 +18,7 @@ import {
 } from "@heroicons/react/24/solid";
 import dayjs from "dayjs";
 import ManageDiscount from "~/components/ManageDiscount";
-import AuthGaurd from "~/components/Base/AuthGaurd";
+import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/Layout/AdminLayout";
 import { api } from "~/utils/api";
 

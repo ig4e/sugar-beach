@@ -14,7 +14,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Logo from "public/logo.png";
 import { useCartStore } from "~/store/cart";
-import AddToCart from "../Base/AddToCart";
+import AddToCart from "../base/AddToCart";
 
 function ProductCard({
   product,

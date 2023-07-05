@@ -22,7 +22,7 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 
 import "dayjs/locale/ar-sa";
 
-import Input from "./Base/Input";
+import Input from "./base/Input";
 //import { featuredSchema } from "~/validations/featuredSchema";
 import { PencilIcon } from "@heroicons/react/24/solid";
 import {

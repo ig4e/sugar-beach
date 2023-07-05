@@ -5,7 +5,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
-import Input from "../Base/Input";
+import Input from "../base/Input";
 
 function Search() {
   const router = useRouter();

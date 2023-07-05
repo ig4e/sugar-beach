@@ -23,7 +23,7 @@ import { Select } from "@mantine/core";
 import { UserShippingAddress } from "@prisma/client";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import Input from "~/components/Base/Input";
+import Input from "~/components/base/Input";
 import { ADDRESS_TYPE } from "~/config/addressConfig";
 import { COUNTRIES } from "~/config/commonConfig";
 import { api } from "~/utils/api";

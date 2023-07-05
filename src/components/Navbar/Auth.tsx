@@ -23,7 +23,7 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import MenuItem from "../Base/MenuItem";
+import MenuItem from "../base/MenuItem";
 
 function Auth({ variant = "avatar" }: { variant?: "avatar" | "menu" }) {
   const { status, data } = useSession();

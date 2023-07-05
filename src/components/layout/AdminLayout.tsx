@@ -19,8 +19,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Logo from "public/transparent-logo.png";
 import { useMemo } from "react";
-import { DiscountIcon } from "../Base/Icons";
-import MenuItem from "../Base/MenuItem";
+import { DiscountIcon } from "../base/Icons";
+import MenuItem from "../base/MenuItem";
 import Auth from "../Navbar/Auth";
 import ChangeRegion from "../Navbar/ChangeRegion";
 

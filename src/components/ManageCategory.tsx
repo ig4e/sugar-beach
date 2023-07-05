@@ -23,7 +23,7 @@ import { PencilIcon } from "@heroicons/react/24/solid";
 import { Category } from "@prisma/client";
 import { api } from "~/utils/api";
 import { categorySchema } from "~/validations/categorySchema";
-import Input from "./Base/Input";
+import Input from "./base/Input";
 
 type CategoryFormValues = {
   ar: string;
