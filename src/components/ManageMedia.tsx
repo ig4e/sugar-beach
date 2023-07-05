@@ -1,9 +1,4 @@
-import {
-  Badge,
-  IconButton,
-  Skeleton,
-  useToast
-} from "@chakra-ui/react";
+import { Badge, IconButton, Skeleton, useToast } from "@chakra-ui/react";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { Media } from "@prisma/client";
 import clsx from "clsx";
@@ -15,7 +10,7 @@ import {
   useCallback,
   useEffect,
   useReducer,
-  useState
+  useState,
 } from "react";
 import type { FileWithPath } from "react-dropzone";
 import { useDropzone } from "react-dropzone";
@@ -247,7 +242,6 @@ const ManageMedia = forwardRef(
               <>
                 <input
                   {...getInputProps()}
-                  ref={ref as LegacyRef<HTMLInputElement>}
                   disabled={state.media.length >= max}
                 />
                 <Badge>ADD</Badge>
@@ -263,7 +257,7 @@ const ManageMedia = forwardRef(
         {...getRootProps()}
         className="flex flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed p-4"
       >
-        <input {...getInputProps()} ref={ref as LegacyRef<HTMLInputElement>} className="w-full h-full" />
+        <input {...getInputProps()} className="h-full w-full" />
         <Badge>ADD MEDIA</Badge>
         <span className="text-sm">Accepts images, or videos</span>
       </div>
