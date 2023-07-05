@@ -170,7 +170,7 @@ function ManageAddress({
               noValidate
             >
               <VStack>
-                <FormControl isInvalid={!!errors.country}>
+                <FormControl isInvalid={!!errors.country} isRequired>
                   <FormLabel>Country/region</FormLabel>
                   <Controller
                     control={control}
@@ -194,7 +194,7 @@ function ManageAddress({
                   <FormErrorMessage>{errors.country?.message}</FormErrorMessage>
                 </FormControl>
 
-                <FormControl isInvalid={!!errors.fullName}>
+                <FormControl isInvalid={!!errors.fullName} isRequired>
                   <FormLabel>Full name (First and Last name)</FormLabel>
                   <Input
                     placeholder="e.g. Mohamed Ahmed Esham"
@@ -207,6 +207,7 @@ function ManageAddress({
 
                 <FormControl
                   isInvalid={!!(errors.phoneNumber || errors.phoneCode)}
+                  isRequired
                 >
                   <FormLabel>Mobile number</FormLabel>
 
@@ -228,6 +229,7 @@ function ManageAddress({
                       )}
                     ></Controller>
                     <Input
+                      isRequired
                       placeholder="e.g. 000 000 000"
                       {...register("phoneNumber")}
                     ></Input>
@@ -246,7 +248,7 @@ function ManageAddress({
 
                 <Divider></Divider>
 
-                <FormControl isInvalid={!!errors.streetName}>
+                <FormControl isInvalid={!!errors.streetName} isRequired>
                   <FormLabel>Street name</FormLabel>
                   <Input
                     placeholder="e.g. Tahlia Street"
@@ -258,7 +260,7 @@ function ManageAddress({
                   </FormErrorMessage>
                 </FormControl>
 
-                <FormControl isInvalid={!!errors.buildingNumber}>
+                <FormControl isInvalid={!!errors.buildingNumber} isRequired>
                   <FormLabel>Building name/no</FormLabel>
                   <Input
                     placeholder="e.g. Prince Tower"
@@ -269,7 +271,7 @@ function ManageAddress({
                   </FormErrorMessage>
                 </FormControl>
 
-                <FormControl isInvalid={!!errors.city}>
+                <FormControl isInvalid={!!errors.city} isRequired>
                   <FormLabel>City/Area</FormLabel>
                   <Input
                     placeholder="e.g. Riyadh"
@@ -279,7 +281,7 @@ function ManageAddress({
                   <FormErrorMessage>{errors.city?.message}</FormErrorMessage>
                 </FormControl>
 
-                <FormControl isInvalid={!!errors.province}>
+                <FormControl isInvalid={!!errors.province} isRequired>
                   <FormLabel>District</FormLabel>
                   <Input
                     placeholder="e.g. Riyadh"
@@ -303,7 +305,7 @@ function ManageAddress({
 
                 <Divider></Divider>
 
-                <FormControl isInvalid={!!errors.type}>
+                <FormControl isInvalid={!!errors.type} isRequired>
                   <FormLabel>Address type</FormLabel>
                   <Controller
                     control={control}
