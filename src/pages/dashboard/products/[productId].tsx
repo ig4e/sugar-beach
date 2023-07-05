@@ -138,8 +138,8 @@ function AdminPageProduct() {
     if (productQuery.data) {
       const formData = getValues();
       const productData = {
-        name: productQuery.data.name,
-        description: productQuery.data.description,
+        name: { ...productQuery.data.name },
+        description: { ...productQuery.data.description },
         categories: productQuery.data.categoryIDs,
         media: productQuery.data.media,
         quantity: productQuery.data.quantity,
@@ -149,10 +149,10 @@ function AdminPageProduct() {
         type: productQuery.data.type,
       };
 
-      if (!_.isEqual(productData, formData)) {
-        setIsChanged(true);
-      } else {
+      if (_.isEqual(productData, formData)) {
         setIsChanged(false);
+      } else {
+        setIsChanged(true);
       }
     }
   }, [productQuery.data, getValues()]);
