@@ -106,14 +106,6 @@ function AdminLayout({ children }: { children: any }) {
           </Navbar.Section>
         </Navbar>
       }
-      footer={
-        <Footer height={60} p="md">
-          <div className="flex h-full items-center justify-between text-sm font-semibold">
-            <span>Admin Dashboard</span>
-            <span>© 2023 Sugar Beach</span>
-          </div>
-        </Footer>
-      }
       header={
         <Header height={{ base: 50, md: 70 }} p="md">
           <div
