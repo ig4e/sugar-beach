@@ -13,7 +13,7 @@ import {
   Th,
   Thead,
   Tr,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
@@ -164,7 +164,7 @@ function Index() {
                             }
                             size="sm"
                           >
-                            Fetch featureds
+                            Fetch more
                           </Button>
                         </div>
                       </Td>
@@ -187,12 +187,6 @@ function Index() {
               </Table>
             </TableContainer>
           </div>
-          <Button
-            onClick={() => void getAllFeaturedQuery.fetchNextPage()}
-            disabled={getAllFeaturedQuery.hasNextPage}
-          >
-            Fetch
-          </Button>
         </div>
       </AdminLayout>
     </AuthGaurd>

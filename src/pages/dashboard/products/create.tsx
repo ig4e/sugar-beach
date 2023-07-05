@@ -141,6 +141,7 @@ function Create() {
                   borderRadius={"md"}
                   display={"flex"}
                   justifyContent={"space-between"}
+                  gap={2}
                   width={"full"}
                 >
                   <HStack>

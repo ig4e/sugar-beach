@@ -201,7 +201,7 @@ function AdminPageProduct() {
 
             <form
               noValidate
-              id="new-product"
+              id="edit-product"
               className="flex grid-cols-6 flex-col gap-x-6 gap-y-4 pb-16 md:grid"
               onSubmit={(...args) => void onSubmit(...args)}
             >
@@ -217,28 +217,33 @@ function AdminPageProduct() {
                     borderRadius={"md"}
                     display={"flex"}
                     justifyContent={"space-between"}
+                    gap={2}
                     width={"full"}
                   >
                     <HStack>
                       <AlertIcon />
-                      <Stack direction={["column", "row"]}>
-                        <AlertTitle>Warning</AlertTitle>
-                        <AlertDescription>
+                      <Stack direction={["column", "row"]} spacing={0}>
+                        <AlertTitle
+                          fontSize={{ base: "sm", md: "md" }}
+                          display={{ base: "none", md: "block" }}
+                        >
+                          Warning
+                        </AlertTitle>
+                        <AlertDescription fontSize={{ base: "sm", md: "md" }}>
                           You have unsaved changes!
                         </AlertDescription>
                       </Stack>
                     </HStack>
 
                     <HStack>
-                      <Button type="submit" form="new-product">
+                      <Button type="submit" form="edit-product" size={"sm"}>
                         Save
                       </Button>
-
                       <Link
                         href={"/dashboard/products"}
                         onClick={() => reset()}
                       >
-                        <Button type="button" colorScheme="gray">
+                        <Button type="button" colorScheme="gray" size={"sm"}>
                           Discard
                         </Button>
                       </Link>
@@ -482,7 +487,7 @@ function AdminPageProduct() {
                   <FormLabel>Compare-at price</FormLabel>
                   <SkeletonWrap>
                     <InputGroup w="full">
-                    <InputLeftAddon>SAR</InputLeftAddon>
+                      <InputLeftAddon>SAR</InputLeftAddon>
                       <Controller
                         control={control}
                         name="compareAtPrice"
