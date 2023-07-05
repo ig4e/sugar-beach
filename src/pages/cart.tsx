@@ -101,7 +101,9 @@ function Cart() {
                   justifyContent={"center"}
                   justifyItems={"center"}
                   hidden={!isCartEmpty}
-                  mb={8}
+                  mt={8}
+                  mb={16}
+                  spacing={4}
                 >
                   <Heading>Looking for something?</Heading>
                   <Text>Add your favourite items to your cart.</Text>
