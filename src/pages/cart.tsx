@@ -95,11 +95,13 @@ function Cart() {
                 <Text>{dataWithCartQuantity.length} Items</Text>
               </HStack>
               <div className="flex h-full flex-col gap-4">
+
                 <VStack
                   h={"full"}
                   justifyContent={"center"}
                   justifyItems={"center"}
                   hidden={!isCartEmpty}
+                  mb={8}
                 >
                   <Heading>Looking for something?</Heading>
                   <Text>Add your favourite items to your cart.</Text>
