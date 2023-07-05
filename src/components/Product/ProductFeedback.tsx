@@ -13,7 +13,7 @@ import {
   Heading,
   Textarea,
   VStack,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { DevTool } from "@hookform/devtools";
 import { LoadingOverlay, Rating } from "@mantine/core";
@@ -291,21 +291,24 @@ function ProductFeedback({ productId }: { productId: string }) {
             visible={productFeedbacksQuery.isLoading}
             overlayBlur={2}
           ></LoadingOverlay>
-          {productFeedbacksQuery.data &&
-            productFeedbacksQuery.data.pages.map((page) => {
-              return (
-                <Fragment key={page.nextCursor}>
-                  {page.items.map((feedback) => {
-                    return (
-                      <Feedback
-                        feedback={feedback}
-                        key={feedback.id}
-                      ></Feedback>
-                    );
-                  })}
-                </Fragment>
-              );
-            })}
+
+          <VStack alignItems={"start"}>
+            {productFeedbacksQuery.data &&
+              productFeedbacksQuery.data.pages.map((page) => {
+                return (
+                  <Fragment key={page.nextCursor}>
+                    {page.items.map((feedback) => {
+                      return (
+                        <Feedback
+                          feedback={feedback}
+                          key={feedback.id}
+                        ></Feedback>
+                      );
+                    })}
+                  </Fragment>
+                );
+              })}
+          </VStack>
         </CardFooter>
       </Card>
     </div>
