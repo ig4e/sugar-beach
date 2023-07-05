@@ -25,6 +25,10 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: z.string(),
     DISCORD_CLIENT_ID: z.string(),
     DISCORD_CLIENT_SECRET: z.string(),
+    AUTH0_ISSUER: z.string(),
+    AUTH0_CLIENT_ID: z.string(),
+    AUTH0_CLIENT_SECRET: z.string(),
+    RESEND_API_KEY: z.string(),
   },
 
   /**
@@ -49,6 +53,10 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
     DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+    AUTH0_ISSUER: process.env.AUTH0_ISSUER,
+    AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
+    AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

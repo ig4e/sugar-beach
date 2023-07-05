@@ -4,9 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply !overflow-x-hidden;
+  }
+}
+
 @layer components {
   .bullet-active-swiper {
-    @apply !bg-pink-500 !opacity-100 !w-10 !transition-all;
+    @apply !w-10 !bg-pink-500 !opacity-100 !transition-all;
   }
 
   :root {

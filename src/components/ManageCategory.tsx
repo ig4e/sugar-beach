@@ -115,7 +115,11 @@ function ManageCategory({
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <form id="category-form" onSubmit={onSubmit} className="space-y-4">
+            <form
+              id="category-form"
+              onSubmit={(...args) => void onSubmit(...args)}
+              className="space-y-4"
+            >
               <FormControl isInvalid={!!errors.en}>
                 <FormLabel>English Category name</FormLabel>
                 <Input type="text" {...register("en")}></Input>

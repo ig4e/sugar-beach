@@ -157,7 +157,7 @@ function ManageDiscount({
             <form
               noValidate
               id="discount-form"
-              onSubmit={onSubmit}
+              onSubmit={(...args) => void onSubmit(...args)}
               className="space-y-4"
             >
               <FormControl isRequired isInvalid={!!errors.code}>
@@ -199,7 +199,9 @@ function ManageDiscount({
                     </Button>
                   </ButtonGroup>
                   <InputGroup>
-                    <InputLeftAddon children={isPrecentage ? "%" : "SAR"} />
+                    <InputLeftAddon>
+                      {isPrecentage ? "%" : "SAR"}
+                    </InputLeftAddon>
                     <Controller
                       control={control}
                       name="amount"
@@ -230,11 +232,6 @@ function ManageDiscount({
                   type="date"
                   min={0}
                   {...register("expiresAt", { valueAsDate: true })}
-                  value={
-                    dateIsValid(getValues("expiresAt"))
-                      ? getValues("expiresAt")?.toISOString().split("T")[0]
-                      : undefined
-                  }
                 />
 
                 {/* <div className="flex w-full flex-col items-center">  <Controller

@@ -1,47 +1,36 @@
-import { Button } from "@chakra-ui/react";
-import { Media } from "@prisma/client";
-import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import ManageProductMedia from "~/components/ManageMedia";
+// import { Button } from "@chakra-ui/react";
+// import { Media } from "@prisma/client";
+// import React, { useEffect, useState } from "react";
+// import { Controller, useForm } from "react-hook-form";
+// import ManageProductMedia from "~/components/ManageMedia";
 
-interface MediaForm {
-  media: Media[];
-}
+// interface MediaForm {
+//   media: Media[];
+// }
 
-function test() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-    getValues,
-    control,
-    setValue,
-  } = useForm<MediaForm>({
-    mode: "onChange",
-    defaultValues: {
-      media: []
-    }
-  });
+// function Test() {
+//   useEffect(() => {
+//     if (window) {
+//       const moyasar = window.Moyasar;
 
-  return (
-    <form onSubmit={handleSubmit((data) => console.log(data))} className="m-16 max-w-md">
-      <Controller
-        control={control}
-        name="media"
-        render={({ field }) => (
-          <ManageProductMedia
-            endpoint="productMedia"
-            onChange={field.onChange}
-            value={field.value}
-          ></ManageProductMedia>
-        )}
-      ></Controller>
+//       moyasar.init({
+//         element: "#my-form",
+//         amount: 1000,
+//         currency: "SAR",
+//         description: "Coffee Order #1",
+//         publishable_api_key: "pk_test_AQpxBV31a29qhkhUYFYUFjhwllaDVrxSq5ydVNui",
+//         callback_url: "https://moyasar.com/thanks",
+//         methods: ["creditcard"],
+//       });
+//     }
+//   }, []);
 
-          <Button type="submit">Sub</Button>
+//   return (
+//     <>
+//     <Head></Head>
+//       <div id={"my-form"}></div>
+//     </>
+//   );
+// }
 
-    </form>
-  );
-}
-
-export default test;
+// export default Test;

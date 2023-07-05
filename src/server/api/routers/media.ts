@@ -33,5 +33,5 @@ export const mediaRouter = createTRPCRouter({
         };
       }
     }),
-  findMany: protectedAdminProcedure.query(async ({ input }) => {}),
+ // findMany: protectedAdminProcedure.query(async ({ input }) => {}),
 });

@@ -9,9 +9,15 @@ import DiscordProvider from "next-auth/providers/discord";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
+import EmailProvider from "next-auth/providers/email";
+
+import Auth0Provider from "next-auth/providers/auth0";
 
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
+import { User } from "@prisma/client";
+import { resend } from "~/server/resend";
+import SignInEmail from "~/email/templates/SignInEmail";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -21,11 +27,7 @@ import { prisma } from "~/server/db";
  */
 declare module "next-auth" {
   interface Session extends DefaultSession {
-    user: {
-      id: string;
-      // ...other properties
-      // role: UserRole;
-    } & DefaultSession["user"];
+    user: User & DefaultSession["user"];
   }
 
   // interface User {
@@ -60,7 +62,35 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.DISCORD_CLIENT_ID!,
       clientSecret: process.env.DISCORD_CLIENT_SECRET!,
     }),
+    Auth0Provider({
+      clientId: process.env.AUTH0_CLIENT_ID!,
+      clientSecret: process.env.AUTH0_CLIENT_SECRET!,
+      issuer: process.env.AUTH0_ISSUER,
+    }),
+    EmailProvider({
+      server: process.env.EMAIL_SERVER,
+      from: process.env.EMAIL_FROM,
+      async sendVerificationRequest(params) {
+        const { identifier, url, provider, theme, expires, token } = params;
+        const user = await prisma.user.findUnique({
+          where: { email: identifier },
+        });
+
+        const data = await resend.emails.send({
+          from: "no-reply@wolflandrp.xyz",
+          to: [identifier],
+          subject: "Verify your email",
+          react: SignInEmail({ url }),
+        });
+
+        console.log(data);
+      },
+    }),
   ],
+  pages: {
+    signIn: "/auth/signin",
+    verifyRequest: "/auth/verify-request",
+  },
 };
 
 /**

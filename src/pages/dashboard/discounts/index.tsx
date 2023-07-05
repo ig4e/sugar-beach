@@ -28,7 +28,7 @@ import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/layout/AdminLayout";
 import { api } from "~/utils/api";
 
-function index() {
+function Index() {
   const toast = useToast();
   const allDiscountsQuery = api.discount.getAll.useQuery();
   const deleteDiscountHook = api.discount.delete.useMutation();
@@ -38,7 +38,7 @@ function index() {
       { id },
       {
         onSuccess: ({ code }) => {
-          allDiscountsQuery.refetch();
+          void allDiscountsQuery.refetch();
           toast({
             status: "success",
             title: `Deleted ${code} successfully`,
@@ -56,7 +56,7 @@ function index() {
             <Heading size={"md"}>Discounts</Heading>
             <ManageDiscount
               action="create"
-              onRefetch={() => allDiscountsQuery.refetch()}
+              onRefetch={() => void allDiscountsQuery.refetch()}
             ></ManageDiscount>
           </div>
 
@@ -90,7 +90,9 @@ function index() {
                               <span>
                                 {discount.precentage
                                   ? `%${discount.precentage}`
-                                  : `${discount.fixedAmount} SAR`}
+                                  : discount.fixedAmount
+                                  ? `${discount.fixedAmount} SAR`
+                                  : "0 SAR"}
                               </span>
                             </Td>
                             <Td isTruncated>
@@ -101,7 +103,7 @@ function index() {
                                 <ManageDiscount
                                   action="edit"
                                   discount={discount}
-                                  onRefetch={() => allDiscountsQuery.refetch()}
+                                  onRefetch={() => void allDiscountsQuery.refetch()}
                                 ></ManageDiscount>
                                 <IconButton
                                   onClick={() => deleteDiscount(discount.id)}
@@ -131,4 +133,4 @@ function index() {
   );
 }
 
-export default index;
+export default Index;

@@ -27,7 +27,7 @@ import Logo from "public/logo-full-transparent.png";
 import { useRouter } from "next/router";
 import ManageFeatured from "~/components/ManageFeatured";
 
-function index() {
+function Index() {
   const toast = useToast();
 
   const getAllFeaturedQuery = api.featured.getAll.useInfiniteQuery(
@@ -44,7 +44,7 @@ function index() {
       { id },
       {
         onSuccess: ({}) => {
-          getAllFeaturedQuery.refetch();
+          void getAllFeaturedQuery.refetch();
           toast({
             status: "success",
             title: `Deleted featured successfully`,
@@ -63,7 +63,7 @@ function index() {
           <div className="flex items-center justify-between">
             <Heading size={"md"}>Featured</Heading>
             <ManageFeatured
-              onRefetch={getAllFeaturedQuery.refetch}
+              onRefetch={() => void getAllFeaturedQuery.refetch()}
               action="create"
             ></ManageFeatured>
           </div>
@@ -130,7 +130,9 @@ function index() {
                                   <Td isNumeric>
                                     <HStack className="justify-end">
                                       <ManageFeatured
-                                        onRefetch={getAllFeaturedQuery.refetch}
+                                        onRefetch={() =>
+                                          void getAllFeaturedQuery.refetch()
+                                        }
                                         action="edit"
                                         featured={featured}
                                       ></ManageFeatured>
@@ -159,7 +161,9 @@ function index() {
                       <Td colSpan={4}>
                         <div className="flex items-center justify-center">
                           <Button
-                            onClick={() => getAllFeaturedQuery.fetchNextPage()}
+                            onClick={() =>
+                              void getAllFeaturedQuery.fetchNextPage()
+                            }
                             size="sm"
                           >
                             Fetch featureds
@@ -186,7 +190,7 @@ function index() {
             </TableContainer>
           </div>
           <Button
-            onClick={() => getAllFeaturedQuery.fetchNextPage()}
+            onClick={() => void getAllFeaturedQuery.fetchNextPage()}
             disabled={getAllFeaturedQuery.hasNextPage}
           >
             Fetch
@@ -197,4 +201,4 @@ function index() {
   );
 }
 
-export default index;
+export default Index;

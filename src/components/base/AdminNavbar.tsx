@@ -14,17 +14,24 @@ function AdminNavbar({ onMenuClick }: { onMenuClick: () => void }) {
   return (
     <nav className="bg-zinc-50">
       <div className="container mx-auto flex items-center justify-between gap-2 py-3">
-        <HStack>
-          <IconButton
-            onClick={onMenuClick}
-            icon={<Bars3Icon className="h-6 w-6"></Bars3Icon>}
-            aria-label="Menu button"
-          ></IconButton>
+        <HStack spacing={4}>
+          <div className="md:hidden">
+            <IconButton
+              onClick={onMenuClick}
+              icon={<Bars3Icon className="h-6 w-6"></Bars3Icon>}
+              aria-label="Menu button"
+            ></IconButton>
+          </div>
 
-          <ChangeRegion></ChangeRegion>
+          <Link href={"/"} className="hidden md:block">
+            <Image src={Logo} alt="logo" width={80} height={80}></Image>
+          </Link>
         </HStack>
 
-        <Auth></Auth>
+        <HStack>
+          <ChangeRegion></ChangeRegion>
+          <Auth></Auth>
+        </HStack>
       </div>
     </nav>
   );

@@ -89,7 +89,7 @@ function ProductFeedback({ productId }: { productId: string }) {
                 title: "Feedback edited successfully!",
                 status: "success",
               });
-              productFeedbacksQuery.refetch();
+              void productFeedbacksQuery.refetch();
             },
             onError(error, variables, context) {
               toast({
@@ -118,8 +118,8 @@ function ProductFeedback({ productId }: { productId: string }) {
               setValue("content", data.content);
               setValue("score", data.score);
 
-              productFeedbacksQuery.refetch();
-              userProductFeedbackQuery.refetch();
+              void productFeedbacksQuery.refetch();
+              void userProductFeedbackQuery.refetch();
             },
             onError(error, variables, context) {
               toast({
@@ -152,8 +152,8 @@ function ProductFeedback({ productId }: { productId: string }) {
               status: "success",
             });
             reset({ content: "", score: 1 });
-            productFeedbacksQuery.refetch();
-            userProductFeedbackQuery.refetch();
+            void productFeedbacksQuery.refetch();
+            void userProductFeedbackQuery.refetch();
           },
         }
       );
@@ -175,7 +175,7 @@ function ProductFeedback({ productId }: { productId: string }) {
           <VStack alignItems={"start"}>
             <form
               className="relative flex w-full flex-col gap-4"
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}
               noValidate
             >
               <LoadingOverlay visible={isSubmitting} overlayBlur={2} />
@@ -188,7 +188,7 @@ function ProductFeedback({ productId }: { productId: string }) {
                 <HStack spacing={4}>
                   <Avatar
                     src={session.data?.user.image as string | undefined}
-                    name={session.data?.user.name as string | undefined}
+                    name={session.data?.user.name}
                     size={"md"}
                   ></Avatar>
 
@@ -284,7 +284,7 @@ function ProductFeedback({ productId }: { productId: string }) {
             </form>
           </VStack>
         </CardBody>
-        
+
         <Divider></Divider>
 
         <CardFooter position={"relative"}>

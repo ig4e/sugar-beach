@@ -16,32 +16,16 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css";
 import { CurrencyContext } from "~/hooks/useCurrency";
+import { customChakraTheme } from "~/theme";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-  const customChakraTheme = extendTheme(
-    {
-      colors: {
-        pink: {
-          100: "#fce7f3",
-          200: "#fbcfe8",
-          300: "#f9a8d4",
-          400: "#f472b6",
-          500: "#ec4899",
-          600: "#db2777",
-          700: "#be185d",
-          800: "#9d174d",
-          900: "#831843",
-        },
-      },
-    },
-    withDefaultColorScheme({ colorScheme: "pink" })
-  );
-
   const customMantineTheme: MantineThemeOverride = {
     primaryColor: "pink",
+    defaultRadius: "md",
+    components: {},
     colors: {
       pink: [
         "#fdf2f8",

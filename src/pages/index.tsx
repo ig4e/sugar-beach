@@ -9,10 +9,17 @@ import "swiper/css";
 import Image from "next/image";
 import clsx from "clsx";
 import { forwardRef } from "react";
-import { A11y, Autoplay, Keyboard, Mousewheel, Navigation, Pagination } from "swiper";
+import {
+  A11y,
+  Autoplay,
+  Keyboard,
+  Mousewheel,
+  Navigation,
+  Pagination,
+} from "swiper";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 
-const index: NextPage = () => {
+const HomePage: NextPage = () => {
   const featuredProducts = api.featured.getAll.useQuery({});
 
   return (
@@ -29,7 +36,7 @@ const index: NextPage = () => {
           onSlideChange={() => console.log("slide change")}
           onSwiper={(swiper) => console.log(swiper)}
           centeredSlides={true}
-          className="h-full max-h-80 overflow-hidden rounded-xl"
+          className="h-full max-h-96 overflow-hidden rounded-xl"
           speed={500}
           pagination={{
             clickable: true,
@@ -44,19 +51,27 @@ const index: NextPage = () => {
           mousewheel={true}
           keyboard={true}
           a11y={{ enabled: true }}
-          modules={[Navigation, Pagination, Mousewheel, A11y, Keyboard, Autoplay]}
+          modules={[
+            Navigation,
+            Pagination,
+            Mousewheel,
+            A11y,
+            Keyboard,
+            Autoplay,
+          ]}
         >
           {featuredProducts.data?.items.map((item) => (
-            <SwiperSlide>
+            <SwiperSlide key={item.id}>
               {({ isActive }) => (
                 <Link href={`/products/${item.productId}`}>
                   <Image
                     src={item.media[0]?.url || ""}
                     width={1040}
-                    height={364}
+                    height={384}
+                    quality={100}
                     alt="image"
                     className={clsx(
-                      "aspect-[1040/364] h-full max-h-80 w-full rounded-xl object-cover transition duration-1000",
+                      "aspect-[1040/364] h-full max-h-96 w-full rounded-xl object-cover transition duration-1000",
                       {
                         "opacity-50": !isActive,
                       }
@@ -88,27 +103,6 @@ const index: NextPage = () => {
   );
 };
 
-const SliderSlide = forwardRef((props, ref) => {
-  return (
-    <SwiperSlide className="-z-50">
-      {({ isActive }) => (
-        <Image
-          src={
-            "https://cdn.discordapp.com/attachments/436232545139687424/1119821449859977297/gi20230615_w.webp"
-          }
-          width={1040}
-          height={364}
-          alt="image"
-          className={clsx(
-            "aspect-[1040/364] rounded-lg object-cover transition duration-1000",
-            {
-              "opacity-50": !isActive,
-            }
-          )}
-        ></Image>
-      )}
-    </SwiperSlide>
-  );
-});
+HomePage.displayName = "HomePage";
 
-export default index;
+export default HomePage;

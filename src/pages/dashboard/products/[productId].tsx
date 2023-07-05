@@ -124,7 +124,7 @@ function AdminPageProduct() {
         type: data.type,
       });
 
-      productQuery.refetch();
+      void productQuery.refetch();
 
       toast({
         title: "Product edited successfully",
@@ -169,15 +169,15 @@ function AdminPageProduct() {
             status: "error",
             description: error.message,
           });
-          router.push("/dashboard/products");
+          void router.push("/dashboard/products");
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
           toast({
             title: "Product deleted successfully",
             status: "success",
-            description: `Deleted ${productQuery.data?.name.en} successfully`,
+            description: `Deleted ${data.name.en} successfully`,
           });
-          router.push("/dashboard/products");
+          void router.push("/dashboard/products");
         },
       }
     );
@@ -205,7 +205,7 @@ function AdminPageProduct() {
               noValidate
               id="new-product"
               className="flex grid-cols-6 flex-col gap-x-6 gap-y-4 pb-16 md:grid"
-              onSubmit={onSubmit}
+              onSubmit={(...args) => void onSubmit(...args)}
             >
               <div
                 className={clsx(
@@ -448,7 +448,7 @@ function AdminPageProduct() {
                   <FormLabel>Price</FormLabel>
                   <SkeletonWrap>
                     <InputGroup w="full">
-                      <InputLeftAddon children="SAR" />
+                      <InputLeftAddon>SAR</InputLeftAddon>
                       <Controller
                         control={control}
                         name="price"
@@ -484,7 +484,7 @@ function AdminPageProduct() {
                   <FormLabel>Compare-at price</FormLabel>
                   <SkeletonWrap>
                     <InputGroup w="full">
-                      <InputLeftAddon children="SAR" />
+                    <InputLeftAddon>SAR</InputLeftAddon>
                       <Controller
                         control={control}
                         name="compareAtPrice"
@@ -500,7 +500,7 @@ function AdminPageProduct() {
                             onBlur={field.onBlur}
                             value={field.value}
                             name={field.name}
-                            className="w-full"
+                            className="!h-full w-full"
                             width={"100%"}
                             min={0}
                             placeholder="10"

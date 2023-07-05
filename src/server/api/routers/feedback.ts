@@ -68,7 +68,7 @@ export const feedbackRouter = createTRPCRouter({
     .input(
       z.object({
         productId: z.string().uuid(),
-        content: z.string(),
+        content: z.string().max(4000),
         score: z.number().min(0).max(5),
       })
     )
@@ -98,7 +98,7 @@ export const feedbackRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string().uuid(),
-        content: z.string(),
+        content: z.string().max(4000),
         score: z.number().min(0).max(5),
       })
     )

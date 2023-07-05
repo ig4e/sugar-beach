@@ -20,16 +20,16 @@ function MenuItem({
     <div
       className={twMerge(
         clsx(
-          "group flex w-full select-none items-center rounded-md transition",
+          "group flex w-full select-none items-center rounded-lg transition",
           {
             "gap-2 p-2": size === "sm",
             "gap-4 px-3 py-2": size === "md",
             "gap-4 px-4 py-3": size === "lg",
             "bg-pink-500 text-white hover:bg-pink-600 active:bg-pink-700":
               active,
-            "text-gray-700 hover:bg-gray-100 hover:text-gray-900 active:bg-gray-200":
+            "text-gray-700 hover:bg-gray-200 hover:text-gray-900 active:bg-gray-300":
               !active && variant === "ghost",
-            "bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900 active:bg-gray-400":
+            "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 active:bg-gray-300":
               variant === "solid" && !active,
           }
         )

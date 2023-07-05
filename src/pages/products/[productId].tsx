@@ -82,6 +82,7 @@ function ProductPage() {
               {data.media.slice(0, 6).map((media) => {
                 return (
                   <Image
+                    key={media.key}
                     src={media.url}
                     className="aspect-square h-12 w-12 rounded-md bg-white object-cover"
                     alt={data.name.en}
@@ -143,7 +144,7 @@ function ProductPage() {
 
                 {data.compareAtPrice && <Badge colorScheme="red">Sale</Badge>}
                 {data.categories.map((category) => (
-                  <Badge>{category.name.en}</Badge>
+                  <Badge key={category.id}>{category.name.en}</Badge>
                 ))}
               </HStack>
             </VStack>
@@ -228,7 +229,7 @@ function ProductPage() {
                     isDisabled={isOutOfStock}
                     onClick={() => {
                       cartStore.addItem(data.id, quantity);
-                      router.push("/cart");
+                      void router.push("/cart");
                     }}
                   >
                     Buy Now

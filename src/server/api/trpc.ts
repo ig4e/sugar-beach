@@ -120,7 +120,7 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
 });
 
 /** Reusable middleware that enforces users are logged in with admin before running the procedure. */
-const enforcenAuthedUserIsAdmin = t.middleware(async ({ ctx, next }) => {
+const enforceAuthedUserIsAdmin = t.middleware(async ({ ctx, next }) => {
   if (!ctx.session || !ctx.session.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
@@ -130,7 +130,7 @@ const enforcenAuthedUserIsAdmin = t.middleware(async ({ ctx, next }) => {
     select: { role: true },
   });
 
-  if (!["ADMIN", "STAFF"].includes(user?.role || "USER")) {
+  if (!(["ADMIN", "STAFF"].includes(user?.role || "USER"))) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
@@ -152,5 +152,5 @@ const enforcenAuthedUserIsAdmin = t.middleware(async ({ ctx, next }) => {
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
 export const protectedAdminProcedure = t.procedure.use(
-  enforcenAuthedUserIsAdmin
+  enforceAuthedUserIsAdmin
 );

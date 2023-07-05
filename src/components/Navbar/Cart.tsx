@@ -16,7 +16,6 @@ function Cart() {
         inline
         label={cartStore?.items.length}
         size={16}
-        hidden={!isCartFull}
         processing={isCartFull}
       >
         <Button colorScheme="gray" variant="ghost" p={0} className="relative">

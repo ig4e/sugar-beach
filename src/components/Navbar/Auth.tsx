@@ -36,7 +36,7 @@ import { useRouter } from "next/router";
 
 function Auth() {
   const { status, data } = useSession();
-  const user = data?.user as User;
+  const user = data?.user;
   const router = useRouter();
 
   const accountOptions = [
@@ -52,10 +52,10 @@ function Auth() {
     },
   ];
 
-  if (status === "authenticated") {
+  if (status === "authenticated" && user) {
     return (
       <div className="!z-[1000]">
-        <Popover placement="bottom-start">
+        <Popover placement="top-start">
           <PopoverTrigger>
             <Button
               variant="outline"
@@ -64,19 +64,19 @@ function Auth() {
               colorScheme="gray"
             >
               <Avatar
-                name={user.name!}
+                name={user.name}
                 src={user.image!}
                 bg={"pink.500"}
                 size="sm"
               ></Avatar>
             </Button>
           </PopoverTrigger>
-          <PopoverContent p={4} w={"full"} maxW={"2xl"} zIndex={"modal"}>
+          <PopoverContent p={4} w={"full"} maxW={"100vw"} zIndex={"modal"}>
             <PopoverArrow />
             <PopoverHeader>
               <div className="z-50 mb-2 flex items-center gap-4">
                 <Avatar
-                  name={user.name!}
+                  name={user.name}
                   src={user.image!}
                   bg={"pink.500"}
                   size="sm"
@@ -113,7 +113,7 @@ function Auth() {
                 }
                 variant={"solid"}
                 colorScheme="red"
-                onClick={() => signOut()}
+                onClick={() => void signOut()}
               >
                 <span>Logout</span>
               </Button>
@@ -132,7 +132,7 @@ function Auth() {
     );
 
   return (
-    <Link href={"/auth/login"}>
+    <Link href={"/auth/signin"}>
       <Button>
         <span className="text-sm font-semibold">Sign In / Sign up</span>
       </Button>

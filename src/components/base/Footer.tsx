@@ -12,7 +12,7 @@ import Logo from "public/transparent-logo.png";
 
 import Image from "next/image";
 
-const paymentOptionLogos = [
+export const paymentOptionLogos = [
   VisaLogo,
   MadaLogo,
   ApplePayLogo,
@@ -43,7 +43,7 @@ function Footer() {
                   quality={100}
                   src={logo}
                   alt="Payment method"
-                  key={"payment-logo" + index}
+                  key={`payment-logo-${index}`}
                   className="h-8 w-16 object-cover"
                 />
               ))}

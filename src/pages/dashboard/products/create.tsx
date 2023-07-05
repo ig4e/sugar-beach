@@ -46,7 +46,7 @@ export interface ProductFormValues {
   type: string;
 }
 
-function create() {
+function Create() {
   const toast = useToast();
   const router = useRouter();
   const createProductHook = api.product.create.useMutation();
@@ -72,13 +72,7 @@ function create() {
     resolver: zodResolver(productSchema),
   });
 
-  control;
-
-  console.log(errors);
-
-  const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
-
+  const onSubmit = handleSubmit((data) => {
     try {
       createProductHook.mutate(
         {
@@ -104,7 +98,7 @@ function create() {
             });
           },
           onSuccess(data, variables, context) {
-            router.push(`/dashboard/products/${data.id}`);
+            void router.push(`/dashboard/products/${data.id}`);
             toast({
               title: "Product created",
               status: "success",
@@ -138,7 +132,7 @@ function create() {
             noValidate
             id="new-product"
             className="flex grid-cols-6 flex-col gap-x-6 gap-y-4 pb-16 md:grid"
-            onSubmit={onSubmit}
+            onSubmit={(...args) => void onSubmit(...args)}
           >
             <div className="fixed inset-x-0 bottom-4 z-50 flex items-center justify-center">
               <div className="mx-auto w-full max-w-2xl">
@@ -351,7 +345,7 @@ function create() {
               <FormControl isRequired isInvalid={!!errors.price}>
                 <FormLabel>Price</FormLabel>
                 <InputGroup w="full">
-                  <InputLeftAddon children="SAR" />
+                  <InputLeftAddon>SAR</InputLeftAddon>
                   <Controller
                     control={control}
                     name="price"
@@ -383,7 +377,7 @@ function create() {
               >
                 <FormLabel>Compare-at price</FormLabel>
                 <InputGroup w="full">
-                  <InputLeftAddon children="SAR" />
+                  <InputLeftAddon>SAR</InputLeftAddon>
 
                   <Controller
                     control={control}
@@ -401,7 +395,6 @@ function create() {
                         min={0}
                         placeholder="10"
                         precision={2}
-
                         error={fieldState.invalid}
                       ></NumberInput>
                     )}
@@ -426,4 +419,4 @@ function create() {
   );
 }
 
-export default create;
+export default Create;

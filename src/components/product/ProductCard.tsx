@@ -18,13 +18,18 @@ import Image from "next/image";
 import React from "react";
 import Logo from "public/logo.png";
 import Link from "next/link";
+import { useCartStore } from "~/store/cart";
+import { useRouter } from "next/router";
+import AddToCart from "../base/AddToCart";
 
 function ProductCard({
   product,
 }: {
   product: Product & { categories: Category[] };
 }) {
+  const cartStore = useCartStore();
   const productImage = product.media[0]?.url || Logo;
+  const router = useRouter();
 
   return (
     <Card>
@@ -52,7 +57,7 @@ function ProductCard({
             <HStack flexWrap={"wrap"}>
               {product.compareAtPrice && <Badge colorScheme="red">Sale</Badge>}
               {product.categories.map((category) => (
-                <Badge>{category.name.en}</Badge>
+                <Badge key={category.id}>{category.name.en}</Badge>
               ))}
             </HStack>
           </VStack>
@@ -71,10 +76,16 @@ function ProductCard({
         </Link>
 
         <VStack>
-          <Button variant="outline" w={"full"}>
-            Add to cart
-          </Button>
-          <Button variant="solid" w={"full"}>
+          <AddToCart productId={product.id} />
+
+          <Button
+            variant="solid"
+            w={"full"}
+            onClick={() => {
+              cartStore.addItem(product.id);
+              void router.push("/cart");
+            }}
+          >
             Buy now
           </Button>
         </VStack>

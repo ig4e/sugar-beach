@@ -27,7 +27,7 @@ import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/layout/AdminLayout";
 import { api } from "~/utils/api";
 
-function index() {
+function Index() {
   const toast = useToast();
   const allCategoriesQuery = api.category.getAll.useInfiniteQuery({
     limit: 100,
@@ -39,11 +39,11 @@ function index() {
       { id },
       {
         onSuccess: ({ name }) => {
-          allCategoriesQuery.refetch();
           toast({
             status: "success",
             title: `Deleted ${name.en} successfully`,
           });
+          void allCategoriesQuery.refetch();
         },
       }
     );
@@ -57,7 +57,7 @@ function index() {
             <Heading size={"md"}>Categories</Heading>
 
             <ManageCategory
-              onRefetch={() => allCategoriesQuery.refetch()}
+              onRefetch={() => void allCategoriesQuery.refetch()}
               action="create"
             ></ManageCategory>
           </div>
@@ -95,7 +95,7 @@ function index() {
                                     action="edit"
                                     category={category}
                                     onRefetch={() =>
-                                      allCategoriesQuery.refetch()
+                                      void allCategoriesQuery.refetch()
                                     }
                                   ></ManageCategory>
                                   <IconButton
@@ -119,7 +119,7 @@ function index() {
                       <Td colSpan={4}>
                         <div className="flex items-center justify-center">
                           <Button
-                            onClick={() => allCategoriesQuery.fetchNextPage()}
+                            onClick={() => void allCategoriesQuery.fetchNextPage()}
                             size="sm"
                           >
                             Fetch categories
@@ -151,4 +151,4 @@ function index() {
   );
 }
 
-export default index;
+export default Index;

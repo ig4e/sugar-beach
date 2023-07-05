@@ -49,6 +49,7 @@ import ManageProductMedia from "./ManageMedia";
 import Image from "next/image";
 import clsx from "clsx";
 import { featuredSchema } from "~/validations/featuredSchema";
+import { useDebounce } from "usehooks-ts";
 
 type FeaturedFormValues = {
   media: Media[];
@@ -68,8 +69,11 @@ function ManageFeatured({
   const createFeaturedHook = api.featured.create.useMutation();
   const editFeaturedHook = api.featured.edit.useMutation();
   const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearchQuery = useDebounce(searchQuery, 250)
+
   const productsQuery = api.product.getAll.useQuery({
-    searchQuery: searchQuery.length > 0 ? searchQuery : undefined,
+    searchQuery: debouncedSearchQuery.length > 0 ? debouncedSearchQuery : undefined,
+    productIDs: !debouncedSearchQuery && featured ? [featured?.productId] : undefined,
   });
 
   const {
@@ -159,7 +163,7 @@ function ManageFeatured({
             <form
               noValidate
               id="featured-form"
-              onSubmit={onSubmit}
+              onSubmit={(...args) => void onSubmit(...args)}
               className="space-y-4"
             >
               <FormControl

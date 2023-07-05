@@ -25,7 +25,7 @@ import { api } from "~/utils/api";
 import Logo from "public/logo-full-transparent.png";
 import { useRouter } from "next/router";
 
-function index() {
+function Index() {
   const utils = api.useContext();
 
   const getAllProductsQuery = api.product.getAll.useInfiniteQuery(
@@ -38,6 +38,7 @@ function index() {
   utils.product.getAll.getInfiniteData();
 
   const router = useRouter();
+
   return (
     <AuthGaurd allowedLevel="STAFF">
       <AdminLayout>
@@ -78,7 +79,7 @@ function index() {
                                 <Tr
                                   key={product.id}
                                   onClick={() =>
-                                    router.push(
+                                    void router.push(
                                       `/dashboard/products/${product.id}`
                                     )
                                   }
@@ -129,7 +130,7 @@ function index() {
                       <Td colSpan={4}>
                         <div className="flex items-center justify-center">
                           <Button
-                            onClick={() => getAllProductsQuery.fetchNextPage()}
+                            onClick={() => void getAllProductsQuery.fetchNextPage()}
                             size="sm"
                           >
                             Fetch products
@@ -161,4 +162,4 @@ function index() {
   );
 }
 
-export default index;
+export default Index;

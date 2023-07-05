@@ -19,6 +19,7 @@ import { Bars3Icon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { SearchIcon } from "@chakra-ui/icons";
 import { api } from "~/utils/api";
 import Search from "./Search";
+import SideNav from "./SideNav";
 
 function Navbar() {
   const categories = api.category.getAll.useQuery({ limit: 3 });
@@ -43,14 +44,7 @@ function Navbar() {
             <Image src={Logo} alt="logo" width={100} height={100}></Image>
           </Link>
 
-          <div className="block md:hidden">
-            <IconButton
-              variant="ghost"
-              icon={<Bars3Icon className="h-6 w-6"></Bars3Icon>}
-              aria-label="menu"
-              colorScheme="gray"
-            ></IconButton>
-          </div>
+          <SideNav></SideNav>
 
           <div className="hidden items-center gap-4 md:flex">
             {categories.data &&
@@ -79,8 +73,9 @@ function Navbar() {
         </div>
 
         <div className="flex items-center gap-4">
-          <Search></Search>
-
+          <div className="hidden md:flex">
+            <Search></Search>
+          </div>
           <Cart></Cart>
           <Auth></Auth>
         </div>

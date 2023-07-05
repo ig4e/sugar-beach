@@ -57,3 +57,21 @@ export const DiscountIcon = ({ className }: { className: string }) => (
     ></path>
   </svg>
 );
+
+export const Auth0Icon = ({ className }: { className: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 23.991 26.66"
+    className={clsx("fill-current", className)}
+    focusable="false"
+    aria-hidden="true"
+  >
+    <g id="Group_4" data-name="Group 4" transform="translate(-22.54 -27.876)">
+      <path
+        id="Path_1"
+        data-name="Path 1"
+        d="M43.2,27.876H34.528l2.678,8.341h8.668l-7.012,4.97,2.677,8.4a11.454,11.454,0,0,0,4.334-13.369Zm-20,8.341H31.85l2.677-8.341H25.879L23.2,36.217a11.446,11.446,0,0,0,4.315,13.369l2.677-8.4Zm4.315,13.369,7.012,4.951,7.012-4.951-7.012-5.047Z"
+      />
+    </g>
+  </svg>
+);

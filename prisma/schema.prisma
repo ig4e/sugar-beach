@@ -140,11 +140,10 @@ model UserShippingAddress {
     id              String              @id @default(uuid()) @map("_id")
     country         Countries
     fullName        String
-    phoneNumber     String
+    phoneNumber     PhoneNumber
     streetName      String
     buildingNumber  String
     city            String
-    area            String
     province        String
     nearestLandmark String?
     type            ShippingAddressType @default(HOME)
@@ -206,6 +205,11 @@ type Description {
     en String?
 }
 
+type PhoneNumber {
+    code   String
+    number String
+}
+
 enum OrderStatus {
     CANCELLED
     ORDER_PLACED
@@ -223,7 +227,6 @@ enum ShippingAddressType {
 enum Countries {
     BH
     KW
-    IQ
     OM
     QA
     SA

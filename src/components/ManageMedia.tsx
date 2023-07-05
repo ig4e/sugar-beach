@@ -192,7 +192,7 @@ const ManageMedia = forwardRef(
     }, []);
 
     const { getRootProps, getInputProps } = useDropzone({
-      onDrop,
+      onDrop: (acceptedFiles) => void onDrop(acceptedFiles),
       accept: generateClientDropzoneAccept(["image", "video"]),
     });
 
@@ -224,7 +224,7 @@ const ManageMedia = forwardRef(
             .fill("d")
             .map((_, index) => (
               <div
-                key={"placeholder-" + index}
+                key={`placeholder-${index}`}
                 className="relative flex aspect-square flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed p-2 text-center"
               >
                 <Badge position={"absolute"} top={2} left={2} zIndex={30}>
@@ -248,7 +248,6 @@ const ManageMedia = forwardRef(
               <>
                 <Badge>Maxed</Badge>
                 <span className="text-xs">Max number of media reached</span>
-
               </>
             ) : (
               <>
@@ -277,6 +276,8 @@ const ManageMedia = forwardRef(
     );
   }
 );
+
+ManageMedia.displayName = "ManageMedia";
 
 function MediaItem({
   big,

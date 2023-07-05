@@ -23,11 +23,16 @@ function Search() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    router.push(`/search?query=${e.currentTarget.search.value}`);
+    void router.push(
+      `/search?query=${
+        (e.currentTarget as unknown as { search: { value: string } }).search
+          .value
+      }`
+    );
   }
 
   return (
-    <form className="relative hidden w-full md:flex" onSubmit={handleSubmit}>
+    <form className="relative flex w-full" onSubmit={handleSubmit}>
       <InputGroup width={"full"}>
         <InputLeftElement pointerEvents="none">
           <input
