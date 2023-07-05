@@ -11,20 +11,19 @@ import {
   FormLabel,
   HStack,
   Heading,
-  Text,
   Textarea,
   VStack,
-  useToast,
+  useToast
 } from "@chakra-ui/react";
 import { DevTool } from "@hookform/devtools";
-import { LoadingOverlay, Rating, Spoiler } from "@mantine/core";
+import { LoadingOverlay, Rating } from "@mantine/core";
 import { useSession } from "next-auth/react";
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 
-import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import Feedback from "../Feedback/Feedback";
 dayjs.extend(relativeTime);
 

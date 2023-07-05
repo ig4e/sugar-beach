@@ -1,27 +1,15 @@
-import React from "react";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Button,
   Avatar,
+  Button,
   Divider,
-  Spinner,
-  Text,
-  PopoverTrigger,
   Popover,
-  PopoverContent,
   PopoverArrow,
-  PopoverHeader,
   PopoverBody,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  Spinner
 } from "@chakra-ui/react";
-import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
-import Image from "next/image";
 import {
   AdjustmentsHorizontalIcon,
   ArrowLeftOnRectangleIcon,
@@ -30,9 +18,10 @@ import {
   HomeModernIcon,
   ShoppingBagIcon,
 } from "@heroicons/react/24/solid";
-import MenuItem from "../base/MenuItem";
-import { User } from "@prisma/client";
+import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import MenuItem from "../base/MenuItem";
 
 function Auth() {
   const { status, data } = useSession();

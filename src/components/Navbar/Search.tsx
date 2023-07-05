@@ -1,22 +1,11 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   InputGroup,
-  InputLeftElement,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverAnchor,
-  useDisclosure,
+  InputLeftElement
 } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { api } from "~/utils/api";
-import Input from "../base/Input";
 import { useRouter } from "next/router";
+import React from "react";
+import Input from "../base/Input";
 
 function Search() {
   const router = useRouter();

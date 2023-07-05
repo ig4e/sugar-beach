@@ -1,22 +1,18 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
-  Badge,
   Checkbox,
-  Heading,
   Input,
   InputGroup,
   InputLeftElement,
-  Text,
   VStack,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import Search from "~/components/Navbar/Search";
-import MainLayout from "~/components/layout/MainLayout";
-import { useDebounce } from "usehooks-ts";
-import { api } from "~/utils/api";
-import ProductCard from "~/components/product/ProductCard";
 import { LoadingOverlay } from "@mantine/core";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useDebounce } from "usehooks-ts";
+import MainLayout from "~/components/layout/MainLayout";
+import ProductCard from "~/components/product/ProductCard";
+import { api } from "~/utils/api";
 
 const projectMock = {};
 

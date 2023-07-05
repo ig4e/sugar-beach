@@ -1,33 +1,16 @@
-import React, { useEffect } from "react";
-import Logo from "public/transparent-logo.png";
-import Image from "next/image";
 import {
   Alert,
   AlertDescription,
   AlertIcon,
-  AlertTitle,
-  Button,
-  Divider,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Heading,
-  InputGroup,
-  InputLeftAddon,
-  Text,
+  AlertTitle
 } from "@chakra-ui/react";
-import Input from "~/components/base/Input";
-import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/solid";
-import LogoFullTransparent from "public/logo-full-transparent.png";
-import { signIn, useSession } from "next-auth/react";
-import { Auth0Icon, DiscordIcon, GoogleIcon } from "~/components/base/Icons";
-import PasswordInput from "~/components/base/PasswordInput";
-import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import Logo from "public/transparent-logo.png";
+import { useEffect } from "react";
 import CenteredLayout from "~/components/layout/CenteredLayout";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 
 function VerifyRequest() {
   const session = useSession();

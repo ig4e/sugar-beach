@@ -1,28 +1,22 @@
 import {
-  Heading,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Button,
-  Progress,
   HStack,
+  Heading,
   IconButton,
-  useToast,
+  Progress,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
+  useToast
 } from "@chakra-ui/react";
 import {
-  PencilSquareIcon,
-  PlusIcon,
-  TrashIcon,
+  TrashIcon
 } from "@heroicons/react/24/solid";
 import dayjs from "dayjs";
-import Link from "next/link";
-import React from "react";
 import ManageDiscount from "~/components/ManageDiscount";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/layout/AdminLayout";

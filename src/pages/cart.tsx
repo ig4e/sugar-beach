@@ -4,17 +4,15 @@ import {
   CardBody,
   HStack,
   Heading,
-  IconButton,
   Text,
   VStack,
-  useToast,
+  useToast
 } from "@chakra-ui/react";
-import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { LoadingOverlay } from "@mantine/core";
 import { Product } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import AddToCart from "~/components/base/AddToCart";
 import { paymentOptionLogos } from "~/components/base/Footer";
 import MainLayout from "~/components/layout/MainLayout";

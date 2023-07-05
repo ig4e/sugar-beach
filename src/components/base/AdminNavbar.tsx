@@ -1,14 +1,11 @@
 import Image from "next/image";
-import React from "react";
 import Logo from "public/transparent-logo.png";
-import ChangeRegion from "~/components/Navbar/ChangeRegion";
-import Cart from "~/components/Navbar/Cart";
 import Auth from "~/components/Navbar/Auth";
+import ChangeRegion from "~/components/Navbar/ChangeRegion";
 
-import Link from "next/link";
-import { Button, HStack, IconButton } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
+import { HStack, IconButton } from "@chakra-ui/react";
 import { Bars3Icon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 function AdminNavbar({ onMenuClick }: { onMenuClick: () => void }) {
   return (

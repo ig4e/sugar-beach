@@ -1,38 +1,38 @@
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
   Button,
   FormControl,
-  FormLabel,
   FormErrorMessage,
   FormHelperText,
+  FormLabel,
   HStack,
   Heading,
   IconButton,
-  Textarea,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
   InputGroup,
   InputLeftAddon,
-  useToast,
   Stack,
+  Textarea,
+  useToast,
 } from "@chakra-ui/react";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import { DevTool } from "@hookform/devtools";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { MultiSelect, NumberInput, Select } from "@mantine/core";
+import { Description, Media, Name, ProductStatus } from "@prisma/client";
 import Link from "next/link";
-import React, { useMemo } from "react";
+import { useRouter } from "next/router";
+import { useMemo } from "react";
+import { Controller, useForm } from "react-hook-form";
+import ManageProductMedia from "~/components/ManageMedia";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import Input from "~/components/base/Input";
 import AdminLayout from "~/components/layout/AdminLayout";
-import ManageProductMedia from "~/components/ManageMedia";
-import { api } from "~/utils/api";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { productSchema } from "~/validations/productSchema";
-import { Description, Media, Name, ProductStatus } from "@prisma/client";
-import { MultiSelect, NumberInput, Select } from "@mantine/core";
-import { DevTool } from "@hookform/devtools";
 import { PRODUCT_STATUS } from "~/config/productConfig";
-import { useRouter } from "next/router";
+import { api } from "~/utils/api";
+import { productSchema } from "~/validations/productSchema";
 
 export interface ProductFormValues {
   media: Media[];

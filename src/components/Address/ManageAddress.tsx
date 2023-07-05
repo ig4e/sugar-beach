@@ -17,17 +17,17 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import { DevTool } from "@hookform/devtools";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Select } from "@mantine/core";
+import { UserShippingAddress } from "@prisma/client";
+import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { ADDRESS_TYPE } from "~/config/addressConfig";
 import { COUNTRIES } from "~/config/commonConfig";
 import { api } from "~/utils/api";
-import Input from "../base/Input";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { addressSchema } from "~/validations/addressSchema";
-import { DevTool } from "@hookform/devtools";
-import { UserShippingAddress } from "@prisma/client";
-import React from "react";
+import Input from "../base/Input";
 
 interface AddressFormValues {
   fullName: string;

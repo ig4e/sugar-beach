@@ -1,7 +1,7 @@
 import { User, UserRole } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import React, { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 
 function AuthGaurd({
   children,

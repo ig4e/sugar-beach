@@ -1,14 +1,8 @@
-import { type NextPage } from "next";
-import { signIn, signOut, useSession } from "next-auth/react";
-import Head from "next/head";
-import Link from "next/link";
-import MainLayout from "~/components/layout/MainLayout";
-import { api } from "~/utils/api";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import Image from "next/image";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
-import { forwardRef } from "react";
+import { type NextPage } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import {
   A11y,
   Autoplay,
@@ -17,7 +11,10 @@ import {
   Navigation,
   Pagination,
 } from "swiper";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import "swiper/css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import MainLayout from "~/components/layout/MainLayout";
+import { api } from "~/utils/api";
 
 const HomePage: NextPage = () => {
   const featuredProducts = api.featured.getAll.useQuery({});

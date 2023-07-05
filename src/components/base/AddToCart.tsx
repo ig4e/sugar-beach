@@ -1,12 +1,10 @@
 import { MinusIcon } from "@chakra-ui/icons";
 import { Button, HStack, Heading, IconButton } from "@chakra-ui/react";
-import { PlusIcon } from "@heroicons/react/24/solid";
 import { TrashIcon } from "@heroicons/react/24/outline";
-
-import React, { useEffect } from "react";
+import { PlusIcon } from "@heroicons/react/24/solid";
+import { LoadingOverlay } from "@mantine/core";
 import { useCartStore } from "~/store/cart";
 import { api } from "~/utils/api";
-import { LoadingOverlay } from "@mantine/core";
 
 function AddToCart({ productId }: { productId: string }) {
   const cartStore = useCartStore();

@@ -1,9 +1,4 @@
-import { Button } from "@chakra-ui/react";
 import { Media } from "@prisma/client";
-import Head from "next/head";
-import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import ManageProductMedia from "~/components/ManageMedia";
 
 interface MediaForm {
   media: Media[];

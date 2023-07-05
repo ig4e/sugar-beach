@@ -1,34 +1,28 @@
-import React, {
+import {
+  Badge,
+  IconButton,
+  Skeleton,
+  useToast
+} from "@chakra-ui/react";
+import { TrashIcon } from "@heroicons/react/24/solid";
+import { Media } from "@prisma/client";
+import clsx from "clsx";
+import * as _ from "lodash";
+import Image from "next/image";
+import {
   LegacyRef,
   forwardRef,
   useCallback,
   useEffect,
-  useMemo,
   useReducer,
-  useState,
+  useState
 } from "react";
-import { useUploadThing } from "~/utils/uploadthing";
-import { useDropzone } from "react-dropzone";
 import type { FileWithPath } from "react-dropzone";
+import { useDropzone } from "react-dropzone";
 import { generateClientDropzoneAccept } from "uploadthing/client";
-import {
-  Badge,
-  Button,
-  HStack,
-  IconButton,
-  Skeleton,
-  Spinner,
-  useToast,
-} from "@chakra-ui/react";
-import clsx from "clsx";
-import { TrashIcon } from "@heroicons/react/24/solid";
-import { api } from "~/utils/api";
-import { Media } from "@prisma/client";
-import Image from "next/image";
-import * as _ from "lodash";
 import { OurFileRouter } from "~/server/uploadthing";
-import { useDebounce } from "usehooks-ts";
-import { useController } from "react-hook-form";
+import { api } from "~/utils/api";
+import { useUploadThing } from "~/utils/uploadthing";
 
 interface State {
   media: Media[];

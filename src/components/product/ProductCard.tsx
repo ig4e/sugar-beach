@@ -1,25 +1,19 @@
 import {
-  VStack,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Heading,
-  Divider,
-  ButtonGroup,
-  Button,
-  Stack,
-  Text,
   Badge,
+  Button,
+  Card,
+  CardBody,
   HStack,
+  Heading,
+  Text,
+  VStack
 } from "@chakra-ui/react";
 import { Category, Product } from "@prisma/client";
 import Image from "next/image";
-import React from "react";
-import Logo from "public/logo.png";
 import Link from "next/link";
-import { useCartStore } from "~/store/cart";
 import { useRouter } from "next/router";
+import Logo from "public/logo.png";
+import { useCartStore } from "~/store/cart";
 import AddToCart from "../base/AddToCart";
 
 function ProductCard({

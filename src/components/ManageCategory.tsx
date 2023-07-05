@@ -1,8 +1,11 @@
 import {
   Button,
   FormControl,
+  FormErrorMessage,
+  FormHelperText,
   FormLabel,
   HStack,
+  IconButton,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -11,21 +14,16 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-  FormErrorMessage,
-  FormHelperText,
-  Toast,
-  useToast,
-  IconButton,
+  useToast
 } from "@chakra-ui/react";
-import React from "react";
-import { useForm, Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
-import Input from "./base/Input";
-import { categorySchema } from "~/validations/categorySchema";
-import { api } from "~/utils/api";
 import { PencilIcon } from "@heroicons/react/24/solid";
 import { Category } from "@prisma/client";
+import { api } from "~/utils/api";
+import { categorySchema } from "~/validations/categorySchema";
+import Input from "./base/Input";
 
 type CategoryFormValues = {
   ar: string;

@@ -1,22 +1,13 @@
 import Image from "next/image";
-import React from "react";
 import Logo from "public/transparent-logo.png";
-import ChangeRegion from "~/components/Navbar/ChangeRegion";
-import Cart from "~/components/Navbar/Cart";
 import Auth from "~/components/Navbar/Auth";
+import Cart from "~/components/Navbar/Cart";
+import ChangeRegion from "~/components/Navbar/ChangeRegion";
 
-import Link from "next/link";
 import {
-  Button,
-  IconButton,
-  InputGroup,
-  InputLeftElement,
-  Tag,
+  Tag
 } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
-import Input from "~/components/base/Input";
-import { Bars3Icon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import { SearchIcon } from "@chakra-ui/icons";
+import Link from "next/link";
 import { api } from "~/utils/api";
 import Search from "./Search";
 import SideNav from "./SideNav";

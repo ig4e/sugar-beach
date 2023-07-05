@@ -1,32 +1,23 @@
 import {
-  Avatar,
   Badge,
   Button,
   Card,
   CardBody,
-  CardFooter,
-  CardHeader,
   Divider,
   FormControl,
-  FormErrorMessage,
   FormHelperText,
   FormLabel,
   HStack,
   Heading,
   Text,
-  Textarea,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
-import { DevTool } from "@hookform/devtools";
-import { NumberInput, Rating, Spoiler } from "@mantine/core";
-import { useSession } from "next-auth/react";
+import { NumberInput, Spoiler } from "@mantine/core";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
 import { A11y, Keyboard, Mousewheel, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import Input from "~/components/base/Input";
 import MainLayout from "~/components/layout/MainLayout";
 import ProductFeedback from "~/components/product/ProductFeedback";
 import useCurrency from "~/hooks/useCurrency";

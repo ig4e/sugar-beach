@@ -2,7 +2,6 @@ import { Button } from "@chakra-ui/react";
 import { ShoppingCartIcon } from "@heroicons/react/24/solid";
 import { Indicator } from "@mantine/core";
 import Link from "next/link";
-import React from "react";
 import { useStore } from "~/hooks/useStore";
 import { useCartStore } from "~/store/cart";
 

@@ -1,6 +1,6 @@
-import React, { createContext, useContext } from "react";
-import currencyJs from "currency.js";
 import { Countries } from "@prisma/client";
+import currencyJs from "currency.js";
+import { createContext, useContext } from "react";
 
 interface CurrencyState {
   country: Countries;

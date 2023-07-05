@@ -1,31 +1,29 @@
 import {
-  Heading,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Button,
-  Progress,
   Badge,
+  Button,
   HStack,
+  Heading,
   IconButton,
-  useToast,
+  Progress,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
+  useToast
 } from "@chakra-ui/react";
-import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { TrashIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import Link from "next/link";
-import React, { Fragment } from "react";
+import { useRouter } from "next/router";
+import Logo from "public/logo-full-transparent.png";
+import { Fragment } from "react";
+import ManageFeatured from "~/components/ManageFeatured";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/layout/AdminLayout";
 import { api } from "~/utils/api";
-import Logo from "public/logo-full-transparent.png";
-import { useRouter } from "next/router";
-import ManageFeatured from "~/components/ManageFeatured";
 
 function Index() {
   const toast = useToast();

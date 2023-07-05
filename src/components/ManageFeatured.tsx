@@ -1,8 +1,11 @@
 import {
   Button,
   FormControl,
+  FormErrorMessage,
+  FormHelperText,
   FormLabel,
   HStack,
+  IconButton,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -11,45 +14,29 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-  FormErrorMessage,
-  FormHelperText,
-  Toast,
-  useToast,
-  IconButton,
-  ButtonGroup,
-  VStack,
-  InputGroup,
-  InputLeftAddon,
-  InputRightAddon,
-  Spinner,
-  useRadio,
+  useToast
 } from "@chakra-ui/react";
-import React, { useEffect, useMemo, useState } from "react";
-import { useForm, Resolver, Controller, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 
-import { DatePicker } from "@mantine/dates";
 import "dayjs/locale/ar-sa";
 
 import Input from "./base/Input";
 //import { featuredSchema } from "~/validations/featuredSchema";
-import { api } from "~/utils/api";
 import { PencilIcon } from "@heroicons/react/24/solid";
-import { Featured, Media } from "@prisma/client";
 import {
-  Autocomplete,
-  AutocompleteItem,
-  LoadingOverlay,
-  NumberInput,
+  LoadingOverlay
 } from "@mantine/core";
+import { Featured, Media } from "@prisma/client";
+import { api } from "~/utils/api";
 //import { featuredSchema } from "~/validations/featuredSchema";
 import { DevTool } from "@hookform/devtools";
-import ManageProductMedia from "./ManageMedia";
-import Image from "next/image";
 import clsx from "clsx";
-import { featuredSchema } from "~/validations/featuredSchema";
+import Image from "next/image";
 import { useDebounce } from "usehooks-ts";
+import { featuredSchema } from "~/validations/featuredSchema";
+import ManageProductMedia from "./ManageMedia";
 
 type FeaturedFormValues = {
   media: Media[];

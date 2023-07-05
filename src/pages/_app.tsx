@@ -1,20 +1,16 @@
+import {
+  ChakraProvider
+} from "@chakra-ui/react";
+import { MantineProvider, MantineThemeOverride } from "@mantine/core";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
-import { api } from "~/utils/api";
-import {
-  ChakraProvider,
-  extendTheme,
-  withDefaultColorScheme,
-  type ThemeConfig,
-  baseTheme,
-} from "@chakra-ui/react";
 import "~/styles/globals.css";
-import { MantineProvider, MantineThemeOverride } from "@mantine/core";
+import { api } from "~/utils/api";
 
+import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "swiper/css";
 import { CurrencyContext } from "~/hooks/useCurrency";
 import { customChakraTheme } from "~/theme";
 

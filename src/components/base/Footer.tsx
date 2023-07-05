@@ -1,12 +1,11 @@
-import { Divider, HStack, Heading, Stack } from "@chakra-ui/react";
-import React from "react";
-import VisaLogo from "public/images/logos/payments/Visa.png";
-import MadaLogo from "public/images/logos/payments/Mada.png";
-import ApplePayLogo from "public/images/logos/payments/ApplePay.png";
-import MasterCardLogo from "public/images/logos/payments/MasterCard.png";
-import StcPayLogo from "public/images/logos/payments/StcPay.png";
+import { Divider, Heading, Stack } from "@chakra-ui/react";
 import AmericanExpressLogo from "public/images/logos/payments/AmericanExpress.png";
+import ApplePayLogo from "public/images/logos/payments/ApplePay.png";
+import MadaLogo from "public/images/logos/payments/Mada.png";
+import MasterCardLogo from "public/images/logos/payments/MasterCard.png";
 import MoyasserLogo from "public/images/logos/payments/Moyasser.png";
+import StcPayLogo from "public/images/logos/payments/StcPay.png";
+import VisaLogo from "public/images/logos/payments/Visa.png";
 
 import Logo from "public/transparent-logo.png";
 

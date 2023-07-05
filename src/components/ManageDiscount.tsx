@@ -1,8 +1,14 @@
 import {
   Button,
+  ButtonGroup,
   FormControl,
+  FormErrorMessage,
+  FormHelperText,
   FormLabel,
   HStack,
+  IconButton,
+  InputGroup,
+  InputLeftAddon,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -10,35 +16,25 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure,
-  FormErrorMessage,
-  FormHelperText,
-  Toast,
-  useToast,
-  IconButton,
-  ButtonGroup,
   VStack,
-  InputGroup,
-  InputLeftAddon,
-  InputRightAddon,
+  useDisclosure,
+  useToast
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
-import { useForm, Resolver, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { yupResolver } from "@hookform/resolvers/yup";
+import React, { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
 
-import { DatePicker } from "@mantine/dates";
 import "dayjs/locale/ar-sa";
 
 import Input from "./base/Input";
 //import { discountSchema } from "~/validations/discountSchema";
-import { api } from "~/utils/api";
 import { PencilIcon } from "@heroicons/react/24/solid";
-import { Discount } from "@prisma/client";
+import { DevTool } from "@hookform/devtools";
 import { NumberInput } from "@mantine/core";
+import { Discount } from "@prisma/client";
+import { api } from "~/utils/api";
 import { generateRandomString } from "~/utils/discountCode";
 import { discountSchema } from "~/validations/discountSchema";
-import { DevTool } from "@hookform/devtools";
 
 type DiscountFormValues = {
   code: string;

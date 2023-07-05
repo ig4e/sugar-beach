@@ -1,9 +1,8 @@
-import React from "react";
 import {
   Body,
   Button,
-  Container,
   Column,
+  Container,
   Head,
   Heading,
   Hr,
@@ -11,10 +10,9 @@ import {
   Img,
   Link,
   Preview,
-  Row,
   Section,
   Tailwind,
-  Text,
+  Text
 } from "@react-email/components";
 
 function SignInEmail({ url }: { url: string }) {

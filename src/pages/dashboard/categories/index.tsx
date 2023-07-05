@@ -1,27 +1,23 @@
 import {
-  Heading,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
   Button,
-  Progress,
   HStack,
+  Heading,
   IconButton,
-  useToast,
+  Progress,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
+  useToast
 } from "@chakra-ui/react";
 import {
-  PencilSquareIcon,
-  PlusIcon,
-  TrashIcon,
+  TrashIcon
 } from "@heroicons/react/24/solid";
-import Link from "next/link";
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import ManageCategory from "~/components/ManageCategory";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/layout/AdminLayout";

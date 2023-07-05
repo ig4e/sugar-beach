@@ -1,38 +1,24 @@
 import {
   Avatar,
   Button,
-  ButtonGroup,
   Card,
   CardBody,
   CardHeader,
   Divider,
-  Flex,
   FormControl,
   FormLabel,
   HStack,
   Heading,
-  IconButton,
   Stack,
-  Text,
-  VStack,
-  useEditableControls,
+  VStack
 } from "@chakra-ui/react";
-import { signIn, useSession } from "next-auth/react";
-import React from "react";
-import AuthGaurd from "~/components/base/AuthGaurd";
-import UserDashboardLayout from "~/components/layout/UserDashboardLayout";
-import {
-  Editable,
-  EditableInput,
-  EditableTextarea,
-  EditablePreview,
-} from "@chakra-ui/react";
-import Input from "~/components/base/Input";
-import { CloseIcon, EditIcon, CheckIcon } from "@chakra-ui/icons";
-import { Auth0Icon, DiscordIcon, GoogleIcon } from "~/components/base/Icons";
-import { api } from "~/utils/api";
 import { LoadingOverlay } from "@mantine/core";
-import { platform } from "os";
+import { signIn, useSession } from "next-auth/react";
+import AuthGaurd from "~/components/base/AuthGaurd";
+import { Auth0Icon, DiscordIcon, GoogleIcon } from "~/components/base/Icons";
+import Input from "~/components/base/Input";
+import UserDashboardLayout from "~/components/layout/UserDashboardLayout";
+import { api } from "~/utils/api";
 
 function MyAccount() {
   const session = useSession();

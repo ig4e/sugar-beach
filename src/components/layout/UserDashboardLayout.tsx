@@ -1,14 +1,12 @@
-import React from "react";
-import MainLayout from "./MainLayout";
 import {
   Cog6ToothIcon,
-  HeartIcon,
   HomeModernIcon,
-  ShoppingBagIcon,
+  ShoppingBagIcon
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import MenuItem from "../base/MenuItem";
 import { useRouter } from "next/router";
+import MenuItem from "../base/MenuItem";
+import MainLayout from "./MainLayout";
 
 function UserDashboardLayout({ children }: { children: any }) {
   const accountOptions = [

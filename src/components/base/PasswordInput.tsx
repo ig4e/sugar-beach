@@ -4,13 +4,12 @@ import {
   InputProps,
   InputRightElement,
 } from "@chakra-ui/react";
-import Input from "./Input";
-import { useState } from "react";
 import {
-  EyeDropperIcon,
   EyeIcon,
-  EyeSlashIcon,
+  EyeSlashIcon
 } from "@heroicons/react/24/solid";
+import { useState } from "react";
+import Input from "./Input";
 
 export default function PasswordInput({ ...args }: InputProps) {
   const [show, setShow] = useState(false);

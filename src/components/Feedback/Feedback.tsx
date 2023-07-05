@@ -1,10 +1,8 @@
 import { Avatar, HStack, Text, VStack } from "@chakra-ui/react";
 import { Rating, Spoiler } from "@mantine/core";
-import React from "react";
-import relativeTime from "dayjs/plugin/relativeTime";
-import dayjs from "dayjs";
-import { RouterOutputs } from "~/utils/api";
 import { User, UserFeedback } from "@prisma/client";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
 function Feedback({ feedback }: { feedback: UserFeedback & { user: User } }) {

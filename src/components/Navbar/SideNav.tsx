@@ -1,28 +1,23 @@
 import {
-  Button,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   FormControl,
   FormLabel,
   IconButton,
-  Input,
   Tag,
-  Text,
   VStack,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 import { Bars3Icon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
-import React, { LegacyRef } from "react";
 import Logo from "public/transparent-logo.png";
-import Search from "./Search";
 import { api } from "~/utils/api";
+import Search from "./Search";
 
 function SideNav() {
   const { isOpen, onOpen, onClose } = useDisclosure();

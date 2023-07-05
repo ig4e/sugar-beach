@@ -1,7 +1,10 @@
-import React, { useMemo } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import Logo from "public/transparent-logo.png";
+import {
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay
+} from "@chakra-ui/react";
 import {
   HomeModernIcon,
   InboxStackIcon,
@@ -9,18 +12,13 @@ import {
   SparklesIcon,
   TagIcon,
 } from "@heroicons/react/24/solid";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import Logo from "public/transparent-logo.png";
+import { useMemo } from "react";
 import { DiscountIcon } from "./base/Icons";
 import MenuItem from "./base/MenuItem";
-import { useRouter } from "next/router";
-import {
-  Drawer,
-  DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-} from "@chakra-ui/react";
 
 const adminHomeRoutes = [
   { name: "Home", href: "/dashboard", Icon: HomeModernIcon },

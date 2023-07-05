@@ -1,40 +1,22 @@
 import {
-  Avatar,
+  Badge,
   Button,
   Card,
   CardBody,
+  CardFooter,
   CardHeader,
   Divider,
-  FormControl,
-  FormLabel,
   HStack,
   Heading,
-  Stack,
-  VStack,
-  Drawer,
-  DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  useDisclosure,
-  useToast,
-  FormHelperText,
-  Badge,
   Text,
-  CardFooter,
+  VStack,
+  useToast
 } from "@chakra-ui/react";
 import { PlusIcon } from "@heroicons/react/24/solid";
-import { Select } from "@mantine/core";
-import React from "react";
-import { Form, useForm } from "react-hook-form";
 import ManageAddress from "~/components/Address/ManageAddress";
 import AuthGaurd from "~/components/base/AuthGaurd";
-import Input from "~/components/base/Input";
 import UserDashboardLayout from "~/components/layout/UserDashboardLayout";
-import { ADDRESS_TYPE } from "~/config/addressConfig";
-import { COUNTRIES, COUNTRIES_NAME } from "~/config/commonConfig";
+import { COUNTRIES_NAME } from "~/config/commonConfig";
 import { api } from "~/utils/api";
 
 /*
