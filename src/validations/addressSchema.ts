@@ -1,26 +1,5 @@
 import { z } from "zod";
-import { nameValidation } from "./common";
-import { COUNTRIES } from "~/config/commonConfig";
 
-/*
-
-
-interface AddressFormValues {
-  fullName: string;
-  phoneCode: string;
-  phoneNumber: string;
-  type: "HOME" | "OFFICE";
-  country: "BH" | "KW" | "OM" | "QA" | "SA" | "AE";
-  streetName: string;
-  buildingNumber: string;
-  city: string;
-  area: string;
-  province: string;
-  nearestLandmark: string;
-}
-
-
-*/
 
 export const addressSchema = z.object({
   fullName: z.string().min(1, { message: "Full name is required" }),

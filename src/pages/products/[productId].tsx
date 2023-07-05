@@ -244,7 +244,7 @@ function ProductPage() {
             >
               {relatedProductsQuery.data
                 ? relatedProductsQuery.data.map((product, index) => {
-                    return <div>{product.name.en}</div>;
+                    return <div key={product.id}>{product.name.en}</div>;
                   })
                 : null}
             </CardBody>

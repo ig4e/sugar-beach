@@ -23,11 +23,11 @@ import { Select } from "@mantine/core";
 import { UserShippingAddress } from "@prisma/client";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import Input from "~/components/Base/Input";
 import { ADDRESS_TYPE } from "~/config/addressConfig";
 import { COUNTRIES } from "~/config/commonConfig";
 import { api } from "~/utils/api";
 import { addressSchema } from "~/validations/addressSchema";
-import Input from "../Base/Input";
 
 interface AddressFormValues {
   fullName: string;

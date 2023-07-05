@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { descriptionValidation, nameValidation } from "./common";
 import { mediaSchema } from "~/server/commonZod";
+import { descriptionValidation, nameValidation } from "./common";
 
 export const productSchema = z.object({
   name: nameValidation,
