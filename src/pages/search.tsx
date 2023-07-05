@@ -137,7 +137,7 @@ function SearchPage() {
             )}
           </h2>
 
-          <div className="relative grid w-full gap-4 sm:grid-cols-2 lg:[grid-template-columns:_repeat(auto-fill,256px);] lg:[grid-template-rows:_repeat(auto-fill,456px);]">
+          <div className="relative grid w-full gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {!productsQuery.isLoading ? (
               productsQuery.data?.items.map((product) => {
                 return (
