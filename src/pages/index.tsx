@@ -13,7 +13,7 @@ import {
 } from "swiper";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
-import MainLayout from "~/components/layout/MainLayout";
+import MainLayout from "~/components/Layout/Layout";
 import { api } from "~/utils/api";
 
 const HomePage: NextPage = () => {

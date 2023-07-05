@@ -21,8 +21,8 @@ import { useRouter } from "next/router";
 import Logo from "public/logo-full-transparent.png";
 import { Fragment } from "react";
 import ManageFeatured from "~/components/ManageFeatured";
-import AuthGaurd from "~/components/base/AuthGaurd";
-import AdminLayout from "~/components/layout/AdminLayout";
+import AuthGaurd from "~/components/Base/AuthGaurd";
+import AdminLayout from "~/components/Layout/AdminLayout";
 import { api } from "~/utils/api";
 
 function Index() {

@@ -21,9 +21,9 @@ import Logo from "public/transparent-logo.png";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Auth0Icon, DiscordIcon, GoogleIcon } from "~/components/base/Icons";
-import Input from "~/components/base/Input";
-import CenteredLayout from "~/components/layout/CenteredLayout";
+import { Auth0Icon, DiscordIcon, GoogleIcon } from "~/components/Base/Icons";
+import Input from "~/components/Base/Input";
+import CenteredLayout from "~/components/Layout/CenteredLayout";
 
 /*
 OAuthSignin: Error in constructing an authorization URL (1, 2, 3),

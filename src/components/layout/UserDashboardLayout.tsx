@@ -1,12 +1,12 @@
 import {
   Cog6ToothIcon,
   HomeModernIcon,
-  ShoppingBagIcon
+  ShoppingBagIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import MenuItem from "../base/MenuItem";
-import MainLayout from "./MainLayout";
+import MenuItem from "../Base/MenuItem";
+import Layout from "./Layout";
 
 function UserDashboardLayout({ children }: { children: any }) {
   const accountOptions = [
@@ -18,7 +18,7 @@ function UserDashboardLayout({ children }: { children: any }) {
   const router = useRouter();
 
   return (
-    <MainLayout>
+    <Layout>
       <div className="my-8 grid gap-8 md:[grid-template-columns:_clamp(15rem,20%,25em)_1fr;]">
         <div className="hidden h-fit flex-col gap-2 rounded-md bg-white p-4 drop-shadow md:flex">
           {accountOptions.map((option) => {
@@ -37,7 +37,7 @@ function UserDashboardLayout({ children }: { children: any }) {
         </div>
         <div>{children}</div>
       </div>
-    </MainLayout>
+    </Layout>
   );
 }
 

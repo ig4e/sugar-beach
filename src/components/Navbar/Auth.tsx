@@ -2,13 +2,15 @@ import {
   Avatar,
   Button,
   Divider,
+  HStack,
   Popover,
   PopoverArrow,
   PopoverBody,
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
-  Spinner
+  Spinner,
+  VStack,
 } from "@chakra-ui/react";
 import {
   AdjustmentsHorizontalIcon,
@@ -21,9 +23,9 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import MenuItem from "../base/MenuItem";
+import MenuItem from "../Base/MenuItem";
 
-function Auth() {
+function Auth({ variant = "avatar" }: { variant?: "avatar" | "menu" }) {
   const { status, data } = useSession();
   const user = data?.user;
   const router = useRouter();
@@ -46,20 +48,47 @@ function Auth() {
       <div className="!z-[1000]">
         <Popover placement="top-start">
           <PopoverTrigger>
-            <Button
-              variant="outline"
-              p={0}
-              borderRadius={"full"}
-              colorScheme="gray"
-            >
-              <Avatar
-                name={user.name}
-                src={user.image!}
-                bg={"pink.500"}
-                size="sm"
-              ></Avatar>
-            </Button>
+            {variant === "avatar" ? (
+              <Button
+                variant="outline"
+                p={0}
+                borderRadius={"full"}
+                colorScheme="gray"
+              >
+                <Avatar
+                  name={user.name}
+                  src={user.image!}
+                  bg={"pink.500"}
+                  size="sm"
+                ></Avatar>
+              </Button>
+            ) : (
+              <Button
+                variant="solid"
+                p={2}
+                colorScheme="gray"
+                width={"full"}
+                size="lg"
+                justifyContent={"start"}
+                height={"fit-content"}
+              >
+                <HStack alignItems={"start"}>
+                  <Avatar
+                    name={user.name}
+                    src={user.image!}
+                    bg={"pink.500"}
+                    size="sm"
+                  ></Avatar>
+
+                  <div className="flex flex-col text-xs items-start">
+                    <span className="font-semibold">{user.name}</span>
+                    <span>{user.email}</span>
+                  </div>
+                </HStack>
+              </Button>
+            )}
           </PopoverTrigger>
+
           <PopoverContent p={4} w={"full"} maxW={"100vw"} zIndex={"modal"}>
             <PopoverArrow />
             <PopoverHeader>

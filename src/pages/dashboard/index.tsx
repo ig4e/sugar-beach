@@ -1,5 +1,5 @@
-import AuthGaurd from "~/components/base/AuthGaurd";
-import AdminLayout from "~/components/layout/AdminLayout";
+import AuthGaurd from "~/components/Base/AuthGaurd";
+import AdminLayout from "~/components/Layout/AdminLayout";
 
 function DashboardHome() {
   return (

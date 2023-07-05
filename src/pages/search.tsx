@@ -10,8 +10,8 @@ import { LoadingOverlay } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDebounce } from "usehooks-ts";
-import MainLayout from "~/components/layout/MainLayout";
-import ProductCard from "~/components/product/ProductCard";
+import MainLayout from "~/components/Layout/Layout";
+import ProductCard from "~/components/Product/ProductCard";
 import { api } from "~/utils/api";
 
 const projectMock = {};
@@ -60,27 +60,29 @@ function SearchPage() {
     <MainLayout>
       <div className="my-4 grid gap-8 md:my-10 md:[grid-template-columns:15rem_1fr] lg:[grid-template-columns:18rem_1fr]">
         <div className="flex h-full flex-col gap-4 border-b pb-6 md:border-e md:pe-6">
-          <InputGroup width={"full"}>
-            <InputLeftElement pointerEvents="none">
-              <SearchIcon color="gray.400" />
-            </InputLeftElement>
-            <Input
-              variant="filled"
-              id="search"
-              name="search"
-              borderRadius={"full"}
-              placeholder="Search"
-              paddingLeft={"9"}
-              width={"full"}
-              type="search"
-              tabIndex={1}
-              border={"2px"}
-              borderColor={"gray.400"}
-              focusBorderColor="pink.400"
-              onChange={(e) => setSearchQuery(e.target.value)}
-              value={searchQuery}
-            ></Input>
-          </InputGroup>
+          <div className="">
+            <InputGroup width={"full"}>
+              <InputLeftElement pointerEvents="none">
+                <SearchIcon color="gray.400" />
+              </InputLeftElement>
+              <Input
+                variant="filled"
+                id="search"
+                name="search"
+                borderRadius={"full"}
+                placeholder="Search"
+                paddingLeft={"9"}
+                width={"full"}
+                type="search"
+                tabIndex={1}
+                border={"2px"}
+                borderColor={"gray.400"}
+                focusBorderColor="pink.400"
+                onChange={(e) => setSearchQuery(e.target.value)}
+                value={searchQuery}
+              ></Input>
+            </InputGroup>
+          </div>
           <div className="flex flex-col gap-4 ">
             <h2 className="font-bold">Category</h2>
             <VStack alignItems={"unset"} position={"relative"}>

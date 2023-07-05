@@ -10,7 +10,7 @@ import {
   HStack,
   Heading,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { NumberInput, Spoiler } from "@mantine/core";
 import Image from "next/image";
@@ -18,8 +18,8 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { A11y, Keyboard, Mousewheel, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import MainLayout from "~/components/layout/MainLayout";
-import ProductFeedback from "~/components/product/ProductFeedback";
+import MainLayout from "~/components/Layout/Layout";
+import ProductFeedback from "~/components/Product/ProductFeedback";
 import useCurrency from "~/hooks/useCurrency";
 import { useCartStore } from "~/store/cart";
 import { api } from "~/utils/api";
@@ -28,13 +28,19 @@ function ProductPage() {
   const router = useRouter();
   const productId = router.query.productId as string;
   const productQuery = api.product.get.useQuery({ id: productId });
-  const relatedProductsQuery = api.product.getAll.useQuery({
-    categoryIDs: productQuery.data?.categoryIDs,
-    limit: 8,
+  const relatedProductsQuery = api.product.similarProducts.useQuery({
+    id: productId,
   });
+  const productVisit = api.product.visit.useMutation();
   const { data, isLoading } = productQuery;
   const [quantity, setQuantity] = React.useState(1);
   const cartStore = useCartStore();
+
+  useEffect(() => {
+    if (productId) {
+      productVisit.mutate({ id: productId });
+    }
+  }, [productId]);
 
   const currency = useCurrency();
 
@@ -130,9 +136,7 @@ function ProductPage() {
                     In Stock ({data.quantity} left)
                   </Badge>
                 )}
-
                 {isOutOfStock && <Badge colorScheme="red">Out Of Stock</Badge>}
-
                 {data.compareAtPrice && <Badge colorScheme="red">Sale</Badge>}
                 {data.categories.map((category) => (
                   <Badge key={category.id}>{category.name.en}</Badge>
@@ -229,6 +233,22 @@ function ProductPage() {
               </CardBody>
             </Card>
           </div>
+        </div>
+        <div className="flex flex-col gap-4">
+          <Card>
+            <CardBody
+              display={"flex"}
+              flexDirection={"column"}
+              justifyContent={"space-between"}
+              gap={4}
+            >
+              {relatedProductsQuery.data
+                ? relatedProductsQuery.data.map((product, index) => {
+                    return <div>{product.name.en}</div>;
+                  })
+                : null}
+            </CardBody>
+          </Card>
         </div>
         <div>
           <ProductFeedback productId={productId}></ProductFeedback>

@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import Link from "next/link";
-import CenteredLayout from "~/components/layout/CenteredLayout";
+import CenteredLayout from "~/components/Layout/CenteredLayout";
 
 function NotFound() {
   return (

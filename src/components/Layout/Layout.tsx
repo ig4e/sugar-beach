@@ -1,7 +1,7 @@
 import Navbar from "~/components/Navbar";
-import Footer from "~/components/base/Footer";
+import Footer from "~/components/Base/Footer";
 
-function MainLayout({ children }: { children: any }) {
+function Layout({ children }: { children: any }) {
   return (
     <div className={"flex min-h-screen  flex-col justify-between"}>
       <Navbar></Navbar>
@@ -13,4 +13,4 @@ function MainLayout({ children }: { children: any }) {
   );
 }
 
-export default MainLayout;
+export default Layout;

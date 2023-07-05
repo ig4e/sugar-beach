@@ -3,7 +3,7 @@ import Logo from "public/transparent-logo.png";
 import Auth from "~/components/Navbar/Auth";
 import ChangeRegion from "~/components/Navbar/ChangeRegion";
 
-import { HStack, IconButton } from "@chakra-ui/react";
+import { Button, HStack, IconButton } from "@chakra-ui/react";
 import { Bars3Icon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 

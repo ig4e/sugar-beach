@@ -19,8 +19,8 @@ import {
 } from "@heroicons/react/24/solid";
 import { Fragment } from "react";
 import ManageCategory from "~/components/ManageCategory";
-import AuthGaurd from "~/components/base/AuthGaurd";
-import AdminLayout from "~/components/layout/AdminLayout";
+import AuthGaurd from "~/components/Base/AuthGaurd";
+import AdminLayout from "~/components/Layout/AdminLayout";
 import { api } from "~/utils/api";
 
 function Index() {

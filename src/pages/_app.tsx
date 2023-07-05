@@ -1,6 +1,4 @@
-import {
-  ChakraProvider
-} from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import { MantineProvider, MantineThemeOverride } from "@mantine/core";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
@@ -36,23 +34,25 @@ const MyApp: AppType<{ session: Session | null }> = ({
         "#831843",
       ],
     },
+    fontFamily: 'Inter, Arial, sans-serif',
   };
+
 
   return (
     <div className="!font-inter">
-      <CurrencyContext.Provider value={{ country: "SA" }}>
-        <MantineProvider
-          withGlobalStyles
-          withNormalizeCSS
-          theme={customMantineTheme}
-        >
-          <ChakraProvider theme={customChakraTheme}>
-            <SessionProvider session={session}>
+      <MantineProvider
+        withGlobalStyles
+        withNormalizeCSS
+        theme={customMantineTheme}
+      >
+        <ChakraProvider theme={customChakraTheme}>
+          <SessionProvider session={session}>
+            <CurrencyContext.Provider value={{ country: "SA" }}>
               <Component {...pageProps} />
-            </SessionProvider>
-          </ChakraProvider>
-        </MantineProvider>
-      </CurrencyContext.Provider>
+            </CurrencyContext.Provider>
+          </SessionProvider>
+        </ChakraProvider>
+      </MantineProvider>
     </div>
   );
 };

@@ -8,6 +8,7 @@ import {
 import { zodName } from "~/server/types/name";
 import { utapi } from "uploadthing/server";
 import { mediaSchema } from "~/server/commonZod";
+import { TRPCError } from "@trpc/server";
 
 const productInput = z.object({
   media: mediaSchema.array().min(1),
@@ -32,6 +33,27 @@ export const productRouter = createTRPCRouter({
         where: { id: { in: input.productIDs } },
         take: 1000,
       });
+    }),
+
+  similarProducts: publicProcedure
+    .input(z.object({ id: z.string().uuid() }))
+    .query(async ({ ctx, input }) => {
+      const product = await ctx.prisma.product.findUnique({
+        where: { id: input.id },
+      });
+
+      if (!product) throw new TRPCError({ code: "NOT_FOUND" });
+
+      const similarProducts = await ctx.prisma.product.findMany({
+        where: {
+          categories: { some: { id: { in: product.categoryIDs } } },
+        },
+        take: 8,
+      });
+
+      console.log(product.categoryIDs, similarProducts);
+
+      return similarProducts;
     }),
 
   getAll: publicProcedure

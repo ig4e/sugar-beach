@@ -26,7 +26,7 @@ import { Controller, useForm } from "react-hook-form";
 
 import "dayjs/locale/ar-sa";
 
-import Input from "./base/Input";
+import Input from "./Base/Input";
 //import { discountSchema } from "~/validations/discountSchema";
 import { PencilIcon } from "@heroicons/react/24/solid";
 import { DevTool } from "@hookform/devtools";

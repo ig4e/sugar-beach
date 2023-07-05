@@ -4,11 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply !overflow-x-hidden;
-  }
-}
 
 @layer components {
   .bullet-active-swiper {
@@ -20,6 +15,6 @@
     --swiper-pagination-bullet-inactive-color: #ffffff !important;
     --swiper-pagination-bullet-inactive-opacity: 0.8 !important;
     --swiper-pagination-bullet-size: 6px;
-    --swiper-pagination-bullet-width: 1.5rem;
+    --swiper-pagination-bullet-width: 1.25rem;
   }
 }

@@ -27,7 +27,7 @@ import { ADDRESS_TYPE } from "~/config/addressConfig";
 import { COUNTRIES } from "~/config/commonConfig";
 import { api } from "~/utils/api";
 import { addressSchema } from "~/validations/addressSchema";
-import Input from "../base/Input";
+import Input from "../Base/Input";
 
 interface AddressFormValues {
   fullName: string;

@@ -14,10 +14,10 @@ import {
 } from "@chakra-ui/react";
 import { LoadingOverlay } from "@mantine/core";
 import { signIn, useSession } from "next-auth/react";
-import AuthGaurd from "~/components/base/AuthGaurd";
-import { Auth0Icon, DiscordIcon, GoogleIcon } from "~/components/base/Icons";
-import Input from "~/components/base/Input";
-import UserDashboardLayout from "~/components/layout/UserDashboardLayout";
+import AuthGaurd from "~/components/Base/AuthGaurd";
+import { Auth0Icon, DiscordIcon, GoogleIcon } from "~/components/Base/Icons";
+import Input from "~/components/Base/Input";
+import UserDashboardLayout from "~/components/Layout/UserDashboardLayout";
 import { api } from "~/utils/api";
 
 function MyAccount() {

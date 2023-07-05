@@ -59,7 +59,7 @@ function SideNav() {
                       src={Logo}
                       alt="logo"
                       width={100}
-                      height={100}
+                      height={50}
                     ></Image>
                   </Link>
 

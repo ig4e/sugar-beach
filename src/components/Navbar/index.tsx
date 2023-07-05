@@ -4,9 +4,7 @@ import Auth from "~/components/Navbar/Auth";
 import Cart from "~/components/Navbar/Cart";
 import ChangeRegion from "~/components/Navbar/ChangeRegion";
 
-import {
-  Tag
-} from "@chakra-ui/react";
+import { Tag } from "@chakra-ui/react";
 import Link from "next/link";
 import { api } from "~/utils/api";
 import Search from "./Search";
@@ -16,7 +14,7 @@ function Navbar() {
   const categories = api.category.getAll.useQuery({ limit: 3 });
 
   return (
-    <nav className="!z-[1000] bg-zinc-50 drop-shadow-lg">
+    <nav className="sticky top-0 !z-[1000] bg-zinc-50 drop-shadow-lg">
       <div className="container mx-auto flex items-center justify-between py-2">
         <Link href={"/"} className="md:hidden">
           <Image src={Logo} alt="logo" width={64} height={64}></Image>
