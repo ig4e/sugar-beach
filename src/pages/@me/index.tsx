@@ -13,6 +13,7 @@ import {
   VStack
 } from "@chakra-ui/react";
 import { LoadingOverlay } from "@mantine/core";
+import { GetStaticProps } from "next";
 import { signIn, useSession } from "next-auth/react";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import { Auth0Icon, DiscordIcon, GoogleIcon } from "~/components/base/Icons";
@@ -138,5 +139,16 @@ function MyAccount() {
       </UserDashboardLayout>
   );
 }
+
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    props: {
+      messages: (await import(`public/locales/${context.locale}.json`)).default,
+    },
+  };
+};
+
+
 
 export default MyAccount;

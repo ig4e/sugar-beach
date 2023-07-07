@@ -1,4 +1,5 @@
 import { Media } from "@prisma/client";
+import { GetStaticProps } from "next";
 
 interface MediaForm {
   media: Media[];
@@ -28,5 +29,14 @@ function Test() {
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    props: {
+      messages: (await import(`public/locales/${context.locale}.json`)).default,
+    },
+  };
+};
+
 
 export default Test;

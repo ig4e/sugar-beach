@@ -20,9 +20,9 @@ const config = {
   },
 
   images: {
-    domains: ["flagsapi.com", "uploadthing.com", "cdn.discordapp.com"],
+    domains: ["flagcdn.com", "uploadthing.com", "cdn.discordapp.com"],
   },
-  
+
   experimental: {
     esmExternals: false, // THIS IS THE FLAG THAT MATTERS
   },

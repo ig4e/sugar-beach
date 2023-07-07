@@ -24,7 +24,7 @@ import { api } from "~/utils/api";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import Feedback from "../Feedback/Feedback";
+import Feedback from "../feedback/Feedback";
 dayjs.extend(relativeTime);
 
 export interface ProductFeedbackFormValues {

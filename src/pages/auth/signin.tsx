@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { GetStaticProps } from "next";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,19 +25,6 @@ import { z } from "zod";
 import { Auth0Icon, DiscordIcon, GoogleIcon } from "~/components/base/Icons";
 import Input from "~/components/base/Input";
 import CenteredLayout from "~/components/layout/CenteredLayout";
-
-/*
-OAuthSignin: Error in constructing an authorization URL (1, 2, 3),
-OAuthCallback: Error in handling the response (1, 2, 3) from an OAuth provider.
-OAuthCreateAccount: Could not create OAuth provider user in the database.
-EmailCreateAccount: Could not create email provider user in the database.
-Callback: Error in the OAuth callback handler route
-OAuthAccountNotLinked: If the email on the account is already linked, but not with this OAuth account
-EmailSignin: Sending the e-mail with the verification token failed
-CredentialsSignin: The authorize callback returned null in the Credentials provider. We don't recommend providing information about which part of the credentials were wrong, as it might be abused by malicious hackers.
-SessionRequired: The content of this page requires you to be signed in at all times. See useSession for configuration.
-Default: Catch all, will apply, if none of the above matched
-*/
 
 const errorMessages = {
   OAuthSignin: "Error in constructing an authorization URL (1, 2, 3)",
@@ -190,5 +178,13 @@ function Signin() {
     </CenteredLayout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    props: {
+      messages: (await import(`public/locales/${context.locale}.json`)).default,
+    },
+  };
+};
 
 export default Signin;

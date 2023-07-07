@@ -16,6 +16,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { TrashIcon } from "@heroicons/react/24/solid";
+import { GetStaticProps } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Logo from "public/logo-full-transparent.png";
@@ -192,5 +193,15 @@ function Index() {
     </AuthGaurd>
   );
 }
+
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    props: {
+      messages: (await import(`public/locales/${context.locale}.json`)).default,
+    },
+  };
+};
+
 
 export default Index;

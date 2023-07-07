@@ -25,6 +25,7 @@ import { MultiSelect, NumberInput, Select } from "@mantine/core";
 import { Description, Media, Name, ProductStatus } from "@prisma/client";
 import clsx from "clsx";
 import * as _ from "lodash";
+import { GetServerSideProps, GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
@@ -543,5 +544,13 @@ function AdminPageProduct() {
     </SkeletonContext.Provider>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return {
+    props: {
+      messages: (await import(`public/locales/${context.locale}.json`)).default,
+    },
+  };
+};
 
 export default AdminPageProduct;

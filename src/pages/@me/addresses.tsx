@@ -13,7 +13,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { PlusIcon } from "@heroicons/react/24/solid";
-import ManageAddress from "~/components/Address/ManageAddress";
+import { GetStaticProps } from "next";
+import ManageAddress from "~/components/address/ManageAddress";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import UserDashboardLayout from "~/components/layout/UserDashboardLayout";
 import { COUNTRIES_NAME } from "~/config/commonConfig";
@@ -154,5 +155,15 @@ function Addresses() {
     </UserDashboardLayout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    props: {
+      messages: (await import(`public/locales/${context.locale}.json`)).default,
+    },
+  };
+};
+
+
 
 export default Addresses;

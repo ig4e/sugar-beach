@@ -21,8 +21,8 @@ import Logo from "public/transparent-logo.png";
 import { useMemo } from "react";
 import { DiscountIcon } from "../base/Icons";
 import MenuItem from "../base/MenuItem";
-import Auth from "../Navbar/Auth";
-import ChangeRegion from "../Navbar/ChangeRegion";
+import Auth from "../navbar/Auth";
+import ChangeRegion from "../navbar/ChangeRegion";
 
 const adminManagmentRoutesDefault = [
   { name: "Products", href: "/dashboard/products", Icon: TagIcon },

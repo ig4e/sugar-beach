@@ -6,15 +6,17 @@ import {
   HStack,
   Heading,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { Category, Product } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Logo from "public/logo.png";
 import { useCartStore } from "~/store/cart";
 import AddToCart from "../base/AddToCart";
+import { useLocale, useTranslations } from "next-intl";
+import { Locale } from "~/types/locale";
+import { LogoSmallTransparent } from "../logos";
 
 function ProductCard({
   product,
@@ -22,8 +24,10 @@ function ProductCard({
   product: Product & { categories: Category[] };
 }) {
   const cartStore = useCartStore();
-  const productImage = product.media[0]?.url || Logo;
+  const productImage = product.media[0]?.url || LogoSmallTransparent;
   const router = useRouter();
+  const locale = useLocale() as Locale;
+  const t = useTranslations("ProductCard");
 
   return (
     <Card>
@@ -44,18 +48,20 @@ function ProductCard({
               src={productImage}
               width={256}
               height={256}
-              alt={product.name.en}
+              alt={product.name[locale]}
               className="max-h-40 w-full rounded-md object-cover"
             />
-            <Heading size="md">{product.name.en}</Heading>
+            <Heading size="md">{product.name[locale]}</Heading>
             <HStack flexWrap={"wrap"}>
-              {product.compareAtPrice && <Badge colorScheme="red">Sale</Badge>}
+              {product.compareAtPrice && (
+                <Badge colorScheme="red">{t("sale")}</Badge>
+              )}
               {product.categories.map((category) => (
-                <Badge key={category.id}>{category.name.en}</Badge>
+                <Badge key={category.id}>{category.name[locale]}</Badge>
               ))}
             </HStack>
           </VStack>
-          <Text className="line-clamp-2">{product.description.en}</Text>
+          <Text className="line-clamp-2">{product.description[locale]}</Text>
           <VStack alignItems={"start"} spacing={0}>
             {product.compareAtPrice && (
               <span className="text-xs text-red-500 line-through">
@@ -80,7 +86,7 @@ function ProductCard({
               void router.push("/cart");
             }}
           >
-            Buy now
+            {t("buy-now")}
           </Button>
         </VStack>
       </CardBody>

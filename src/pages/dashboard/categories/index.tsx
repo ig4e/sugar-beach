@@ -12,11 +12,10 @@ import {
   Th,
   Thead,
   Tr,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
-import {
-  TrashIcon
-} from "@heroicons/react/24/solid";
+import { TrashIcon } from "@heroicons/react/24/solid";
+import { GetStaticProps } from "next";
 import { Fragment } from "react";
 import ManageCategory from "~/components/ManageCategory";
 import AuthGaurd from "~/components/base/AuthGaurd";
@@ -115,7 +114,9 @@ function Index() {
                       <Td colSpan={4}>
                         <div className="flex items-center justify-center">
                           <Button
-                            onClick={() => void allCategoriesQuery.fetchNextPage()}
+                            onClick={() =>
+                              void allCategoriesQuery.fetchNextPage()
+                            }
                             size="sm"
                           >
                             Fetch categories
@@ -146,5 +147,13 @@ function Index() {
     </AuthGaurd>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    props: {
+      messages: (await import(`public/locales/${context.locale}.json`)).default,
+    },
+  };
+};
 
 export default Index;

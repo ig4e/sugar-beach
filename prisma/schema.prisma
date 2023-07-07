@@ -46,20 +46,31 @@ model Session {
 }
 
 model User {
-    id              String                @id @default(uuid()) @map("_id")
-    image           String?
-    name            String                @default("SweetUser")
-    email           String                @unique
-    emailVerified   DateTime?
-    accounts        Account[]
-    sessions        Session[]
-    feedbacks       UserFeedback[]
-    orders          Order[]
-    shippingAddress UserShippingAddress[]
-    role            UserRole              @default(USER)
+    id                     String                       @id @default(uuid()) @map("_id")
+    image                  String?
+    name                   String                       @default("SweetUser")
+    email                  String                       @unique
+    emailVerified          DateTime?
+    accounts               Account[]
+    sessions               Session[]
+    feedbacks              UserFeedback[]
+    orders                 Order[]
+    shippingAddress        UserShippingAddress[]
+    role                   UserRole                     @default(USER)
+    recentlyViewedProducts UserRecentlyViewedProducts[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model UserRecentlyViewedProducts {
+    id        String   @id @default(uuid()) @map("_id")
+    user      User     @relation(fields: [userId], references: [id])
+    product   Product  @relation(fields: [productId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    userId    String
+    productId String
 }
 
 model Category {
@@ -74,19 +85,20 @@ model Category {
 }
 
 model Product {
-    id             String         @id @default(uuid()) @map("_id")
-    media          Media[]
-    name           Name
-    description    Description
-    price          Float
-    compareAtPrice Float?
-    quantity       Int
-    status         ProductStatus
-    feedback       UserFeedback[]
-    orders         Order[]
-    categories     Category[]     @relation(references: [id], fields: [categoryIDs])
-    type           String
-    visits         Int            @default(0)
+    id               String                       @id @default(uuid()) @map("_id")
+    media            Media[]
+    name             Name
+    description      Description
+    price            Float
+    compareAtPrice   Float?
+    quantity         Int
+    status           ProductStatus
+    feedback         UserFeedback[]
+    orders           Order[]
+    categories       Category[]                   @relation(references: [id], fields: [categoryIDs])
+    type             String
+    visits           Int                          @default(0)
+    recentUserViewes UserRecentlyViewedProducts[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

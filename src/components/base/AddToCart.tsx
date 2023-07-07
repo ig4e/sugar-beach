@@ -3,6 +3,7 @@ import { Button, HStack, Heading, IconButton } from "@chakra-ui/react";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { LoadingOverlay } from "@mantine/core";
+import { useTranslations } from "next-intl";
 import { useCartStore } from "~/store/cart";
 import { api } from "~/utils/api";
 
@@ -12,6 +13,7 @@ function AddToCart({ productId }: { productId: string }) {
   const { data: product, isLoading } = api.product.get.useQuery({
     id: productId,
   });
+  const t = useTranslations("ProductCard")
 
   if (!product)
     return (
@@ -65,7 +67,7 @@ function AddToCart({ productId }: { productId: string }) {
           w={"full"}
           onClick={() => cartStore.addItem(productId)}
         >
-          Add to cart
+          {t("add-to-cart")}
         </Button>
       )}
     </div>

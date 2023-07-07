@@ -7,14 +7,17 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { LoadingOverlay } from "@mantine/core";
+import { GetStaticProps } from "next";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDebounce } from "usehooks-ts";
+import { SEO } from "~/components/SEO";
 import Layout from "~/components/layout/Layout";
-import ProductCard from "~/components/Product/ProductCard";
+import { LogoLarge, LogoLargeDynamicPath } from "~/components/logos";
+import ProductCard from "~/components/product/ProductCard";
+import { Locale } from "~/types/locale";
 import { api } from "~/utils/api";
-
-const projectMock = {};
 
 function SearchPage() {
   const router = useRouter();
@@ -28,6 +31,9 @@ function SearchPage() {
     categoryIDs: selectedCategories,
     status: "ACTIVE",
   });
+
+  const t = useTranslations("Search");
+  const locale = useLocale() as Locale;
 
   useEffect(() => {
     setSearchQuery(router.query.query as string);
@@ -59,6 +65,11 @@ function SearchPage() {
 
   return (
     <Layout>
+      <SEO
+        title={t("search")}
+        openGraphType="website"
+        image={LogoLargeDynamicPath}
+      ></SEO>
       <div className="my-4 grid gap-8 md:my-10 md:[grid-template-columns:15rem_1fr] lg:[grid-template-columns:18rem_1fr]">
         <div className="flex h-full flex-col gap-4 border-b pb-6 md:border-e md:pe-6">
           <div className="">
@@ -71,8 +82,8 @@ function SearchPage() {
                 id="search"
                 name="search"
                 borderRadius={"full"}
-                placeholder="Search"
-                paddingLeft={"9"}
+                placeholder={t("search")}
+                paddingStart={"9"}
                 width={"full"}
                 type="search"
                 tabIndex={1}
@@ -84,8 +95,8 @@ function SearchPage() {
               ></Input>
             </InputGroup>
           </div>
-          <div className="flex flex-col gap-4 ">
-            <h2 className="font-bold">Category</h2>
+          <div className="flex flex-col gap-4">
+            <h2 className="font-bold">{t("category")}</h2>
             <VStack alignItems={"unset"} position={"relative"}>
               {categoriesQuery.isLoading ? (
                 <LoadingOverlay visible overlayBlur={3}></LoadingOverlay>
@@ -111,7 +122,7 @@ function SearchPage() {
                           value={category.id}
                         ></Checkbox>
                         <span className="text-sm font-semibold">
-                          {category.name.en}
+                          {category.name[locale]}
                         </span>
                       </div>
                       <span className="text-xs text-zinc-500">
@@ -122,15 +133,15 @@ function SearchPage() {
                 })
               )}
             </VStack>
-            <h2 className="font-bold">Shop By Price</h2>
+            <h2 className="font-bold">{t("shop-by-price")}</h2>
           </div>
         </div>
         <div className="flex flex-col gap-4">
           <h2 className="text-2xl">
-            Search Results{" "}
+            {t("search-results")}{" "}
             {debouncedSearchQuery?.length > 0 && (
               <span>
-                for{" "}
+                {t("for")}{" "}
                 <span className="font-bold text-pink-400">
                   &quot;{debouncedSearchQuery}&quot;
                 </span>
@@ -138,21 +149,30 @@ function SearchPage() {
             )}
           </h2>
 
-          <div className="relative grid w-full gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {!productsQuery.isLoading ? (
+          <div className="relative grid h-full w-full gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <LoadingOverlay
+              visible={productsQuery.isLoading}
+              overlayBlur={2}
+            ></LoadingOverlay>
+            {!productsQuery.isLoading &&
               productsQuery.data?.items.map((product) => {
                 return (
                   <ProductCard key={product.id} product={product}></ProductCard>
                 );
-              })
-            ) : (
-              <LoadingOverlay visible={true} overlayBlur={2}></LoadingOverlay>
-            )}
+              })}
           </div>
         </div>
       </div>
     </Layout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    props: {
+      messages: (await import(`public/locales/${context.locale}.json`)).default,
+    },
+  };
+};
 
 export default SearchPage;

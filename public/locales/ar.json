@@ -1,0 +1,60 @@
+{
+  "Navbar": {
+    "brand-copy": "© 2023 Sugar Beach",
+    "explore": "استكشف"
+  },
+  "Search": {
+    "search": "بحث",
+    "category": "الفئة",
+    "shop-by-price": "التسوق حسب السعر",
+    "search-results": "نتائج البحث",
+    "for": "لـ"
+  },
+  "Cart": {
+    "your-order": "طلبك",
+    "items-count": "{itemsCount, plural, =0 {0 عناصر} =1 {عنصر واحد} other {# عناصر}}",
+    "order-summary": "ملخص الطلب",
+    "check-out": "الدفع",
+    "available-payment-methods": "طرق الدفع المتاحة",
+    "cart-empty": {
+      "heading": "تبحث عن شيء؟",
+      "text": "أضف العناصر المفضلة لك إلى عربة التسوق.",
+      "button": "تابع التسوق"
+    },
+    "errors": {
+      "quantity": {
+        "not-enough": "الكمية المتوفرة من المنتج غير كافية"
+      }
+    }
+  },
+  "ChangeRegion": {
+    "drawer": {
+      "header": "إعدادات التوطين",
+      "body": {
+        "choose-country": "اختر الدولة",
+        "choose-language": "اختر اللغة"
+      },
+      "footer": {
+        "confirm": "تأكيد",
+        "cancel": "إلغاء"
+      }
+    }
+  },
+  "Footer": {
+    "pay-with-ease": "الدفع بسهولة",
+    "about-us": "معلومات عنا",
+    "contact-us": "اتصل بنا",
+    "support": "الدعم",
+    "legal": "قانوني",
+    "terms-of-use": "شروط الاستخدام",
+    "terms-of-sale": "شروط البيع",
+    "privacy-policy": "سياسة الخصوصية",
+    "stay-updated-with-us": "ابق على اطلاع معنا",
+    "brand-copy": "© 2023 Sugar Beach"
+  },
+  "ProductCard": {
+    "sale": "تخفيض",
+    "add-to-cart": "أضف إلى السلة",
+    "buy-now": "اشتر الآن"
+  }
+}

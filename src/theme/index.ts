@@ -5,7 +5,7 @@ import { buttonTheme } from "./components/button";
 import { checkboxTheme } from "./components/checkbox";
 import { inputTheme } from "./components/input";
 
-export const customChakraTheme = extendTheme(
+export const customChakraTheme = (dir: "ltr" | "rtl" = "ltr") => extendTheme(
   {
     colors: {
       pink: {
@@ -27,6 +27,7 @@ export const customChakraTheme = extendTheme(
       Input: inputTheme,
       Alert: alertTheme,
     },
+    direction: dir,
   },
   withDefaultColorScheme({ colorScheme: "pink" })
 );

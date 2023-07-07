@@ -22,6 +22,7 @@ import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MultiSelect, NumberInput, Select } from "@mantine/core";
 import { Description, Media, Name, ProductStatus } from "@prisma/client";
+import { GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
@@ -424,5 +425,13 @@ function Create() {
     </AuthGaurd>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    props: {
+      messages: (await import(`public/locales/${context.locale}.json`)).default,
+    },
+  };
+};
 
 export default Create;

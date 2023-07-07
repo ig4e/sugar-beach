@@ -13,15 +13,19 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { NumberInput, Spoiler } from "@mantine/core";
+import { GetServerSideProps } from "next";
+import { useLocale } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { A11y, Keyboard, Mousewheel, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { SEO } from "~/components/SEO";
 import Layout from "~/components/layout/Layout";
-import ProductFeedback from "~/components/Product/ProductFeedback";
+import ProductFeedback from "~/components/product/ProductFeedback";
 import useCurrency from "~/hooks/useCurrency";
 import { useCartStore } from "~/store/cart";
+import { Locale } from "~/types/locale";
 import { api } from "~/utils/api";
 
 function ProductPage() {
@@ -35,6 +39,7 @@ function ProductPage() {
   const { data, isLoading } = productQuery;
   const [quantity, setQuantity] = React.useState(1);
   const cartStore = useCartStore();
+  const locale = useLocale() as Locale;
 
   useEffect(() => {
     if (productId) {
@@ -72,6 +77,16 @@ function ProductPage() {
 
   return (
     <Layout>
+      <SEO
+        title={data.name[locale]}
+        description={data.description[locale] || "No description"}
+        createdAt={data.createdAt}
+        updatedAt={data.updatedAt}
+        image={data.media[0]?.url}
+        key={data.id}
+        openGraphType="website"
+        settings={{ meta: { title: data.name[locale] } }}
+      ></SEO>
       <div className="relative my-8 space-y-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
           <div className="flex h-fit flex-col-reverse gap-4 md:flex-row">
@@ -257,5 +272,13 @@ function ProductPage() {
     </Layout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return {
+    props: {
+      messages: (await import(`public/locales/${context.locale}.json`)).default,
+    },
+  };
+};
 
 export default ProductPage;

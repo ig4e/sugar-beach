@@ -2,8 +2,9 @@ import {
   Alert,
   AlertDescription,
   AlertIcon,
-  AlertTitle
+  AlertTitle,
 } from "@chakra-ui/react";
+import { GetStaticProps } from "next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -55,5 +56,13 @@ function VerifyRequest() {
     </CenteredLayout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    props: {
+      messages: (await import(`public/locales/${context.locale}.json`)).default,
+    },
+  };
+};
 
 export default VerifyRequest;

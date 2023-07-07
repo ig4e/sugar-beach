@@ -1,6 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
-import { type NextPage } from "next";
+import { GetStaticProps, type NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -101,5 +101,13 @@ const HomePage: NextPage = () => {
 };
 
 HomePage.displayName = "HomePage";
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    props: {
+      messages: (await import(`public/locales/${context.locale}.json`)).default,
+    },
+  };
+};
 
 export default HomePage;

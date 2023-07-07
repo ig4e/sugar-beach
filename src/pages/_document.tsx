@@ -1,24 +1,30 @@
-import { Head, Html, Main, NextScript } from "next/document";
-import Script from "next/script";
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+  DocumentContext,
+} from "next/document";
 
+class MyDocument extends Document {
+  static async getInitialProps(ctx: DocumentContext) {
+    const initialProps = await Document.getInitialProps(ctx);
+    return { ...initialProps };
+  }
 
-export default function Document() {
-  return (
-    <Html>
-     <Head>
-        <Script
-          src="https://polyfill.io/v3/polyfill.min.js?features=fetch"
-          strategy="beforeInteractive"
-        />
-        <Script
-          src="https://cdn.moyasar.com/mpf/1.7.3/moyasar.js"
-          strategy="beforeInteractive"
-        />
-      </Head>
-      <body className="bg-zinc-100">
-        <Main />
-        <NextScript />
-      </body>
-    </Html>
-  );
+  render() {
+    const { locale } = this.props.__NEXT_DATA__;
+    const dir = locale === "ar" ? "rtl" : "ltr";
+    return (
+      <Html>
+        <Head />
+        <body dir={dir} lang={locale}>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    );
+  }
 }
+
+export default MyDocument;

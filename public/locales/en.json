@@ -1,0 +1,60 @@
+{
+  "Navbar": {
+    "brand-copy": "© 2023 Sugar Beach",
+    "explore": "Explore"
+  },
+  "Search": {
+    "search": "Search",
+    "category": "Category",
+    "shop-by-price": "Shop By Price",
+    "search-results": "Search Results",
+    "for": "for"
+  },
+  "Cart": {
+    "your-order": "Your order",
+    "items-count": "{itemsCount, plural, =0 {0 items} =1 {1 item} other {# items}}",
+    "order-summary": "Order Summary",
+    "check-out": "Check out",
+    "available-payment-methods": "Available payment methods",
+    "cart-empty": {
+      "heading": "Looking for something?",
+      "text": "Add your favourite items to your cart.",
+      "button": "Keep Shopping"
+    },
+    "errors": {
+      "quantity": {
+        "not-enough": "Not enough product quantity in stock"
+      }
+    }
+  },
+  "ChangeRegion": {
+    "drawer": {
+      "header": "Localisation settings",
+      "body": {
+        "choose-country": "Choose country",
+        "choose-language": "Choose language"
+      },
+      "footer": {
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      }
+    }
+  },
+  "Footer": {
+    "pay-with-ease": "Pay With Ease",
+    "about-us": "About Us",
+    "contact-us": "Contact Us",
+    "support": "Support",
+    "legal": "Legal",
+    "terms-of-use": "Terms of use",
+    "terms-of-sale": "Terms of sale",
+    "privacy-policy": "Privacy Policy",
+    "stay-updated-with-us": "Stay updated with us",
+    "brand-copy": "© 2023 Sugar Beach"
+  },
+  "ProductCard": {
+    "sale": "Sale",
+    "add-to-cart": "Add to cart",
+    "buy-now": "Buy now"
+  }
+}

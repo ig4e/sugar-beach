@@ -6,10 +6,12 @@ import {
   Heading,
   Text,
   VStack,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { LoadingOverlay } from "@mantine/core";
 import { Product } from "@prisma/client";
+import { GetStaticProps } from "next";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo } from "react";
@@ -21,8 +23,11 @@ import { useCartStore } from "~/store/cart";
 import { api } from "~/utils/api";
 
 function Cart() {
+  const t = useTranslations("Cart");
   const cartStore = useCartStore();
   const toast = useToast();
+  const currency = useCurrency();
+  const userAddresses = api.user.address.findMany.useQuery({});
 
   const { data, isLoading, isError } = api.product.getCart.useQuery({
     productIDs: cartStore.items.reduce(
@@ -30,8 +35,6 @@ function Cart() {
       [] as string[]
     ),
   });
-
-  const userAddresses = api.user.address.findMany.useQuery({});
 
   const dataWithCartQuantity = useMemo(() => {
     return data
@@ -52,8 +55,6 @@ function Cart() {
         }[]
       | undefined;
   }, [data, cartStore.items]);
-
-  const currency = useCurrency();
 
   useEffect(() => {
     if (dataWithCartQuantity) {
@@ -91,11 +92,14 @@ function Cart() {
           <div className="relative my-8 grid gap-8 md:grid-cols-2">
             <div className="space-y-4">
               <HStack justifyContent={"space-between"}>
-                <Heading size="md">Your order</Heading>
-                <Text>{dataWithCartQuantity.length} Items</Text>
+                <Heading size="md">{t("your-order")}</Heading>
+                <Text>
+                  {t("items-count", {
+                    itemsCount: dataWithCartQuantity.length,
+                  })}
+                </Text>
               </HStack>
               <div className="flex h-full flex-col gap-4">
-
                 <VStack
                   h={"full"}
                   justifyContent={"center"}
@@ -105,11 +109,11 @@ function Cart() {
                   mb={16}
                   spacing={4}
                 >
-                  <Heading>Looking for something?</Heading>
-                  <Text>Add your favourite items to your cart.</Text>
+                  <Heading>{t("cart-empty.heading")}</Heading>
+                  <Text>{t("cart-empty.text")}</Text>
 
                   <Link href={"/"}>
-                    <Button>Keep Shopping</Button>
+                    <Button>{t("cart-empty.button")}</Button>
                   </Link>
                 </VStack>
 
@@ -154,7 +158,7 @@ function Cart() {
               </div>
             </div>
             <div className="space-y-4">
-              <Heading size="md">Order Summary</Heading>
+              <Heading size="md">{t("order-summary")}</Heading>
               <Card>
                 <CardBody>
                   <HStack justifyContent={"space-between"}>
@@ -162,7 +166,7 @@ function Cart() {
                       {totalPrice.format()}
                     </Heading>
 
-                    <Button isDisabled={isCartEmpty}>Check out</Button>
+                    <Button isDisabled={isCartEmpty}>{t("check-out")}</Button>
                   </HStack>
                 </CardBody>
               </Card>
@@ -171,7 +175,7 @@ function Cart() {
                 <CardBody>
                   <VStack alignItems={"start"} spacing={4}>
                     <Heading size="md" fontWeight={"semibold"}>
-                      Available payment methods
+                      {t("available-payment-methods")}
                     </Heading>
 
                     <HStack flexWrap={"wrap"}>
@@ -199,5 +203,13 @@ function Cart() {
     </Layout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    props: {
+      messages: (await import(`public/locales/${context.locale}.json`)).default,
+    },
+  };
+};
 
 export default Cart;

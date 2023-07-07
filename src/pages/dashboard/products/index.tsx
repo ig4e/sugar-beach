@@ -10,8 +10,9 @@ import {
   Tfoot,
   Th,
   Thead,
-  Tr
+  Tr,
 } from "@chakra-ui/react";
+import { GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -126,7 +127,9 @@ function Index() {
                       <Td colSpan={4}>
                         <div className="flex items-center justify-center">
                           <Button
-                            onClick={() => void getAllProductsQuery.fetchNextPage()}
+                            onClick={() =>
+                              void getAllProductsQuery.fetchNextPage()
+                            }
                             size="sm"
                           >
                             Fetch products
@@ -157,5 +160,13 @@ function Index() {
     </AuthGaurd>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    props: {
+      messages: (await import(`public/locales/${context.locale}.json`)).default,
+    },
+  };
+};
 
 export default Index;

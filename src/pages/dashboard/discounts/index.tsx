@@ -11,12 +11,11 @@ import {
   Th,
   Thead,
   Tr,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
-import {
-  TrashIcon
-} from "@heroicons/react/24/solid";
+import { TrashIcon } from "@heroicons/react/24/solid";
 import dayjs from "dayjs";
+import { GetStaticProps } from "next";
 import ManageDiscount from "~/components/ManageDiscount";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/layout/AdminLayout";
@@ -97,7 +96,9 @@ function Index() {
                                 <ManageDiscount
                                   action="edit"
                                   discount={discount}
-                                  onRefetch={() => void allDiscountsQuery.refetch()}
+                                  onRefetch={() =>
+                                    void allDiscountsQuery.refetch()
+                                  }
                                 ></ManageDiscount>
                                 <IconButton
                                   onClick={() => deleteDiscount(discount.id)}
@@ -126,5 +127,13 @@ function Index() {
     </AuthGaurd>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  return {
+    props: {
+      messages: (await import(`public/locales/${context.locale}.json`)).default,
+    },
+  };
+};
 
 export default Index;

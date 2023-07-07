@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Logo from "public/transparent-logo.png";
-import Auth from "~/components/Navbar/Auth";
-import ChangeRegion from "~/components/Navbar/ChangeRegion";
+import Auth from "~/components/navbar/Auth";
+import ChangeRegion from "~/components/navbar/ChangeRegion";
 
 import { HStack, IconButton } from "@chakra-ui/react";
 import { Bars3Icon } from "@heroicons/react/24/solid";

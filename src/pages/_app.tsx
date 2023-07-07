@@ -1,21 +1,37 @@
 import { ChakraProvider } from "@chakra-ui/react";
-import { MantineProvider, MantineThemeOverride } from "@mantine/core";
+import {
+  MantineProvider,
+  MantineThemeOverride,
+  createEmotionCache,
+} from "@mantine/core";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
+import { NextIntlClientProvider } from "next-intl";
 import { type AppType } from "next/app";
-import "~/styles/globals.css";
-import { api } from "~/utils/api";
-
+import { useRouter } from "next/router";
+import stylisRTLPlugin from "stylis-plugin-rtl";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { RtlProvider } from "~/components/rtl-provider";
 import { CurrencyContext } from "~/hooks/useCurrency";
+import { useLocalisationStore } from "~/store/localisation";
+import "~/styles/globals.css";
 import { customChakraTheme } from "~/theme";
+import { api } from "~/utils/api";
 
-const MyApp: AppType<{ session: Session | null }> = ({
+const MyApp: AppType<{ session: Session | null; messages: {} }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const { locale } = useRouter();
+  const rtl = locale === "ar";
+
+  const rtlCache = createEmotionCache({
+    key: "mantine-rtl",
+    stylisPlugins: [stylisRTLPlugin],
+  });
+
   const customMantineTheme: MantineThemeOverride = {
     primaryColor: "pink",
     defaultRadius: "md",
@@ -34,25 +50,31 @@ const MyApp: AppType<{ session: Session | null }> = ({
         "#831843",
       ],
     },
-    fontFamily: 'Inter, Arial, sans-serif',
+    fontFamily: "Inter, Arial, sans-serif",
+    dir: rtl ? "rtl" : "ltr",
   };
 
+  const currency = useLocalisationStore((state) => state.currency);
+  const chakraTheme = customChakraTheme(rtl ? "rtl" : "ltr");
 
   return (
     <div className="!font-inter">
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={customMantineTheme}
-      >
-        <ChakraProvider theme={customChakraTheme}>
-          <SessionProvider session={session}>
-            <CurrencyContext.Provider value={{ country: "SA" }}>
-              <Component {...pageProps} />
-            </CurrencyContext.Provider>
-          </SessionProvider>
-        </ChakraProvider>
-      </MantineProvider>
+      <NextIntlClientProvider messages={pageProps.messages}>
+        <MantineProvider
+          withGlobalStyles
+          withNormalizeCSS
+          theme={customMantineTheme}
+          emotionCache={rtl ? rtlCache : undefined}
+        >
+          <ChakraProvider theme={chakraTheme}>
+            <SessionProvider session={session}>
+              <CurrencyContext.Provider value={{ currency }}>
+                <Component {...pageProps} />
+              </CurrencyContext.Provider>
+            </SessionProvider>
+          </ChakraProvider>
+        </MantineProvider>
+      </NextIntlClientProvider>
     </div>
   );
 };

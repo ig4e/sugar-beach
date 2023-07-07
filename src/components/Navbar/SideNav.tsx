@@ -10,14 +10,14 @@ import {
   IconButton,
   Tag,
   VStack,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import { Bars3Icon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
-import Logo from "public/transparent-logo.png";
 import { api } from "~/utils/api";
-import Search from "./Search";
+import Search from "~/components/navbar/Search";
+import { LogoSmallTransparent } from "../logos";
 
 function SideNav() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -39,7 +39,7 @@ function SideNav() {
         <DrawerContent>
           <DrawerHeader>
             <Link href={"/"}>
-              <Image src={Logo} alt="logo" width={100} height={100}></Image>
+              <Image src={LogoSmallTransparent} alt="logo" width={100} height={100}></Image>
             </Link>
           </DrawerHeader>
           <DrawerCloseButton />
@@ -56,14 +56,14 @@ function SideNav() {
                 <div className="flex items-center gap-8">
                   <Link href={"/"} className="hidden md:block">
                     <Image
-                      src={Logo}
+                      src={LogoSmallTransparent}
                       alt="logo"
                       width={100}
                       height={50}
                     ></Image>
                   </Link>
 
-                  <div className="flex items-center flex-wrap gap-4">
+                  <div className="flex flex-wrap items-center gap-4">
                     {categories.data &&
                       categories.data.items.map((category) => (
                         <Link
