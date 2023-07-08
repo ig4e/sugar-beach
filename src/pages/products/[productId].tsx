@@ -32,9 +32,7 @@ function ProductPage() {
   const router = useRouter();
   const productId = router.query.productId as string;
   const productQuery = api.product.get.useQuery({ id: productId });
-  const relatedProductsQuery = api.product.similarProducts.useQuery({
-    id: productId,
-  });
+
   const productVisit = api.product.visit.useMutation();
   const { data, isLoading } = productQuery;
   const [quantity, setQuantity] = React.useState(1);
@@ -47,7 +45,7 @@ function ProductPage() {
     if (productId) {
       productVisit.mutate({ id: productId });
     }
-  }, [productId, productVisit]);
+  }, [productId]);
 
   const currency = useCurrency();
 
@@ -256,7 +254,7 @@ function ProductPage() {
             </Card>
           </div>
         </div>
-        <div className="flex flex-col gap-4">
+        {/* <div className="flex flex-col gap-4">
           <Card>
             <CardBody
               display={"flex"}
@@ -271,7 +269,7 @@ function ProductPage() {
                 : null}
             </CardBody>
           </Card>
-        </div>
+        </div> */}
         <div>
           <ProductFeedback productId={productId}></ProductFeedback>
         </div>
