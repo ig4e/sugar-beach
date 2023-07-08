@@ -16,6 +16,7 @@ import {
 import { TrashIcon } from "@heroicons/react/24/solid";
 import dayjs from "dayjs";
 import type { GetStaticProps } from "next";
+import { useTranslations } from "next-intl";
 import ManageDiscount from "~/components/ManageDiscount";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/layout/AdminLayout";
@@ -25,6 +26,7 @@ function Index() {
   const toast = useToast();
   const allDiscountsQuery = api.discount.getAll.useQuery();
   const deleteDiscountHook = api.discount.delete.useMutation();
+  const t = useTranslations("Discounts")
 
   function deleteDiscount(id: string) {
     deleteDiscountHook.mutate(
@@ -46,7 +48,7 @@ function Index() {
       <AdminLayout>
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <Heading size={"md"}>Discounts</Heading>
+            <Heading size={"md"}>{t("discounts")}</Heading>
             <ManageDiscount
               action="create"
               onRefetch={() => void allDiscountsQuery.refetch()}
@@ -64,10 +66,10 @@ function Index() {
               >
                 <Thead>
                   <Tr>
-                    <Th isTruncated>Code</Th>
-                    <Th isTruncated>Amount</Th>
-                    <Th isTruncated>Expiers At</Th>
-                    <Th isNumeric>Actions</Th>
+                    <Th isTruncated>{t("code")}</Th>
+                    <Th isTruncated>{t("amount")}</Th>
+                    <Th isTruncated>{t("expires-at")}</Th>
+                    <Th isNumeric>{t("actions")}</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -116,7 +118,7 @@ function Index() {
                 </Tbody>
                 <Tfoot>
                   <Tr>
-                    <Th>{allDiscountsQuery.data?.length || 0} Discounts</Th>
+                    <Th>{allDiscountsQuery.data?.length || 0} {t("discounts")}</Th>
                   </Tr>
                 </Tfoot>
               </Table>

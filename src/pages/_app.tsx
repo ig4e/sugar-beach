@@ -1,14 +1,16 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import {
   MantineProvider,
-  MantineThemeOverride,
   createEmotionCache,
+  type MantineThemeOverride,
 } from "@mantine/core";
+import "@uploadthing/react/styles.css";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { NextIntlClientProvider } from "next-intl";
 import { type AppType } from "next/app";
 import { useRouter } from "next/router";
+import enMessages from "public/locales/en.json";
 import stylisRTLPlugin from "stylis-plugin-rtl";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -18,8 +20,6 @@ import { useLocalisationStore } from "~/store/localisation";
 import "~/styles/globals.css";
 import { customChakraTheme } from "~/theme";
 import { api } from "~/utils/api";
-import enMessages from "public/locales/en.json";
-
 
 const MyApp: AppType<{ session: Session | null; messages: Messages }> = ({
   Component,
@@ -59,8 +59,8 @@ const MyApp: AppType<{ session: Session | null; messages: Messages }> = ({
   const chakraTheme = customChakraTheme(rtl ? "rtl" : "ltr");
 
   return (
-    <div className="!font-inter bg-zinc-100">
-      <NextIntlClientProvider messages={pageProps.messages || enMessages}>
+    <div className="bg-zinc-100 !font-inter">
+      <NextIntlClientProvider messages={pageProps.messages ?? enMessages}>
         <MantineProvider
           withGlobalStyles
           withNormalizeCSS

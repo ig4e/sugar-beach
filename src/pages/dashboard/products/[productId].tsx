@@ -22,15 +22,10 @@ import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MultiSelect, NumberInput, Select } from "@mantine/core";
-import {
-  type Description,
-  type Media,
-  type Name,
-  type ProductStatus,
-} from "@prisma/client";
+import { Description, Media, Name, ProductStatus } from "@prisma/client";
 import clsx from "clsx";
 import * as _ from "lodash";
-import { type GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
@@ -80,7 +75,7 @@ function AdminPageProduct() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
     getValues,
     control,
@@ -88,9 +83,8 @@ function AdminPageProduct() {
   } = useForm<ProductFormValues>({
     mode: "onChange",
     resolver: zodResolver(productSchema),
-    async defaultValues() {
+    async defaultValues(payload) {
       const productData = (await productQuery.refetch()).data!;
-
       return {
         name: productData.name,
         description: productData.description,
@@ -109,7 +103,7 @@ function AdminPageProduct() {
 
   useEffect(() => {
     if (!productQuery.isFetched) reset();
-  }, [productQuery.isFetched, reset]);
+  }, [productQuery.isFetched]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -162,7 +156,7 @@ function AdminPageProduct() {
         setIsChanged(true);
       }
     }
-  }, [productQuery.data, getValues(), setIsChanged]);
+  }, [productQuery.data, getValues()]);
 
   function onDelete() {
     deleteProduct.mutate(

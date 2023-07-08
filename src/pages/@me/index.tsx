@@ -11,22 +11,22 @@ import {
   Heading,
   Stack,
   VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { LoadingOverlay } from "@mantine/core";
-import { GetStaticProps } from "next";
-import { getProviders, signIn, useSession } from "next-auth/react";
+import type { GetStaticProps } from "next";
+import { signIn, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import AuthGaurd from "~/components/base/AuthGaurd";
 import { Auth0Icon, DiscordIcon, GoogleIcon } from "~/components/base/Icons";
 import Input from "~/components/base/Input";
 import UserDashboardLayout from "~/components/layout/UserDashboardLayout";
+import EditProfile from "~/components/user/EditProfile";
 import { api } from "~/utils/api";
 
 function MyAccount() {
   const session = useSession();
   const userLinkedPlatforms = api.user.getLinkedPlatforms.useQuery({});
   const t = useTranslations("UserDashboardHome");
-
   if (!session.data) return;
 
   const { user } = session.data;
@@ -64,7 +64,7 @@ function MyAccount() {
 
   return (
     <UserDashboardLayout>
-      <div className="grid gap-8 md:grid-cols-2">
+      <div className="grid gap-8 lg:grid-cols-2">
         <Card>
           <CardBody>
             <Stack direction={["column"]}>
@@ -87,7 +87,9 @@ function MyAccount() {
                     <span className="font-semibold">{user.name}</span>
                   </div>
                 </div>
-                <Button>{t("info.edit")}</Button>
+                <EditProfile user={user} onRefetch={() => void session.update()}>
+                  <Button>{t("info.edit")}</Button>
+                </EditProfile>
               </HStack>
 
               <FormControl>

@@ -35,6 +35,7 @@ import type { Discount } from "@prisma/client";
 import { api } from "~/utils/api";
 import { generateRandomString } from "~/utils/discountCode";
 import { discountSchema } from "~/validations/discountSchema";
+import { useTranslations } from "next-intl";
 
 type DiscountFormValues = {
   code: string;
@@ -55,6 +56,7 @@ function ManageDiscount({
   const createDiscountHook = api.discount.create.useMutation();
   const editDiscountHook = api.discount.edit.useMutation();
   const [isPrecentage, setIsPrecentage] = React.useState(true);
+  const t = useTranslations("ManageDiscount");
 
   const {
     register,
@@ -132,7 +134,7 @@ function ManageDiscount({
     <div>
       <DevTool control={control} />
       {action === "create" ? (
-        <Button onClick={onOpen}>Add discount</Button>
+        <Button onClick={onOpen}>{t("add-discount")}</Button>
       ) : (
         <IconButton
           onClick={onOpen}
@@ -145,7 +147,7 @@ function ManageDiscount({
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            {action === "create" ? "Create new discount" : "Edit discount"}
+            {action === "create" ? t("header-create") : t("header-edit")}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -156,7 +158,7 @@ function ManageDiscount({
               className="space-y-4"
             >
               <FormControl isRequired isInvalid={!!errors.code}>
-                <FormLabel>Discount Code</FormLabel>
+                <FormLabel>{t("discount-code")}</FormLabel>
                 <HStack>
                   <Input
                     type="text"
@@ -166,15 +168,15 @@ function ManageDiscount({
                   <Button
                     onClick={() => setValue("code", generateRandomString(6))}
                   >
-                    Generate
+                    {t("generate")}
                   </Button>
                 </HStack>
-                <FormHelperText>The discount code.</FormHelperText>
+                <FormHelperText>{t("discount-code-helper")}</FormHelperText>
                 <FormErrorMessage>{errors.code?.message}</FormErrorMessage>
               </FormControl>
 
               <FormControl isRequired isInvalid={!!errors.amount}>
-                <FormLabel>Discount</FormLabel>
+                <FormLabel>{t("discount")}</FormLabel>
 
                 <VStack>
                   <ButtonGroup isAttached width={"full"}>
@@ -183,14 +185,14 @@ function ManageDiscount({
                       colorScheme={isPrecentage ? undefined : "gray"}
                       onClick={() => setIsPrecentage(true)}
                     >
-                      Precentage
+                      {t("percentage")}
                     </Button>
                     <Button
                       colorScheme={isPrecentage ? "gray" : undefined}
                       width={"full"}
                       onClick={() => setIsPrecentage(false)}
                     >
-                      Fixed Amount
+                      {t("fixed-amount")}
                     </Button>
                   </ButtonGroup>
                   <InputGroup>
@@ -217,12 +219,12 @@ function ManageDiscount({
                   </InputGroup>
                 </VStack>
 
-                <FormHelperText>The Discount amount.</FormHelperText>
+                <FormHelperText>{t("discount-amount-helper")}</FormHelperText>
                 <FormErrorMessage>{errors.amount?.message}</FormErrorMessage>
               </FormControl>
 
               <FormControl isInvalid={!!errors.expiresAt} isRequired>
-                <FormLabel>Discount Expire Date</FormLabel>
+                <FormLabel>{t("discount-expire-date")}</FormLabel>
                 <Input
                   type="date"
                   min={0}
@@ -246,7 +248,7 @@ function ManageDiscount({
                   ></Controller>   </div>*/}
 
                 <FormHelperText>
-                  The date when the discount will expire.
+                  {t("discount-expire-date-helper")}
                 </FormHelperText>
                 <FormErrorMessage>{errors.expiresAt?.message}</FormErrorMessage>
               </FormControl>
@@ -261,14 +263,14 @@ function ManageDiscount({
                 type="submit"
                 form="discount-form"
               >
-                Save
+                {t("save")}
               </Button>
               <Button
                 isLoading={isSubmitting}
                 colorScheme="red"
                 onClick={onClose}
               >
-                Cancel
+                {t("cancel")}
               </Button>
             </HStack>
           </ModalFooter>

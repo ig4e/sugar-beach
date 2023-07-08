@@ -1,12 +1,12 @@
 {
   "Navbar": {
     "brand-copy": "© 2023 Sugar Beach",
-    "explore": "استكشف"
+    "explore": "استكشاف"
   },
   "Search": {
     "search": "بحث",
     "category": "الفئة",
-    "shop-by-price": "التسوق حسب السعر",
+    "shop-by-price": "تسوق حسب السعر",
     "search-results": "نتائج البحث",
     "for": "لـ"
   },
@@ -14,12 +14,12 @@
     "your-order": "طلبك",
     "items-count": "{itemsCount, plural, =0 {0 عناصر} =1 {عنصر واحد} other {# عناصر}}",
     "order-summary": "ملخص الطلب",
-    "check-out": "الدفع",
+    "check-out": "إتمام الشراء",
     "available-payment-methods": "طرق الدفع المتاحة",
     "cart-empty": {
-      "heading": "تبحث عن شيء؟",
-      "text": "أضف العناصر المفضلة لك إلى عربة التسوق.",
-      "button": "تابع التسوق"
+      "heading": "هل تبحث عن شيء؟",
+      "text": "أضف العناصر المفضلة لديك إلى سلة التسوق.",
+      "button": "متابعة التسوق"
     },
     "errors": {
       "quantity": {
@@ -31,7 +31,7 @@
     "drawer": {
       "header": "إعدادات التوطين",
       "body": {
-        "choose-country": "اختر الدولة",
+        "choose-country": "اختر البلد",
         "choose-language": "اختر اللغة"
       },
       "footer": {
@@ -42,20 +42,20 @@
   },
   "Footer": {
     "pay-with-ease": "الدفع بسهولة",
-    "about-us": "معلومات عنا",
+    "about-us": "من نحن",
     "contact-us": "اتصل بنا",
     "support": "الدعم",
     "legal": "قانوني",
     "terms-of-use": "شروط الاستخدام",
     "terms-of-sale": "شروط البيع",
     "privacy-policy": "سياسة الخصوصية",
-    "stay-updated-with-us": "ابق على اطلاع معنا",
+    "stay-updated-with-us": "ابق على اطلاع",
     "brand-copy": "© 2023 Sugar Beach"
   },
   "ProductCard": {
     "sale": "تخفيض",
     "add-to-cart": "أضف إلى السلة",
-    "buy-now": "اشتر الآن"
+    "buy-now": "اشترِ الآن"
   },
   "Product": {
     "in-stock": "متوفر",
@@ -64,32 +64,32 @@
     "sale": "تخفيض",
     "description": "الوصف",
     "quantity": "الكمية",
-    "purchase-limit": "الحد الأدنى للشراء: 0 ~ ",
+    "purchase-limit": "الحد الأقصى للشراء: 0 ~ ",
     "no-description": "لا يوجد وصف",
     "total": "الإجمالي",
     "add-to-cart": "أضف إلى السلة",
-    "buy-now": "اشتر الآن"
+    "buy-now": "اشترِ الآن"
   },
   "ProductFeedback": {
-    "customer-feedback": "آراء العملاء",
-    "edit-your-feedback": "تعديل رأيك",
-    "add-your-feedback": "أضف رأيك",
+    "customer-feedback": "تقييمات العملاء",
+    "edit-your-feedback": "عدل تقييمك",
+    "add-your-feedback": "أضف تقييمك",
     "discard": "تجاهل",
     "delete": "حذف",
     "submit": "إرسال",
-    "submitting-feedback": "جارٍ إرسال الرأي",
+    "submitting-feedback": "جارٍ إرسال التقييم",
     "feedback-input": {
-      "placeholder": "ماذا أعجبك أو لم يعجبك؟ كيف كان الطعم؟"
+      "placeholder": "ما الذي أعجبك أو لم يعجبك؟ كيف كان الطعم؟"
     },
     "errors": {
-      "feedback-add": "حدث خطأ أثناء إضافة الرأي",
-      "feedback-edit": "حدث خطأ أثناء تعديل الرأي",
-      "feedback-delete": "حدث خطأ أثناء حذف الرأي"
+      "feedback-add": "حدث خطأ أثناء إضافة التقييم",
+      "feedback-edit": "حدث خطأ أثناء تعديل التقييم",
+      "feedback-delete": "حدث خطأ أثناء حذف التقييم"
     },
     "success": {
-      "feedback-add": "تمت إضافة الرأي بنجاح!",
-      "feedback-edit": "تم تعديل الرأي بنجاح!",
-      "feedback-delete": "تم حذف الرأي بنجاح!"
+      "feedback-add": "تمت إضافة التقييم بنجاح!",
+      "feedback-edit": "تم تعديل التقييم بنجاح!",
+      "feedback-delete": "تم حذف التقييم بنجاح!"
     }
   },
   "AdminLayout": {
@@ -101,25 +101,22 @@
       "discounts": "التخفيضات",
       "categories": "الفئات"
     },
-    "management": "إدارة"
+    "management": "الإدارة"
   },
-
   "Auth": {
     "routes": {
       "my-account": "حسابي",
       "my-orders": "طلباتي",
       "my-addresses": "عناويني",
-      "admin-dashboard": "لوحة تحكم المشرف"
+      "admin-dashboard": "لوحة التحكم للمسؤول"
     },
-
+    "sign-in": "تسجيل الدخول",
     "sign-out": "تسجيل الخروج"
   },
-
   "404": {
-    "header": "يبدو أنك قد ضللت الطريق",
+    "header": "يبدو أنك ضائع",
     "go-back": "العودة"
   },
-
   "UserDashboardHome": {
     "info": {
       "edit": "تعديل",
@@ -129,5 +126,64 @@
     "account-linking": "ربط الحساب",
     "link": "ربط",
     "linked-to": "مرتبط بـ"
+  },
+  "VerifyRequest": {
+    "title": "تحقق من بريدك الإلكتروني!",
+    "description": "تم إرسال رابط تسجيل إلى عنوان بريدك الإلكتروني.",
+    "alert": {
+      "title": "نجاح!",
+      "description": "تم إرسال رابط التحقق إلى بريدك الإلكتروني بنجاح!"
+    }
+  },
+  "SignIn": {
+    "title": "مرحبًا",
+    "description": "مرحبًا! قم بإنشاء حساب واستمتع بتجربة التسوق الرائعة على ساحل سوجار.",
+    "alert": {
+      "title": "خطأ!"
+    },
+    "email": "البريد الإلكتروني",
+    "sign-in": "تسجيل الدخول",
+    "sign-in-loading": "جارٍ تسجيل الدخول...",
+    "sign-in-with": "تسجيل الدخول باستخدام"
+  },
+  "EditProfile": {
+    "header": "تعديل الملف الشخصي",
+    "info": {
+      "edit": "تعديل",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني"
+    },
+    "editProfile": {
+      "success": "تم تعديل الملف الشخصي بنجاح!",
+      "error": "فشل في تعديل الملف الشخصي"
+    }
+  },
+  "AvatarUpload": {
+    "user-avatar-updated-success": "تم تحديث صورتك الشخصية بنجاح",
+    "user-avatar-updated-error": "فشل في تحديث صورتك الشخصية",
+    "user-avatar-updated-upload-error": "فشل في تحميل صورتك الشخصية"
+  },
+  "Discounts": {
+    "discounts": "تخفيضات",
+    "code": "الكود",
+    "amount": "المبلغ",
+    "expires-at": "تنتهي في",
+    "actions": "الإجراءات"
+  },
+  "ManageDiscount": {
+    "header-create": "إنشاء تخفيض جديد",
+    "header-edit": "تعديل التخفيض",
+    "discount": "التخفيض",
+    "add-discount": "إضافة تخفيض",
+    "discount-code": "كود التخفيض",
+    "generate": "توليد",
+    "discount-code-helper": "كود التخفيض.",
+    "percentage": "نسبة مئوية",
+    "fixed-amount": "مبلغ ثابت",
+    "discount-amount-helper": "مبلغ التخفيض.",
+    "discount-expire-date": "تاريخ انتهاء التخفيض",
+    "discount-expire-date-helper": "تاريخ انتهاء التخفيض.",
+    "save": "حفظ",
+    "cancel": "إلغاء"
   }
 }

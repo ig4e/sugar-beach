@@ -18,7 +18,6 @@ const getBaseUrl = () => {
 
 /** A set of type-safe react-query hooks for your tRPC API. */
 export const api = createTRPCNext<AppRouter>({
-  ssr: true,
   config(opts) {
     const { ctx } = opts;
     if (typeof window !== "undefined") {
@@ -68,6 +67,8 @@ export const api = createTRPCNext<AppRouter>({
       ],
     };
   },
+  ssr: true,
+
   /**
    * Whether tRPC should await queries when server rendering pages.
    *

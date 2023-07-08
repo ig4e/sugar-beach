@@ -101,7 +101,7 @@
       "discounts": "Discounts",
       "categories": "Categories"
     },
-    "management": "management"
+    "management": "Management"
   },
   "Auth": {
     "routes": {
@@ -123,13 +123,13 @@
       "name": "Name",
       "email": "Email"
     },
-    "account-linking": "Account linking",
+    "account-linking": "Account Linking",
     "link": "Link",
     "linked-to": "Linked to"
   },
   "VerifyRequest": {
     "title": "Check your email!",
-    "description": "A sign in link has been sent to your email address.",
+    "description": "A sign-in link has been sent to your email address.",
     "alert": {
       "title": "Success!",
       "description": "Sent the verification link to your email!"
@@ -137,7 +137,7 @@
   },
   "SignIn": {
     "title": "Welcome",
-    "description": "Hi there! Sign up an account and enjoy your shopping experience on Sugar Beach.",
+    "description": "Hi there! Sign up for an account and enjoy your shopping experience on Sugar Beach.",
     "alert": {
       "title": "Error!"
     },
@@ -145,5 +145,60 @@
     "sign-in": "Sign In",
     "sign-in-loading": "Signing In...",
     "sign-in-with": "Sign In With"
+  },
+  "EditProfile": {
+    "header": "Edit Profile",
+    "info": {
+      "edit": "Edit",
+      "name": "Name",
+      "email": "Email"
+    },
+    "editProfile": {
+      "success": "Profile edited successfully!",
+      "error": "Failed to edit profile"
+    },
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "AvatarUpload": {
+    "user-avatar-updated-success": "Successfully updated your avatar",
+    "user-avatar-updated-error": "Failed to update your avatar",
+    "user-avatar-updated-upload-error": "Failed to upload your avatar"
+  },
+  "Discounts": {
+    "discounts": "Discounts",
+    "code": "Code",
+    "amount": "Amount",
+    "expires-at": "Expiers At",
+    "actions": "Actions"
+  },
+  "ManageDiscount": {
+    "header-create": "Create new discount",
+    "header-edit": "Edit discount",
+    "discount": "Discount",
+    "add-discount": "Add Discount",
+    "discount-code": "Discount Code",
+    "generate": "Generate",
+    "discount-code-helper": "The discount code.",
+    "percentage": "Precentage",
+    "fixed-amount": "Fixed Amount",
+    "discount-amount-helper": "The Discount amount.",
+    "discount-expire-date": "Discount Expire Date",
+    "discount-expire-date-helper": "The date when the discount will expire.",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "EditEmail": {
+    "header": "Edit Email",
+    "email-verification": {
+      "error": "Failed to send email verification",
+      "success": "Successfuly sent email verification!"
+    },
+    "email-edit": {
+      "error": "Failed to edit email!",
+      "success": "Successfuly edited email!"
+    },
+    "edit": "Edit"
   }
 }
