@@ -13,18 +13,19 @@ import {
 } from "@chakra-ui/react";
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { GetStaticProps } from "next";
+import type { GetStaticProps } from "next";
 import { signIn, useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Logo from "public/transparent-logo.png";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Auth0Icon, DiscordIcon, GoogleIcon } from "~/components/base/Icons";
 import Input from "~/components/base/Input";
 import CenteredLayout from "~/components/layout/CenteredLayout";
+import { LogoSmallTransparent } from "~/components/logos";
 
 const errorMessages = {
   OAuthSignin: "Error in constructing an authorization URL (1, 2, 3)",
@@ -43,13 +44,15 @@ const errorMessages = {
   Default: "Catch all, will apply, if none of the above matched",
 } as const;
 
-function Signin() {
+function SignIn() {
   const session = useSession();
   const router = useRouter();
   const signinForm = useForm<{ email: string }>({
     resolver: zodResolver(z.object({ email: z.string().email() })),
     mode: "all",
   });
+
+  const t = useTranslations("SignIn");
 
   const error = router.query.error as keyof typeof errorMessages | null;
 
@@ -65,14 +68,19 @@ function Signin() {
         {error && (
           <Alert status="error">
             <AlertIcon />
-            <AlertTitle>Error!</AlertTitle>
+            <AlertTitle>{t("alert.title")}</AlertTitle>
             <AlertDescription>{errorMessages[error]}</AlertDescription>
           </Alert>
         )}
 
         <header>
           <Link href="/">
-            <Image src={Logo} alt="logo" width={100} height={100}></Image>
+            <Image
+              src={LogoSmallTransparent}
+              alt="logo"
+              width={100}
+              height={100}
+            ></Image>
           </Link>
         </header>
 
@@ -86,11 +94,8 @@ function Signin() {
           }
         >
           <div>
-            <h1 className="text-2xl font-bold text-zinc-800">Welcome Back!</h1>
-            <p>
-              Hi there! Sign up an account and enjoy your shopping experience on
-              Sugar Beach.
-            </p>
+            <h1 className="text-2xl font-bold text-zinc-800">{t("title")}</h1>
+            <p>{t("description")}</p>
           </div>
 
           <div className="flex flex-col gap-4">
@@ -99,7 +104,7 @@ function Signin() {
               className="space-y-2"
               isInvalid={!!signinForm.formState.errors?.email}
             >
-              <FormLabel className="FormLabel-zinc-500">Email</FormLabel>
+              <FormLabel className="FormLabel-zinc-500">{t("email")}</FormLabel>
 
               <InputGroup>
                 <InputLeftAddon bg="white">
@@ -126,9 +131,9 @@ function Signin() {
             className="w-full"
             type="submit"
             isLoading={signinForm.formState.isSubmitting}
-            loadingText="Signing In..."
+            loadingText={t("sign-in-loading")}
           >
-            Sign In
+            {t("sign-in")}
           </Button>
 
           <Divider></Divider>
@@ -142,7 +147,7 @@ function Signin() {
               colorScheme="gray"
             >
               <GoogleIcon className="h-5 w-5"></GoogleIcon>
-              <span>Sign In With Google</span>
+              <span>{t("sign-in-with")} With Google</span>
             </Button>
 
             <Button
@@ -153,7 +158,7 @@ function Signin() {
               colorScheme="gray"
             >
               <DiscordIcon className="h-5 w-5"></DiscordIcon>
-              <span>Sign In With Discord</span>
+              <span>{t("sign-in-with")} With Discord</span>
             </Button>
 
             <Button
@@ -164,7 +169,7 @@ function Signin() {
               colorScheme="gray"
             >
               <Auth0Icon className="h-5 w-5"></Auth0Icon>
-              <span>Auth 0</span>
+              <span>{t("sign-in-with")} With Auth 0</span>
             </Button>
           </div>
 
@@ -192,4 +197,4 @@ export const getStaticProps: GetStaticProps = async (context) => {
     },
   };
 };
-export default Signin;
+export default SignIn;

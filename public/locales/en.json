@@ -126,5 +126,24 @@
     "account-linking": "Account linking",
     "link": "Link",
     "linked-to": "Linked to"
+  },
+  "VerifyRequest": {
+    "title": "Check your email!",
+    "description": "A sign in link has been sent to your email address.",
+    "alert": {
+      "title": "Success!",
+      "description": "Sent the verification link to your email!"
+    }
+  },
+  "SignIn": {
+    "title": "Welcome",
+    "description": "Hi there! Sign up an account and enjoy your shopping experience on Sugar Beach.",
+    "alert": {
+      "title": "Error!"
+    },
+    "email": "Email",
+    "sign-in": "Sign In",
+    "sign-in-loading": "Signing In...",
+    "sign-in-with": "Sign In With"
   }
 }
