@@ -6,37 +6,32 @@ import {
   SparklesIcon,
   TagIcon,
 } from "@heroicons/react/24/solid";
-import {
-  AppShell,
-  Burger,
-  Footer,
-  Header,
-  MediaQuery,
-  Navbar,
-} from "@mantine/core";
+import { AppShell, Burger, Header, MediaQuery, Navbar } from "@mantine/core";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Logo from "public/transparent-logo.png";
-import { useMemo } from "react";
+import { type ReactNode, useMemo } from "react";
 import { DiscountIcon } from "../base/Icons";
 import MenuItem from "../base/MenuItem";
+import { LogoSmallTransparent } from "../logos";
 import Auth from "../navbar/Auth";
 import ChangeRegion from "../navbar/ChangeRegion";
 
 const adminManagmentRoutesDefault = [
-  { name: "Products", href: "/dashboard/products", Icon: TagIcon },
-  { name: "Orders", href: "/dashboard/orders", Icon: InboxStackIcon },
-  { name: "Featured", href: "/dashboard/featured", Icon: SparklesIcon },
-  { name: "Discounts", href: "/dashboard/discounts", Icon: DiscountIcon },
+  { name: "products", href: "/dashboard/products", Icon: TagIcon },
+  { name: "orders", href: "/dashboard/orders", Icon: InboxStackIcon },
+  { name: "featured", href: "/dashboard/featured", Icon: SparklesIcon },
+  { name: "discounts", href: "/dashboard/discounts", Icon: DiscountIcon },
   {
-    name: "Categories",
+    name: "categories",
     href: "/dashboard/categories",
     Icon: RectangleGroupIcon,
   },
-];
+] as const;
 
-function AdminLayout({ children }: { children: any }) {
+function AdminLayout({ children }: { children: ReactNode }) {
+  const t = useTranslations("AdminLayout");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const adminManagmentRoutes = useMemo(() => {
@@ -63,7 +58,12 @@ function AdminLayout({ children }: { children: any }) {
           <MediaQuery largerThan="md" styles={{ display: "none" }}>
             <Navbar.Section mb="md">
               <Link href={"/"}>
-                <Image src={Logo} alt="logo" width={100} height={100}></Image>
+                <Image
+                  src={LogoSmallTransparent}
+                  alt="LogoSmallTransparent"
+                  width={100}
+                  height={100}
+                ></Image>
               </Link>
             </Navbar.Section>
           </MediaQuery>
@@ -72,12 +72,12 @@ function AdminLayout({ children }: { children: any }) {
             <div className="space-y-4">
               <div className="flex flex-col gap-2">
                 <h1 className="text-xs font-semibold uppercase text-pink-500">
-                  Home
+                  {t("routes.home")}
                 </h1>
                 <Link href={"/dashboard"}>
                   <MenuItem
                     size="sm"
-                    name="Home"
+                    name={t("routes.home")}
                     Icon={HomeModernIcon}
                   ></MenuItem>
                 </Link>
@@ -85,13 +85,13 @@ function AdminLayout({ children }: { children: any }) {
 
               <div className="flex flex-col gap-2">
                 <h1 className="text-xs font-semibold uppercase text-pink-500">
-                  Management
+                  {t("management")}
                 </h1>
                 {adminManagmentRoutes.map((route) => (
                   <Link href={route.href} key={route.name}>
                     <MenuItem
                       size="sm"
-                      name={route.name}
+                      name={t(`routes.${route.name}`)}
                       Icon={route.Icon}
                       active={route.active}
                     ></MenuItem>
@@ -123,7 +123,12 @@ function AdminLayout({ children }: { children: any }) {
             <HStack justifyContent={"space-between"} width={"full"}>
               <HStack spacing={4}>
                 <Link href={"/"} className="hidden md:block">
-                  <Image src={Logo} alt="logo" width={80} height={80}></Image>
+                  <Image
+                    src={LogoSmallTransparent}
+                    alt="LogoSmallTransparent"
+                    width={80}
+                    height={80}
+                  ></Image>
                 </Link>
               </HStack>
 
@@ -135,6 +140,7 @@ function AdminLayout({ children }: { children: any }) {
           </div>
         </Header>
       }
+      bg={"#f4f4f5"}
     >
       {children}
     </AppShell>

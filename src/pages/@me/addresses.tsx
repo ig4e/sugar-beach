@@ -64,22 +64,6 @@ function Addresses() {
           <Divider></Divider>
           <CardBody>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              <ManageAddress
-                onRefetch={() => void userAddresses.refetch()}
-                action="create"
-                Trigger={
-                  <Button
-                    className="grid aspect-square !h-full max-h-full w-full border-2 border-dashed border-black"
-                    colorScheme="gray"
-                  >
-                    <VStack>
-                      <PlusIcon className="h-8 w-8"></PlusIcon>
-                      <Heading size="sm">Add New Address</Heading>
-                    </VStack>
-                  </Button>
-                }
-              ></ManageAddress>
-
               {userAddresses.data?.map((address, index) => {
                 return (
                   <Card
@@ -148,6 +132,22 @@ function Addresses() {
                   </Card>
                 );
               })}
+
+              <ManageAddress
+                onRefetch={() => void userAddresses.refetch()}
+                action="create"
+                Trigger={
+                  <Button
+                    className="grid aspect-square !h-full max-h-full w-full border-2 border-dashed border-black"
+                    colorScheme="gray"
+                  >
+                    <VStack>
+                      <PlusIcon className="h-8 w-8"></PlusIcon>
+                      <Heading size="sm">Add New Address</Heading>
+                    </VStack>
+                  </Button>
+                }
+              ></ManageAddress>
             </div>
           </CardBody>
         </Card>
@@ -163,7 +163,5 @@ export const getStaticProps: GetStaticProps = async (context) => {
     },
   };
 };
-
-
 
 export default Addresses;

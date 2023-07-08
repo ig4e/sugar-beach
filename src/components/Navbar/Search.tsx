@@ -1,9 +1,9 @@
 import { SearchIcon } from "@chakra-ui/icons";
-import { IconButton, InputGroup, InputLeftElement } from "@chakra-ui/react";
+import { InputGroup } from "@chakra-ui/react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
 import React from "react";
 import Input from "../base/Input";
-import { useTranslations } from "next-intl";
 
 function Search() {
   const router = useRouter();

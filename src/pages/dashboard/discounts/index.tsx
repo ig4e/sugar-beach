@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import dayjs from "dayjs";
-import { GetStaticProps } from "next";
+import type { GetStaticProps } from "next";
 import ManageDiscount from "~/components/ManageDiscount";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/layout/AdminLayout";
@@ -129,9 +129,15 @@ function Index() {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
+  const locale = context.locale || "en";
+
+  const messages = (await import(
+    `public/locales/${locale}.json`
+  )) as unknown as { default: Messages };
+
   return {
     props: {
-      messages: (await import(`public/locales/${context.locale}.json`)).default,
+      messages: messages.default,
     },
   };
 };

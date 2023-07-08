@@ -14,23 +14,17 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
-
 import "dayjs/locale/ar-sa";
-
 import Input from "./base/Input";
-//import { featuredSchema } from "~/validations/featuredSchema";
 import { PencilIcon } from "@heroicons/react/24/solid";
-import {
-  LoadingOverlay
-} from "@mantine/core";
-import { Featured, Media } from "@prisma/client";
+import { LoadingOverlay } from "@mantine/core";
+import type { Featured, Media } from "@prisma/client";
 import { api } from "~/utils/api";
-//import { featuredSchema } from "~/validations/featuredSchema";
 import { DevTool } from "@hookform/devtools";
 import clsx from "clsx";
 import Image from "next/image";
@@ -56,21 +50,21 @@ function ManageFeatured({
   const createFeaturedHook = api.featured.create.useMutation();
   const editFeaturedHook = api.featured.edit.useMutation();
   const [searchQuery, setSearchQuery] = useState("");
-  const debouncedSearchQuery = useDebounce(searchQuery, 250)
+  const debouncedSearchQuery = useDebounce(searchQuery, 250);
 
   const productsQuery = api.product.getAll.useQuery({
-    searchQuery: debouncedSearchQuery.length > 0 ? debouncedSearchQuery : undefined,
-    productIDs: !debouncedSearchQuery && featured ? [featured?.productId] : undefined,
+    searchQuery:
+      debouncedSearchQuery.length > 0 ? debouncedSearchQuery : undefined,
+    productIDs:
+      !debouncedSearchQuery && featured ? [featured?.productId] : undefined,
   });
 
   const {
-    register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
     control,
     setValue,
-    getValues,
   } = useForm<FeaturedFormValues>({
     mode: "onChange",
     resolver: zodResolver(featuredSchema),
@@ -116,7 +110,7 @@ function ManageFeatured({
       toast({
         status: "error",
         title: `Failed to ${action === "create" ? "create" : "edit"} featured`,
-        description: (error as any as Error)?.message,
+        description: (error as Error)?.message,
       });
     }
 

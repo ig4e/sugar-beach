@@ -8,14 +8,16 @@ import { useRouter } from "next/router";
 import MenuItem from "../base/MenuItem";
 import Layout from "./Layout";
 import AuthGaurd from "../base/AuthGaurd";
+import { useTranslations } from "next-intl";
+import { type ReactNode } from "react";
+const accountOptions = [
+  { name: "my-account", href: "/@me", Icon: Cog6ToothIcon },
+  { name: "my-orders", href: "/@me/orders", Icon: ShoppingBagIcon },
+  { name: "my-addresses", href: "/@me/addresses", Icon: HomeModernIcon },
+] as const;
 
-function UserDashboardLayout({ children }: { children: any }) {
-  const accountOptions = [
-    { name: "My Account", href: "/@me", Icon: Cog6ToothIcon },
-    { name: "My Orders", href: "/@me/orders", Icon: ShoppingBagIcon },
-    { name: "My Addresses", href: "/@me/addresses", Icon: HomeModernIcon },
-  ];
-
+function UserDashboardLayout({ children }: { children: ReactNode }) {
+  const t = useTranslations("Auth");
   const router = useRouter();
 
   return (
@@ -27,7 +29,7 @@ function UserDashboardLayout({ children }: { children: any }) {
               return (
                 <Link href={option.href} key={option.name}>
                   <MenuItem
-                    name={option.name}
+                    name={t(`routes.${option.name}`)}
                     Icon={option.Icon}
                     variant="ghost"
                     size="md"

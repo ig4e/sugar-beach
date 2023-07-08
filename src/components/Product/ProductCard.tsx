@@ -8,14 +8,14 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { Category, Product } from "@prisma/client";
+import type { Category, Product } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCartStore } from "~/store/cart";
 import AddToCart from "../base/AddToCart";
 import { useLocale, useTranslations } from "next-intl";
-import { Locale } from "~/types/locale";
+import type { Locale } from "~/types/locale";
 import { LogoSmallTransparent } from "../logos";
 
 function ProductCard({

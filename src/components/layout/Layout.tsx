@@ -1,7 +1,8 @@
 import Navbar from "~/components/navbar";
 import Footer from "~/components/base/Footer";
+import { type ReactNode } from "react";
 
-function Layout({ children }: { children: any }) {
+function Layout({ children }: { children: ReactNode }) {
   return (
     <div className={"flex min-h-screen  flex-col justify-between"}>
       <Navbar></Navbar>

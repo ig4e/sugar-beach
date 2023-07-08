@@ -18,7 +18,7 @@ import {
   ModalOverlay,
   VStack,
   useDisclosure,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
@@ -31,7 +31,7 @@ import Input from "./base/Input";
 import { PencilIcon } from "@heroicons/react/24/solid";
 import { DevTool } from "@hookform/devtools";
 import { NumberInput } from "@mantine/core";
-import { Discount } from "@prisma/client";
+import type { Discount } from "@prisma/client";
 import { api } from "~/utils/api";
 import { generateRandomString } from "~/utils/discountCode";
 import { discountSchema } from "~/validations/discountSchema";
@@ -63,7 +63,6 @@ function ManageDiscount({
     reset,
     control,
     setValue,
-    getValues,
   } = useForm<DiscountFormValues>({
     mode: "onChange",
     resolver: zodResolver(discountSchema),
@@ -122,7 +121,7 @@ function ManageDiscount({
         title: `Failed to ${action === "create" ? "create" : "edit"} ${
           data.code
         }`,
-        description: (error as any as Error)?.message,
+        description: (error as Error)?.message,
       });
     }
 
@@ -277,10 +276,6 @@ function ManageDiscount({
       </Modal>
     </div>
   );
-}
-
-function dateIsValid(date: Date) {
-  return !Number.isNaN(new Date(date).getTime());
 }
 
 export default ManageDiscount;

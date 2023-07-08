@@ -13,8 +13,8 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { NumberInput, Spoiler } from "@mantine/core";
-import { GetServerSideProps } from "next";
-import { useLocale } from "next-intl";
+import type { GetServerSideProps } from "next";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -25,7 +25,7 @@ import Layout from "~/components/layout/Layout";
 import ProductFeedback from "~/components/product/ProductFeedback";
 import useCurrency from "~/hooks/useCurrency";
 import { useCartStore } from "~/store/cart";
-import { Locale } from "~/types/locale";
+import type { Locale } from "~/types/locale";
 import { api } from "~/utils/api";
 
 function ProductPage() {
@@ -41,11 +41,13 @@ function ProductPage() {
   const cartStore = useCartStore();
   const locale = useLocale() as Locale;
 
+  const t = useTranslations("Product");
+
   useEffect(() => {
     if (productId) {
       productVisit.mutate({ id: productId });
     }
-  }, [productId]);
+  }, [productId, productVisit]);
 
   const currency = useCurrency();
 
@@ -63,7 +65,7 @@ function ProductPage() {
         setQuantity(data.quantity);
       }
     }
-  }, [cartQuantity, quantity, data?.quantity, data?.id, cartStore]);
+  }, [cartQuantity, quantity, cartStore, data]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -97,7 +99,7 @@ function ProductPage() {
                     key={media.key}
                     src={media.url}
                     className="aspect-square h-12 w-12 rounded-md bg-white object-cover"
-                    alt={data.name.en}
+                    alt={data.name[locale]}
                     width={64}
                     height={64}
                   />
@@ -133,7 +135,7 @@ function ProductPage() {
                       quality={100}
                       src={media.url}
                       className="aspect-square h-full w-full rounded-xl bg-white object-cover"
-                      alt={data.name.en}
+                      alt={data.name[locale]}
                       width={480}
                       height={480}
                     />
@@ -144,17 +146,21 @@ function ProductPage() {
           </div>
           <div className="flex flex-col gap-4">
             <VStack alignItems={"start"}>
-              <Heading>{data.name.en}</Heading>
+              <Heading>{data.name[locale]}</Heading>
               <HStack flexWrap={"wrap"}>
                 {!isOutOfStock && (
                   <Badge colorScheme="green">
-                    In Stock ({data.quantity} left)
+                    {t("in-stock")} ({data.quantity} {t("left")})
                   </Badge>
                 )}
-                {isOutOfStock && <Badge colorScheme="red">Out Of Stock</Badge>}
-                {data.compareAtPrice && <Badge colorScheme="red">Sale</Badge>}
+                {isOutOfStock && (
+                  <Badge colorScheme="red">{t("out-of-stock")}</Badge>
+                )}
+                {data.compareAtPrice && (
+                  <Badge colorScheme="red">{t("sale")}</Badge>
+                )}
                 {data.categories.map((category) => (
-                  <Badge key={category.id}>{category.name.en}</Badge>
+                  <Badge key={category.id}>{category.name[locale]}</Badge>
                 ))}
               </HStack>
             </VStack>
@@ -175,9 +181,9 @@ function ProductPage() {
             </HStack>
 
             <VStack alignItems={"start"}>
-              <Heading size={"sm"}>Description</Heading>
+              <Heading size={"sm"}>{"description"}</Heading>
               <Spoiler maxHeight={104} showLabel="Show more" hideLabel="Hide">
-                <Text>{data.description.en || "No description"}</Text>
+                <Text>{data.description[locale] || t("no-description")}</Text>
               </Spoiler>
             </VStack>
           </div>
@@ -190,7 +196,7 @@ function ProductPage() {
                 gap={4}
               >
                 <FormControl>
-                  <FormLabel fontWeight={"semibold"}>Quantity</FormLabel>
+                  <FormLabel fontWeight={"semibold"}>{t("quantity")}</FormLabel>
                   <NumberInput
                     defaultValue={1}
                     placeholder="Quantity"
@@ -202,7 +208,8 @@ function ProductPage() {
                     onChange={(value) => setQuantity(Number(value))}
                   ></NumberInput>
                   <FormHelperText>
-                    Purchase limit: 0 ~ {data.quantity}
+                    {t("purchase-limit")}
+                    {data.quantity}
                   </FormHelperText>
                 </FormControl>
               </CardBody>
@@ -216,7 +223,7 @@ function ProductPage() {
                 gap={4}
               >
                 <HStack justifyContent={"space-between"}>
-                  <Heading size={"lg"}>Total</Heading>
+                  <Heading size={"lg"}> {t("total")}</Heading>
                   <Text color="pink.600" fontSize="2xl" fontWeight={"semibold"}>
                     {currency(data.price).multiply(quantity).format()}
                   </Text>
@@ -231,7 +238,7 @@ function ProductPage() {
                     isDisabled={isOutOfStock}
                     onClick={() => cartStore.addItem(data.id, quantity)}
                   >
-                    Add To Cart
+                    {t("add-to-cart")}
                   </Button>
                   <Button
                     w={"full"}
@@ -242,7 +249,7 @@ function ProductPage() {
                       void router.push("/cart");
                     }}
                   >
-                    Buy Now
+                    {t("buy-now")}
                   </Button>
                 </VStack>
               </CardBody>
@@ -258,8 +265,8 @@ function ProductPage() {
               gap={4}
             >
               {relatedProductsQuery.data
-                ? relatedProductsQuery.data.map((product, index) => {
-                    return <div key={product.id}>{product.name.en}</div>;
+                ? relatedProductsQuery.data.map((product) => {
+                    return <div key={product.id}>{product.name[locale]}</div>;
                   })
                 : null}
             </CardBody>
@@ -274,9 +281,15 @@ function ProductPage() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const locale = context.locale || "en";
+
+  const messages = (await import(
+    `public/locales/${locale}.json`
+  )) as unknown as { default: Messages };
+
   return {
     props: {
-      messages: (await import(`public/locales/${context.locale}.json`)).default,
+      messages: messages.default,
     },
   };
 };

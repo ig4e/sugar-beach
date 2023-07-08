@@ -1,5 +1,5 @@
 import { Skeleton } from "@chakra-ui/react";
-import { ReactNode, createContext, useContext } from "react";
+import { type ReactNode, createContext, useContext } from "react";
 
 export const SkeletonContext = createContext(false);
 

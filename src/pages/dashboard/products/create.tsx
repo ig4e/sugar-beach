@@ -21,8 +21,8 @@ import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MultiSelect, NumberInput, Select } from "@mantine/core";
-import { Description, Media, Name, ProductStatus } from "@prisma/client";
-import { GetStaticProps } from "next";
+import { type Description, type Media, type Name, type ProductStatus } from "@prisma/client";
+import { type GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
@@ -63,11 +63,9 @@ function Create() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
-    getValues,
     control,
-    setValue,
   } = useForm<ProductFormValues>({
     mode: "onChange",
     resolver: zodResolver(productSchema),
@@ -91,14 +89,14 @@ function Create() {
           type: data.type,
         },
         {
-          onError(error, variables, context) {
+          onError(error) {
             toast({
               title: "Failed to create product",
               status: "error",
               description: error.message,
             });
           },
-          onSuccess(data, variables, context) {
+          onSuccess(data) {
             void router.push(`/dashboard/products/${data.id}`);
             toast({
               title: "Product created",
@@ -427,11 +425,16 @@ function Create() {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
+  const locale = context.locale || "en";
+
+  const messages = (await import(
+    `public/locales/${locale}.json`
+  )) as unknown as { default: Messages };
+
   return {
     props: {
-      messages: (await import(`public/locales/${context.locale}.json`)).default,
+      messages: messages.default,
     },
   };
 };
-
 export default Create;

@@ -7,8 +7,8 @@ import MoyasserLogo from "public/images/logos/payments/Moyasser.png";
 import StcPayLogo from "public/images/logos/payments/StcPay.png";
 import VisaLogo from "public/images/logos/payments/Visa.png";
 
-import Image from "next/image";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { LogoSmallTransparent } from "../logos";
 
 export const paymentOptionLogos = [

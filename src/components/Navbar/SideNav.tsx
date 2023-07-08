@@ -15,8 +15,8 @@ import {
 import { Bars3Icon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
-import { api } from "~/utils/api";
 import Search from "~/components/navbar/Search";
+import { api } from "~/utils/api";
 import { LogoSmallTransparent } from "../logos";
 
 function SideNav() {

@@ -1,7 +1,7 @@
 import {
   Button,
   InputGroup,
-  InputProps,
+  type InputProps,
   InputRightElement,
 } from "@chakra-ui/react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";

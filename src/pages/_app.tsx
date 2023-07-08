@@ -50,7 +50,7 @@ const MyApp: AppType<{ session: Session | null; messages: {} }> = ({
         "#831843",
       ],
     },
-    fontFamily: "Inter, Arial, sans-serif",
+    fontFamily: "Inter, Noto Kufi Arabic, sans-serif",
     dir: rtl ? "rtl" : "ltr",
   };
 
@@ -58,7 +58,7 @@ const MyApp: AppType<{ session: Session | null; messages: {} }> = ({
   const chakraTheme = customChakraTheme(rtl ? "rtl" : "ltr");
 
   return (
-    <div className="!font-inter">
+    <div className="!font-inter bg-zinc-100">
       <NextIntlClientProvider messages={pageProps.messages}>
         <MantineProvider
           withGlobalStyles

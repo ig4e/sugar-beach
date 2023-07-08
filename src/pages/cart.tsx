@@ -9,8 +9,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { LoadingOverlay } from "@mantine/core";
-import { Product } from "@prisma/client";
-import { GetStaticProps } from "next";
+import { type Product } from "@prisma/client";
+import { type GetStaticProps } from "next";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
@@ -29,7 +29,7 @@ function Cart() {
   const currency = useCurrency();
   const userAddresses = api.user.address.findMany.useQuery({});
 
-  const { data, isLoading, isError } = api.product.getCart.useQuery({
+  const { data, isLoading } = api.product.getCart.useQuery({
     productIDs: cartStore.items.reduce(
       (total, currentItem) => [...total, currentItem.id],
       [] as string[]
@@ -68,7 +68,7 @@ function Cart() {
         }
       }
     }
-  }, [dataWithCartQuantity]);
+  }, [dataWithCartQuantity, cartStore, toast]);
 
   const totalPrice = useMemo(() => {
     const total = dataWithCartQuantity
@@ -205,11 +205,18 @@ function Cart() {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
+  const locale = context.locale || "en";
+
+  const messages = (await import(
+    `public/locales/${locale}.json`
+  )) as unknown as { default: Messages };
+
   return {
     props: {
-      messages: (await import(`public/locales/${context.locale}.json`)).default,
+      messages: messages.default,
     },
   };
 };
+
 
 export default Cart;

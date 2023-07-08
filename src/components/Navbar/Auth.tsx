@@ -9,39 +9,50 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
-  Spinner,
-  VStack,
+  Spinner
 } from "@chakra-ui/react";
 import {
   AdjustmentsHorizontalIcon,
   ArrowLeftOnRectangleIcon,
   Cog6ToothIcon,
-  HeartIcon,
   HomeModernIcon,
-  ShoppingBagIcon,
+  ShoppingBagIcon
 } from "@heroicons/react/24/solid";
 import { signOut, useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import MenuItem from "../base/MenuItem";
+import { type User } from "@prisma/client";
+
+const accountOptions = [
+  { name: "my-account", href: "/@me", Icon: Cog6ToothIcon, admin: false },
+  {
+    name: "my-orders",
+    href: "/@me/orders",
+    Icon: ShoppingBagIcon,
+    admin: false,
+  },
+  {
+    name: "my-addresses",
+    href: "/@me/addresses",
+    Icon: HomeModernIcon,
+    admin: false,
+  },
+  //{ name: "My Favorites", href: "/@me/favorites", Icon: HeartIcon },
+  {
+    name: "admin-dashboard",
+    href: "/dashboard",
+    Icon: AdjustmentsHorizontalIcon,
+    admin: true,
+  },
+] as const;
 
 function Auth({ variant = "avatar" }: { variant?: "avatar" | "menu" }) {
   const { status, data } = useSession();
-  const user = data?.user;
+  const user = data?.user as User;
   const router = useRouter();
-
-  const accountOptions = [
-    { name: "My Account", href: "/@me", Icon: Cog6ToothIcon },
-    { name: "My Orders", href: "/@me/orders", Icon: ShoppingBagIcon },
-    { name: "My Addresses", href: "/@me/addresses", Icon: HomeModernIcon },
-    { name: "My Favorites", href: "/@me/favorites", Icon: HeartIcon },
-    {
-      name: "Admin Dashboard",
-      href: "/dashboard",
-      Icon: AdjustmentsHorizontalIcon,
-      admin: true,
-    },
-  ];
+  const t = useTranslations("Auth");
 
   if (status === "authenticated" && user) {
     return (
@@ -80,7 +91,7 @@ function Auth({ variant = "avatar" }: { variant?: "avatar" | "menu" }) {
                     size="sm"
                   ></Avatar>
 
-                  <div className="flex flex-col text-xs items-start">
+                  <div className="flex flex-col items-start text-xs">
                     <span className="font-semibold">{user.name}</span>
                     <span>{user.email}</span>
                   </div>
@@ -115,7 +126,7 @@ function Auth({ variant = "avatar" }: { variant?: "avatar" | "menu" }) {
                     <Link href={option.href} key={option.name}>
                       <MenuItem
                         Icon={option.Icon}
-                        name={option.name}
+                        name={t(`routes.${option.name}`)}
                         active={router.pathname === option.href}
                         variant="ghost"
                       ></MenuItem>
@@ -133,7 +144,7 @@ function Auth({ variant = "avatar" }: { variant?: "avatar" | "menu" }) {
                 colorScheme="red"
                 onClick={() => void signOut()}
               >
-                <span>Logout</span>
+                <span>{t("sign-out")}</span>
               </Button>
             </PopoverBody>
           </PopoverContent>
@@ -151,8 +162,8 @@ function Auth({ variant = "avatar" }: { variant?: "avatar" | "menu" }) {
 
   return (
     <Link href={"/auth/signin"}>
-      <Button>
-        <span className="text-sm font-semibold">Sign In / Sign up</span>
+      <Button colorScheme="gray">
+        <span className="text-sm font-semibold">{t("sign-in")}</span>
       </Button>
     </Link>
   );

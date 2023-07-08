@@ -56,5 +56,78 @@
     "sale": "تخفيض",
     "add-to-cart": "أضف إلى السلة",
     "buy-now": "اشتر الآن"
+  },
+  "Product": {
+    "in-stock": "متوفر",
+    "out-of-stock": "غير متوفر",
+    "left": "متبقي",
+    "sale": "تخفيض",
+    "description": "الوصف",
+    "quantity": "الكمية",
+    "purchase-limit": "الحد الأدنى للشراء: 0 ~ ",
+    "no-description": "لا يوجد وصف",
+    "total": "الإجمالي",
+    "add-to-cart": "أضف إلى السلة",
+    "buy-now": "اشتر الآن"
+  },
+  "ProductFeedback": {
+    "customer-feedback": "آراء العملاء",
+    "edit-your-feedback": "تعديل رأيك",
+    "add-your-feedback": "أضف رأيك",
+    "discard": "تجاهل",
+    "delete": "حذف",
+    "submit": "إرسال",
+    "submitting-feedback": "جارٍ إرسال الرأي",
+    "feedback-input": {
+      "placeholder": "ماذا أعجبك أو لم يعجبك؟ كيف كان الطعم؟"
+    },
+    "errors": {
+      "feedback-add": "حدث خطأ أثناء إضافة الرأي",
+      "feedback-edit": "حدث خطأ أثناء تعديل الرأي",
+      "feedback-delete": "حدث خطأ أثناء حذف الرأي"
+    },
+    "success": {
+      "feedback-add": "تمت إضافة الرأي بنجاح!",
+      "feedback-edit": "تم تعديل الرأي بنجاح!",
+      "feedback-delete": "تم حذف الرأي بنجاح!"
+    }
+  },
+  "AdminLayout": {
+    "routes": {
+      "home": "الصفحة الرئيسية",
+      "products": "المنتجات",
+      "orders": "الطلبات",
+      "featured": "مميز",
+      "discounts": "التخفيضات",
+      "categories": "الفئات"
+    },
+    "management": "إدارة"
+  },
+
+  "Auth": {
+    "routes": {
+      "my-account": "حسابي",
+      "my-orders": "طلباتي",
+      "my-addresses": "عناويني",
+      "admin-dashboard": "لوحة تحكم المشرف"
+    },
+
+    "sign-out": "تسجيل الخروج"
+  },
+
+  "404": {
+    "header": "يبدو أنك قد ضللت الطريق",
+    "go-back": "العودة"
+  },
+
+  "UserDashboardHome": {
+    "info": {
+      "edit": "تعديل",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني"
+    },
+    "account-linking": "ربط الحساب",
+    "link": "ربط",
+    "linked-to": "مرتبط بـ"
   }
 }

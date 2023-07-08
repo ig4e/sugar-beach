@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { SegmentedControl } from "@mantine/core";
-import { Countries } from "@prisma/client";
+import type { Countries } from "@prisma/client";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/router";

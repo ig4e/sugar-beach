@@ -14,13 +14,13 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { PencilIcon } from "@heroicons/react/24/solid";
-import { Category } from "@prisma/client";
+import type { Category } from "@prisma/client";
 import { api } from "~/utils/api";
 import { categorySchema } from "~/validations/categorySchema";
 import Input from "./base/Input";
@@ -89,8 +89,6 @@ function ManageCategory({
         title: `Faild to ${action === "create" ? "create" : "edit"} ${data.en}`,
       });
     }
-
-    return "";
   });
 
   return (

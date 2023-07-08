@@ -1,7 +1,9 @@
-import { User, UserRole } from "@prisma/client";
+import { type User, type UserRole } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { ReactNode, useEffect } from "react";
+import { type ReactNode, useEffect } from "react";
+
+const levels = ["NONE", "USER", "STAFF", "ADMIN"];
 
 function AuthGaurd({
   children,
@@ -10,8 +12,6 @@ function AuthGaurd({
   children: ReactNode;
   allowedLevel?: UserRole;
 }) {
-  const levels = ["NONE", "USER", "STAFF", "ADMIN"];
-
   const router = useRouter();
   const { data, status } = useSession({
     required: true,
@@ -30,7 +30,7 @@ function AuthGaurd({
     if (userLevelIndex < allowedLevelIndex) {
       void router.push("/auth/signin");
     }
-  }, [data]);
+  }, [data, status, router, allowedLevel]);
 
   return children;
 }

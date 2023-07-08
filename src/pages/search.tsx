@@ -7,16 +7,16 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { LoadingOverlay } from "@mantine/core";
-import { GetStaticProps } from "next";
+import type { GetStaticProps } from "next";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDebounce } from "usehooks-ts";
 import { SEO } from "~/components/SEO";
 import Layout from "~/components/layout/Layout";
-import { LogoLarge, LogoLargeDynamicPath } from "~/components/logos";
+import { LogoLargeDynamicPath } from "~/components/logos";
 import ProductCard from "~/components/product/ProductCard";
-import { Locale } from "~/types/locale";
+import type { Locale } from "~/types/locale";
 import { api } from "~/utils/api";
 
 function SearchPage() {
@@ -61,7 +61,7 @@ function SearchPage() {
         }&categories=${selectedCategories.join(",")}`
       );
     }
-  }, [debouncedSearchQuery, selectedCategories]);
+  }, [debouncedSearchQuery, selectedCategories, router]);
 
   return (
     <Layout>
@@ -168,9 +168,15 @@ function SearchPage() {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
+  const locale = context.locale || "en";
+
+  const messages = (await import(
+    `public/locales/${locale}.json`
+  )) as unknown as { default: Messages };
+
   return {
     props: {
-      messages: (await import(`public/locales/${context.locale}.json`)).default,
+      messages: messages.default,
     },
   };
 };

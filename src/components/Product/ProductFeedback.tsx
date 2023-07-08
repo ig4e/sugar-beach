@@ -24,6 +24,7 @@ import { api } from "~/utils/api";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { useTranslations } from "next-intl";
 import Feedback from "../feedback/Feedback";
 dayjs.extend(relativeTime);
 
@@ -48,6 +49,7 @@ function ProductFeedback({ productId }: { productId: string }) {
   const editProductFeedback = api.feedback.editProductFeedback.useMutation();
   const deleteProductFeedback =
     api.feedback.deleteProductFeedback.useMutation();
+  const t = useTranslations("ProductFeedback");
 
   const {
     handleSubmit,
@@ -58,7 +60,7 @@ function ProductFeedback({ productId }: { productId: string }) {
     setValue,
   } = useForm<ProductFeedbackFormValues>({
     mode: "all",
-    async defaultValues(payload) {
+    async defaultValues() {
       const { data } = await userProductFeedbackQuery.refetch();
       return {
         content: data?.content ?? "",
@@ -70,7 +72,7 @@ function ProductFeedback({ productId }: { productId: string }) {
   function onSubmit(data: ProductFeedbackFormValues) {
     if (session.status === "authenticated") {
       toast({
-        title: "Submitting feedback",
+        title: t("submitting-feedback"),
         status: "info",
       });
 
@@ -85,14 +87,14 @@ function ProductFeedback({ productId }: { productId: string }) {
             onSuccess(data) {
               reset({ content: data.content, score: data.score });
               toast({
-                title: "Feedback edited successfully!",
+                title: t("success.feedback-edit"),
                 status: "success",
               });
               void productFeedbacksQuery.refetch();
             },
-            onError(error, variables, context) {
+            onError(error) {
               toast({
-                title: "Error editing feedback",
+                title: t("errors.feedback-edit"),
                 description: error.message,
                 status: "error",
               });
@@ -110,7 +112,7 @@ function ProductFeedback({ productId }: { productId: string }) {
             onSuccess(data) {
               reset();
               toast({
-                title: "Feedback added successfully!",
+                title: t("success.feedback-add"),
                 status: "success",
               });
 
@@ -120,9 +122,9 @@ function ProductFeedback({ productId }: { productId: string }) {
               void productFeedbacksQuery.refetch();
               void userProductFeedbackQuery.refetch();
             },
-            onError(error, variables, context) {
+            onError(error) {
               toast({
-                title: "Error adding feedback",
+                title: t("errors.feedback-add"),
                 description: error.message,
                 status: "error",
               });
@@ -138,16 +140,16 @@ function ProductFeedback({ productId }: { productId: string }) {
       deleteProductFeedback.mutate(
         { id: userProductFeedbackQuery.data.id },
         {
-          onError(error, variables, context) {
+          onError(error) {
             toast({
-              title: "Error deleting feedback",
+              title: t("errors.feedback-delete"),
               description: error.message,
               status: "error",
             });
           },
-          onSuccess(data, variables, context) {
+          onSuccess() {
             toast({
-              title: "Feedback deleted successfully!",
+              title: t("success.feedback-delete"),
               status: "success",
             });
             reset({ content: "", score: 1 });
@@ -165,7 +167,7 @@ function ProductFeedback({ productId }: { productId: string }) {
 
       <Card>
         <CardHeader>
-          <Heading size="md">Customer Feedbacks</Heading>
+          <Heading size="md">{t("customer-feedback")}</Heading>
         </CardHeader>
 
         <Divider></Divider>
@@ -181,8 +183,8 @@ function ProductFeedback({ productId }: { productId: string }) {
               <FormControl w={"full"} isInvalid={!!errors.content}>
                 <FormLabel fontWeight={"semibold"}>
                   {userProductFeedbackQuery.data
-                    ? "Edit your feedback"
-                    : "Add your feedback"}
+                    ? t("edit-your-feedback")
+                    : t("add-your-feedback")}
                 </FormLabel>
                 <HStack spacing={4}>
                   <Avatar
@@ -209,7 +211,7 @@ function ProductFeedback({ productId }: { productId: string }) {
                       })}
                       minH={"12"}
                       width={"full"}
-                      placeholder="What did you like or dislike? What did it taste like?"
+                      placeholder={t("feedback-input.placeholder")}
                       focusBorderColor="pink.500"
                     ></Textarea>
                     <Controller
@@ -251,7 +253,7 @@ function ProductFeedback({ productId }: { productId: string }) {
                     }
                     isDisabled={postProductFeedback.isLoading || isSubmitting}
                   >
-                    Discard
+                    {t("discard")}
                   </Button>
                 )}
 
@@ -266,7 +268,7 @@ function ProductFeedback({ productId }: { productId: string }) {
                     variant={"outline"}
                     colorScheme="red"
                   >
-                    Delete
+                    {t("delete")}
                   </Button>
                 )}
 
@@ -277,7 +279,7 @@ function ProductFeedback({ productId }: { productId: string }) {
                   isLoading={postProductFeedback.isLoading || isSubmitting}
                   loadingText="Submitting"
                 >
-                  Submit
+                  {t("submit")}
                 </Button>
               </HStack>
             </form>

@@ -22,10 +22,15 @@ import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MultiSelect, NumberInput, Select } from "@mantine/core";
-import { Description, Media, Name, ProductStatus } from "@prisma/client";
+import {
+  type Description,
+  type Media,
+  type Name,
+  type ProductStatus,
+} from "@prisma/client";
 import clsx from "clsx";
 import * as _ from "lodash";
-import { GetServerSideProps, GetStaticProps } from "next";
+import { type GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
@@ -75,7 +80,7 @@ function AdminPageProduct() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
     getValues,
     control,
@@ -83,8 +88,9 @@ function AdminPageProduct() {
   } = useForm<ProductFormValues>({
     mode: "onChange",
     resolver: zodResolver(productSchema),
-    async defaultValues(payload) {
+    async defaultValues() {
       const productData = (await productQuery.refetch()).data!;
+
       return {
         name: productData.name,
         description: productData.description,
@@ -103,7 +109,7 @@ function AdminPageProduct() {
 
   useEffect(() => {
     if (!productQuery.isFetched) reset();
-  }, [productQuery.isFetched]);
+  }, [productQuery.isFetched, reset]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -156,7 +162,7 @@ function AdminPageProduct() {
         setIsChanged(true);
       }
     }
-  }, [productQuery.data, getValues()]);
+  }, [productQuery.data, getValues(), setIsChanged]);
 
   function onDelete() {
     deleteProduct.mutate(
@@ -546,9 +552,15 @@ function AdminPageProduct() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const locale = context.locale || "en";
+
+  const messages = (await import(
+    `public/locales/${locale}.json`
+  )) as unknown as { default: Messages };
+
   return {
     props: {
-      messages: (await import(`public/locales/${context.locale}.json`)).default,
+      messages: messages.default,
     },
   };
 };

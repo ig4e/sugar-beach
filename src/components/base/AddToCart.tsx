@@ -10,7 +10,7 @@ import { api } from "~/utils/api";
 function AddToCart({ productId }: { productId: string }) {
   const cartStore = useCartStore();
   const cartItem = cartStore.items.find((item) => item.id === productId);
-  const { data: product, isLoading } = api.product.get.useQuery({
+  const { data: product } = api.product.get.useQuery({
     id: productId,
   });
   const t = useTranslations("ProductCard")

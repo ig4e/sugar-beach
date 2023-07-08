@@ -1,11 +1,10 @@
 import { Badge, IconButton, Skeleton, useToast } from "@chakra-ui/react";
 import { TrashIcon } from "@heroicons/react/24/solid";
-import { Media } from "@prisma/client";
+import type { Media } from "@prisma/client";
 import clsx from "clsx";
 import * as _ from "lodash";
 import Image from "next/image";
 import {
-  LegacyRef,
   forwardRef,
   useCallback,
   useEffect,
@@ -15,7 +14,7 @@ import {
 import type { FileWithPath } from "react-dropzone";
 import { useDropzone } from "react-dropzone";
 import { generateClientDropzoneAccept } from "uploadthing/client";
-import { OurFileRouter } from "~/server/uploadthing";
+import type { OurFileRouter } from "~/server/uploadthing";
 import { api } from "~/utils/api";
 import { useUploadThing } from "~/utils/uploadthing";
 
@@ -68,20 +67,17 @@ function reducer(state: State, action: MediaAction) {
 }
 
 const ManageMedia = forwardRef(
-  (
-    {
-      value,
-      onChange,
-      endpoint,
-      max = 10,
-    }: {
-      endpoint: keyof OurFileRouter;
-      value?: Media[];
-      max?: number;
-      onChange: (fileURLs: Media[]) => void;
-    },
-    ref
-  ) => {
+  ({
+    value,
+    onChange,
+    endpoint,
+    max = 10,
+  }: {
+    endpoint: keyof OurFileRouter;
+    value?: Media[];
+    max?: number;
+    onChange: (fileURLs: Media[]) => void;
+  }) => {
     const toast = useToast({ duration: 3000 });
     const deleteMedia = api.media.deleteMany.useMutation();
     const [uploadingFilesCount, setUploadingFilesCount] = useState(0);
@@ -91,7 +87,7 @@ const ManageMedia = forwardRef(
       if (value && value.length > 0) {
         dispatch({ type: MediaActionType.SET, payload: value, onChange });
       }
-    }, [value]);
+    }, [value, onChange]);
 
     function onMediaDelete(key: string) {
       const media = state.media.find((media) => media.key === key);
@@ -101,7 +97,7 @@ const ManageMedia = forwardRef(
         deleteMedia.mutate(
           { fileKeys: [key] },
           {
-            onError(error, variables, context) {
+            onError(error) {
               toast({
                 title: "Error occurred while deleting media",
                 status: "error",
@@ -114,7 +110,7 @@ const ManageMedia = forwardRef(
                 onChange,
               });
             },
-            onSuccess(data, variables, context) {
+            onSuccess() {
               toast({
                 title: "Media deleted successfully",
                 status: "success",
@@ -125,73 +121,76 @@ const ManageMedia = forwardRef(
       }
     }
 
-    const onDrop = useCallback(async (acceptedFiles: FileWithPath[]) => {
-      setUploadingFilesCount((state) => state + acceptedFiles.length);
-      const acceptedFilesWithType = acceptedFiles.map((file) => ({
-        file,
-        isVideo: file.type.includes("video"),
-      }));
-
-      try {
-        const result = await startUpload(acceptedFiles);
-
-        if (result) {
-          setUploadingFilesCount((state) => state - result.length);
-
-          if (state.media.length + result.length > max) {
-            toast({
-              title: `Maximum number of media (${max}) reached`,
-              status: "error",
-            });
-
-            return;
-          }
-
-          dispatch({
-            type: MediaActionType.ADD,
-            payload: result.map((file, index) => {
-              return {
-                key: file.fileKey,
-                isVideo: acceptedFilesWithType[index]?.isVideo || false,
-                url: file.fileUrl,
-                name: acceptedFilesWithType[index]?.file.name,
-                size: acceptedFilesWithType[index]?.file.size,
-              } as Media;
-            }),
-            onChange,
-          });
-
-          toast({ title: "Media uploaded successfully", status: "success" });
-        } else {
-          setUploadingFilesCount((state) => state - acceptedFiles.length);
-          toast({
-            title: "Error occurred while uploading media",
-            status: "error",
-            description: "",
-          });
-        }
-      } catch (e) {
-        setUploadingFilesCount((state) => state - acceptedFiles.length);
-        toast({
-          title: "Error occurred while uploading media",
-          status: "error",
-          description: (e as Error).message,
-        });
-      }
-    }, []);
-
-    const { getRootProps, getInputProps } = useDropzone({
-      onDrop: (acceptedFiles) => void onDrop(acceptedFiles),
-      accept: generateClientDropzoneAccept(["image", "video"]),
-    });
-
     const { startUpload } = useUploadThing(endpoint, {
-      onClientUploadComplete: (res = []) => {
+      onClientUploadComplete: () => {
         console.log("uploaded successfully!");
       },
       onUploadError: () => {
         console.log("error occurred while uploading");
       },
+    });
+
+    const onDrop = useCallback(
+      async (acceptedFiles: FileWithPath[]) => {
+        setUploadingFilesCount((state) => state + acceptedFiles.length);
+        const acceptedFilesWithType = acceptedFiles.map((file) => ({
+          file,
+          isVideo: file.type.includes("video"),
+        }));
+
+        try {
+          const result = await startUpload(acceptedFiles);
+
+          if (result) {
+            setUploadingFilesCount((state) => state - result.length);
+
+            if (state.media.length + result.length > max) {
+              toast({
+                title: `Maximum number of media (${max}) reached`,
+                status: "error",
+              });
+
+              return;
+            }
+
+            dispatch({
+              type: MediaActionType.ADD,
+              payload: result.map((file, index) => {
+                return {
+                  key: file.fileKey,
+                  isVideo: acceptedFilesWithType[index]?.isVideo || false,
+                  url: file.fileUrl,
+                  name: acceptedFilesWithType[index]?.file.name,
+                  size: acceptedFilesWithType[index]?.file.size,
+                } as Media;
+              }),
+              onChange,
+            });
+
+            toast({ title: "Media uploaded successfully", status: "success" });
+          } else {
+            setUploadingFilesCount((state) => state - acceptedFiles.length);
+            toast({
+              title: "Error occurred while uploading media",
+              status: "error",
+              description: "",
+            });
+          }
+        } catch (e) {
+          setUploadingFilesCount((state) => state - acceptedFiles.length);
+          toast({
+            title: "Error occurred while uploading media",
+            status: "error",
+            description: (e as Error).message,
+          });
+        }
+      },
+      [max, onChange, toast, state.media.length, startUpload]
+    );
+
+    const { getRootProps, getInputProps } = useDropzone({
+      onDrop: (acceptedFiles) => void onDrop(acceptedFiles),
+      accept: generateClientDropzoneAccept(["image", "video"]),
     });
 
     if (state.media.length > 0 || uploadingFilesCount > 0)

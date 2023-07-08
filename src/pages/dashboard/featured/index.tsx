@@ -16,14 +16,13 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { TrashIcon } from "@heroicons/react/24/solid";
-import { GetStaticProps } from "next";
+import { type GetStaticProps } from "next";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import Logo from "public/logo-full-transparent.png";
 import { Fragment } from "react";
 import ManageFeatured from "~/components/ManageFeatured";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/layout/AdminLayout";
+import { LogoSmallTransparent } from "~/components/logos";
 import { api } from "~/utils/api";
 
 function Index() {
@@ -52,8 +51,6 @@ function Index() {
       }
     );
   }
-
-  const router = useRouter();
 
   return (
     <AuthGaurd allowedLevel="STAFF">
@@ -101,7 +98,10 @@ function Index() {
                                       <div className="h-10 w-10 rounded-md border">
                                         <Image
                                           className="h-full w-full rounded-md object-cover"
-                                          src={featured.media[0]?.url || Logo}
+                                          src={
+                                            featured.media[0]?.url ||
+                                            LogoSmallTransparent
+                                          }
                                           alt={featured.product.name.en}
                                           width={100}
                                           height={100}
@@ -194,14 +194,18 @@ function Index() {
   );
 }
 
-
 export const getStaticProps: GetStaticProps = async (context) => {
+  const locale = context.locale || "en";
+
+  const messages = (await import(
+    `public/locales/${locale}.json`
+  )) as unknown as { default: Messages };
+
   return {
     props: {
-      messages: (await import(`public/locales/${context.locale}.json`)).default,
+      messages: messages.default,
     },
   };
 };
-
 
 export default Index;

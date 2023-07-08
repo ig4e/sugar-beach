@@ -12,14 +12,14 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { GetStaticProps } from "next";
+import type { GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Logo from "public/logo-full-transparent.png";
 import { Fragment } from "react";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/layout/AdminLayout";
+import { LogoSmallTransparent } from "~/components/logos";
 import { api } from "~/utils/api";
 
 function Index() {
@@ -87,7 +87,10 @@ function Index() {
                                       <div className="h-10 w-10 rounded-md border">
                                         <Image
                                           className="h-full w-full rounded-md object-cover"
-                                          src={product.media[0]?.url || Logo}
+                                          src={
+                                            product.media[0]?.url ||
+                                            LogoSmallTransparent
+                                          }
                                           alt={product.name.en}
                                           width={100}
                                           height={100}
@@ -162,11 +165,16 @@ function Index() {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
+  const locale = context.locale || "en";
+
+  const messages = (await import(
+    `public/locales/${locale}.json`
+  )) as unknown as { default: Messages };
+
   return {
     props: {
-      messages: (await import(`public/locales/${context.locale}.json`)).default,
+      messages: messages.default,
     },
   };
 };
-
 export default Index;

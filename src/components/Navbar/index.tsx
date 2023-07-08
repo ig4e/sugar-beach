@@ -4,11 +4,11 @@ import Cart from "~/components/navbar/Cart";
 import ChangeRegion from "~/components/navbar/ChangeRegion";
 
 import { Tag } from "@chakra-ui/react";
+import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
-import { api } from "~/utils/api";
 import Search from "~/components/navbar/Search";
 import SideNav from "~/components/navbar/SideNav";
-import { useTranslations, useLocale } from "next-intl";
+import { api } from "~/utils/api";
 import { LogoSmallTransparent } from "../logos";
 
 function Navbar() {
