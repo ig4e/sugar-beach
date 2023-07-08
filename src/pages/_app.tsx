@@ -18,6 +18,8 @@ import { useLocalisationStore } from "~/store/localisation";
 import "~/styles/globals.css";
 import { customChakraTheme } from "~/theme";
 import { api } from "~/utils/api";
+import enMessages from "public/locales/en.json";
+
 
 const MyApp: AppType<{ session: Session | null; messages: Messages }> = ({
   Component,
@@ -58,7 +60,7 @@ const MyApp: AppType<{ session: Session | null; messages: Messages }> = ({
 
   return (
     <div className="!font-inter bg-zinc-100">
-      <NextIntlClientProvider messages={pageProps.messages}>
+      <NextIntlClientProvider messages={pageProps.messages || enMessages}>
         <MantineProvider
           withGlobalStyles
           withNormalizeCSS
