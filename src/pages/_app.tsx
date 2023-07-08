@@ -13,14 +13,13 @@ import stylisRTLPlugin from "stylis-plugin-rtl";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { RtlProvider } from "~/components/rtl-provider";
 import { CurrencyContext } from "~/hooks/useCurrency";
 import { useLocalisationStore } from "~/store/localisation";
 import "~/styles/globals.css";
 import { customChakraTheme } from "~/theme";
 import { api } from "~/utils/api";
 
-const MyApp: AppType<{ session: Session | null; messages: {} }> = ({
+const MyApp: AppType<{ session: Session | null; messages: Messages }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
