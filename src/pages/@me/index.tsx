@@ -78,7 +78,7 @@ function MyAccount() {
                   >
                     <Avatar
                       name={user.name}
-                      src={user.image!}
+                      src={user.media?.url || user.image!}
                       bg={"pink.500"}
                       size="md"
                     ></Avatar>

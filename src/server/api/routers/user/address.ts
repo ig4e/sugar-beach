@@ -6,40 +6,6 @@ import {
   protectedProcedure,
   protectedAdminProcedure,
 } from "~/server/api/trpc";
-/*
-
-model UserShippingAddress {
-    id              String              @id @default(uuid()) @map("_id")
-    country         Countries
-    fullName        String
-    phoneNumber     String
-    streetName      String
-    buildingNumber  String
-    city            String
-    area            String
-    province        String
-    nearestLandmark String?
-    type            ShippingAddressType @default(HOME)
-    orders          Order[]
-
-    user User @relation(fields: [userId], references: [id])
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    userId String
-}
-
-enum Countries {
-    BH
-    KW
-    OM
-    QA
-    SA
-    AE
-}
-
-*/
 
 const addressInput = z.object({
   fullName: z.string(),

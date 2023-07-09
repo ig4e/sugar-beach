@@ -199,6 +199,36 @@
       "error": "Failed to edit email!",
       "success": "Successfuly edited email!"
     },
-    "edit": "Edit"
+    "steps": {
+      "first": {
+        "meta": {
+          "title": "First",
+          "description": "Verify your email"
+        },
+        "header": "We’ll need to verify your old email address",
+        "button": "Send Verification code"
+      },
+      "second": {
+        "meta": {
+          "title": "Second",
+          "description": "Add your new email"
+        },
+        "verification-code-input-label": "Verification code",
+        "verification-code-input-resend": "Didn’t receive a code or it expired? Resend it.",
+        "verification-code-input-helper": "heck your email: we sent you a verification code. Enter it here to verify you’re really you.",
+        "new-email-input-label": "New Email",
+        "new-email-input-helper": "Your new email address."
+      },
+      "third": {
+        "meta": {
+          "title": "Third",
+          "description": "Complete"
+        },
+        "header": "Your email address has been changed!"
+      }
+    },
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "submit": "Submit"
   }
 }

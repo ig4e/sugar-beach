@@ -1,26 +1,23 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import React, { useEffect } from "react";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
-  Stack,
-  HStack,
+  Box,
   Button,
-  Avatar,
   FormControl,
-  FormLabel,
-  useToast,
   FormErrorMessage,
   FormHelperText,
+  FormLabel,
+  HStack,
+  Heading,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   PinInput,
   PinInputField,
-  useSteps,
   Step,
   StepDescription,
   StepIcon,
@@ -30,20 +27,19 @@ import {
   StepStatus,
   StepTitle,
   Stepper,
-  Box,
-  VStack,
-  Text,
-  Tabs,
-  TabPanels,
   TabPanel,
-  Heading,
-  Input,
+  TabPanels,
+  Tabs,
+  VStack,
+  useDisclosure,
+  useSteps,
+  useToast,
 } from "@chakra-ui/react";
-import { Controller, useForm } from "react-hook-form";
-import { api } from "~/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useTranslations } from "next-intl";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
+import { api } from "~/utils/api";
 
 interface EditEmailFormValues {
   email: string;
@@ -51,9 +47,9 @@ interface EditEmailFormValues {
 }
 
 const steps = [
-  { title: "First", description: "Verify your email" },
-  { title: "Second", description: "Verify your new email" },
-  { title: "Third", description: "Complete" },
+  { title: "first", description: "Verify your email" },
+  { title: "second", description: "Add your new email" },
+  { title: "third", description: "Complete" },
 ] as const;
 
 function EditEmail({ onRefetch }: { onRefetch: () => void }) {
@@ -73,7 +69,6 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
     control,
   } = useForm<EditEmailFormValues>({
     mode: "onChange",
@@ -101,7 +96,6 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
           status: "success",
         });
         goToNext();
-        onRefetch();
       },
     });
   }
@@ -112,16 +106,17 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
       {
         onError(error) {
           toast({
-            title: "Error",
+            title: t("email-edit.error"),
             description: error.message,
             status: "error",
           });
         },
         onSuccess() {
           toast({
-            title: "Success",
+            title: t("email-edit.success"),
             status: "success",
           });
+          onRefetch();
           goToNext();
         },
       }
@@ -130,11 +125,11 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
 
   return (
     <>
-      <Button onClick={onOpen}>Edit</Button>
+      <Button onClick={onOpen}>{t("edit")}</Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Edit email</ModalHeader>
+          <ModalHeader>{t("header")}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form
@@ -162,8 +157,12 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
                       </StepIndicator>
 
                       <Box flexShrink="0">
-                        <StepTitle>{step.title}</StepTitle>
-                        <StepDescription>{step.description}</StepDescription>
+                        <StepTitle>
+                          {t(`steps.${step.title}.meta.title`)}
+                        </StepTitle>
+                        <StepDescription>
+                          {t(`steps.${step.title}.meta.description`)}
+                        </StepDescription>
                       </Box>
 
                       <StepSeparator />
@@ -175,22 +174,22 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
                   <TabPanels>
                     <TabPanel>
                       <VStack spacing={4}>
-                        <Heading size="md">
-                          We’ll need to verify your old email address
-                        </Heading>
+                        <Heading size="md">{t("steps.first.header")}</Heading>
 
                         <Button
                           onClick={() => handleSendEmailVerification()}
                           w="full"
                         >
-                          Send Verification code
+                          {t("steps.first.button")}
                         </Button>
                       </VStack>
                     </TabPanel>
                     <TabPanel>
                       <VStack spacing={4}>
                         <FormControl isInvalid={!!errors.code}>
-                          <FormLabel>Verification code</FormLabel>
+                          <FormLabel>
+                            {t("steps.second.verification-code-input-label")}
+                          </FormLabel>
                           <VStack alignItems={"start"}>
                             <Controller
                               control={control}
@@ -212,12 +211,11 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
                               variant={"link"}
                               size="sm"
                             >
-                              Didn’t receive a code or it expired? Resend it.
+                              {t("steps.second.verification-code-input-resend")}
                             </Button>
                           </VStack>
                           <FormHelperText>
-                            Check your email: we sent you a verification code.
-                            Enter it here to verify you’re really you.
+                            {t("steps.second.verification-code-input-helper")}
                           </FormHelperText>
                           <FormErrorMessage>
                             {errors.code?.message}
@@ -225,7 +223,9 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
                         </FormControl>
 
                         <FormControl>
-                          <FormLabel>New Email</FormLabel>
+                          <FormLabel>
+                            {t("steps.second.new-email-input-label")}
+                          </FormLabel>
                           <VStack alignItems={"start"}>
                             <Input
                               placeholder="yournewemail@mail.com"
@@ -233,17 +233,14 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
                             ></Input>
                           </VStack>
                           <FormHelperText>
-                            Your new email address. We’ll send you a
-                            verification
+                            {t("steps.second.new-email-input-helper")}
                           </FormHelperText>
                         </FormControl>
                       </VStack>
                     </TabPanel>
                     <TabPanel>
                       <VStack spacing={4}>
-                        <Heading size="md">
-                          Your email address has been changed!
-                        </Heading>
+                        <Heading size="md">{t("steps.third.header")}</Heading>
                       </VStack>
                     </TabPanel>
                   </TabPanels>
@@ -254,12 +251,12 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
 
           <ModalFooter>
             <Button mr={3} onClick={onClose} variant={"ghost"}>
-              Close
+              {t("cancel")}
             </Button>
 
             {activeStep === 1 && (
               <Button type="submit" form="edit-email">
-                Submit
+                {t("submit")}
               </Button>
             )}
           </ModalFooter>

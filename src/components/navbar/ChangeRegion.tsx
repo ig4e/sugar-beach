@@ -79,7 +79,7 @@ function ChangeRegion() {
         <ChevronDownIcon className="h-5 w-5 text-zinc-900" />
       </Button>
 
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="sm">
+      <Drawer isOpen={isOpen} placement={locale === "ar" ? "left" : "right"} onClose={onClose} size="sm">
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />

@@ -1,3 +1,4 @@
+import { utapi } from "uploadthing/server";
 import { z } from "zod";
 import {
   createTRPCRouter,
@@ -88,7 +89,13 @@ export const featuredRouter = createTRPCRouter({
         id: z.string().uuid(),
       })
     )
-    .mutation(({ ctx, input }) => {
-      return ctx.prisma.featured.delete({ where: { id: input.id } });
+    .mutation(async ({ ctx, input }) => {
+      const deletedFeatured = await ctx.prisma.featured.delete({ where: { id: input.id } });
+
+      try {
+        await utapi.deleteFiles(deletedFeatured.media.map((media) => media.key));
+      } catch {}
+
+      return deletedFeatured
     }),
 });

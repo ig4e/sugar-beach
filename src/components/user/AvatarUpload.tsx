@@ -18,7 +18,7 @@ export const AvatarUpload = ({ onRefetch }: { onRefetch: () => void }) => {
         if (!avatar) return;
 
         updateUserAvatar.mutate(
-          { url: avatar.fileUrl },
+          { url: avatar.fileUrl, key: avatar.fileKey },
           {
             onSuccess() {
               toast({

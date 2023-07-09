@@ -1,29 +1,29 @@
-import React, { ReactNode, useEffect } from "react";
 import {
+  Avatar,
+  Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  HStack,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  useDisclosure,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Stack,
-  HStack,
-  Button,
-  Avatar,
-  FormControl,
-  FormLabel,
+  useDisclosure,
   useToast,
-  FormErrorMessage,
 } from "@chakra-ui/react";
-import Input from "../base/Input";
-import type { User } from "@prisma/client";
-import { useForm } from "react-hook-form";
-import { useTranslations } from "next-intl";
-import { api } from "~/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { User } from "@prisma/client";
+import { useTranslations } from "next-intl";
+import type { ReactNode } from "react";
+import { useForm } from "react-hook-form";
+import { api } from "~/utils/api";
 import { userSchema } from "~/validations/userSchema";
+import Input from "../base/Input";
 import { AvatarUpload } from "./AvatarUpload";
 import EditEmail from "./EditEmail";
 
@@ -116,7 +116,7 @@ function EditProfile({
                   >
                     <Avatar
                       name={user.name}
-                      src={user.image!}
+                      src={user.media?.url || user.image!}
                       bg={"pink.500"}
                       size="md"
                     ></Avatar>

@@ -57,6 +57,8 @@ function ManageFeatured({
       debouncedSearchQuery.length > 0 ? debouncedSearchQuery : undefined,
     productIDs:
       !debouncedSearchQuery && featured ? [featured?.productId] : undefined,
+
+    limit: 4,
   });
 
   const {
@@ -162,7 +164,7 @@ function ManageFeatured({
                   placeholder="Search products"
                 />
 
-                <div className="relative grid min-h-[5rem] grid-cols-2 gap-2 rounded border border-dashed p-2">
+                <div className="relative grid min-h-[5rem] grid-cols-2 lg:grid-cols-3 gap-2 rounded border border-dashed p-2">
                   <LoadingOverlay
                     visible={productsQuery.isLoading}
                     overlayBlur={2}
@@ -194,7 +196,7 @@ function ManageFeatured({
                         alt={product.name.en}
                       ></Image>
                       <div>
-                        <h2 className="text-lg font-semibold">
+                        <h2 className="text-lg font-semibold line-clamp-2">
                           {product.name.en}
                         </h2>
                         <h1 className="text-base font-bold text-pink-600">

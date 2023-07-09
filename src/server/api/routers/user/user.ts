@@ -11,6 +11,7 @@ import { resend } from "~/server/resend";
 import ChangeEmail from "~/email/templates/verification/ChangeEmail";
 
 import { v4 } from "uuid";
+import { utapi } from "uploadthing/server";
 
 export const userRouter = createTRPCRouter({
   getLinkedPlatforms: protectedProcedure
@@ -53,14 +54,33 @@ export const userRouter = createTRPCRouter({
     }),
 
   updateUserAvatar: protectedProcedure
-    .input(z.object({ url: z.string() }))
+    .input(z.object({ url: z.string(), key: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const user = await ctx.prisma.user.update({
+      const user = await ctx.prisma.user.findUnique({
         where: { id: ctx.session.user.id },
-        data: { image: input.url },
       });
 
-      return user;
+      if (!user)
+        throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+
+      try {
+        if (user.media) await utapi.deleteFiles([user.media.key]);
+      } catch {}
+
+      const updatedUser = await ctx.prisma.user.update({
+        where: { id: ctx.session.user.id },
+        data: {
+          media: {
+            isVideo: false,
+            key: input.key,
+            name: `${user.name}-avatar`,
+            url: input.url,
+            size: 4,
+          },
+        },
+      });
+
+      return updatedUser;
     }),
 
   sendEmailChangeVerification: protectedProcedure.mutation(async ({ ctx }) => {

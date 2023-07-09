@@ -61,7 +61,7 @@ function SearchPage() {
         }&categories=${selectedCategories.join(",")}`
       );
     }
-  }, [debouncedSearchQuery, selectedCategories, router]);
+  }, [debouncedSearchQuery, selectedCategories, !!router]);
 
   return (
     <Layout>

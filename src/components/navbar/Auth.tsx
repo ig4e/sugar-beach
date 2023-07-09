@@ -9,14 +9,14 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
-  Spinner
+  Spinner,
 } from "@chakra-ui/react";
 import {
   AdjustmentsHorizontalIcon,
   ArrowLeftOnRectangleIcon,
   Cog6ToothIcon,
   HomeModernIcon,
-  ShoppingBagIcon
+  ShoppingBagIcon,
 } from "@heroicons/react/24/solid";
 import { signOut, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
@@ -24,6 +24,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import MenuItem from "../base/MenuItem";
 import { type User } from "@prisma/client";
+import { LogoLargeDynamicPath } from "../logos";
 
 const accountOptions = [
   { name: "my-account", href: "/@me", Icon: Cog6ToothIcon, admin: false },
@@ -55,6 +56,7 @@ function Auth({ variant = "avatar" }: { variant?: "avatar" | "menu" }) {
   const t = useTranslations("Auth");
 
   if (status === "authenticated" && user) {
+    const userAvatar = user.media?.url ?? user.image ?? LogoLargeDynamicPath;
     return (
       <div className="!z-[1000]">
         <Popover placement="top-start">
@@ -68,7 +70,7 @@ function Auth({ variant = "avatar" }: { variant?: "avatar" | "menu" }) {
               >
                 <Avatar
                   name={user.name}
-                  src={user.image!}
+                  src={userAvatar}
                   bg={"pink.500"}
                   size="sm"
                 ></Avatar>
@@ -86,7 +88,7 @@ function Auth({ variant = "avatar" }: { variant?: "avatar" | "menu" }) {
                 <HStack alignItems={"start"}>
                   <Avatar
                     name={user.name}
-                    src={user.image!}
+                    src={userAvatar}
                     bg={"pink.500"}
                     size="sm"
                   ></Avatar>
@@ -106,7 +108,7 @@ function Auth({ variant = "avatar" }: { variant?: "avatar" | "menu" }) {
               <div className="z-50 mb-2 flex items-center gap-4">
                 <Avatar
                   name={user.name}
-                  src={user.image!}
+                  src={userAvatar}
                   bg={"pink.500"}
                   size="sm"
                 ></Avatar>
