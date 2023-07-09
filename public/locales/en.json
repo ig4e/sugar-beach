@@ -230,5 +230,10 @@
     "edit": "Edit",
     "cancel": "Cancel",
     "submit": "Submit"
+  },
+  "SideNav": {
+    "search": "Search",
+    "categories": "Categories",
+    "explore": "Explore"
   }
 }

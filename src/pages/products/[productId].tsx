@@ -164,7 +164,7 @@ function ProductPage() {
             </VStack>
             <HStack alignItems={"start"}>
               <Text color="pink.600" fontSize="2xl" fontWeight={"semibold"}>
-                {data.price} <span className="text-sm">SAR</span>
+                {currency(data.price).format()}
               </Text>
               {data.compareAtPrice && (
                 <Text
@@ -173,7 +173,7 @@ function ProductPage() {
                   color={"red.500"}
                   textDecorationLine={"line-through"}
                 >
-                  {data.compareAtPrice} <span className="text-sm">SAR</span>
+                  {currency(data.compareAtPrice).format()}
                 </Text>
               )}
             </HStack>

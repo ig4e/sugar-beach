@@ -13,15 +13,19 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { Bars3Icon } from "@heroicons/react/24/solid";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import Search from "~/components/navbar/Search";
+import type { Locale } from "~/types/locale";
 import { api } from "~/utils/api";
 import { LogoSmallTransparent } from "../logos";
 
 function SideNav() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const categories = api.category.getAll.useQuery({ limit: 50 });
+  const t = useTranslations("SideNav");
+  const locale = useLocale() as Locale;
 
   return (
     <>
@@ -34,12 +38,17 @@ function SideNav() {
           onClick={onOpen}
         ></IconButton>
       </div>
-      <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+      <Drawer isOpen={isOpen} placement={"left"} onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerHeader>
             <Link href={"/"}>
-              <Image src={LogoSmallTransparent} alt="logo" width={100} height={100}></Image>
+              <Image
+                src={LogoSmallTransparent}
+                alt="logo"
+                width={100}
+                height={100}
+              ></Image>
             </Link>
           </DrawerHeader>
           <DrawerCloseButton />
@@ -47,12 +56,12 @@ function SideNav() {
           <DrawerBody>
             <VStack alignItems={"start"}>
               <FormControl>
-                <FormLabel>Search</FormLabel>
+                <FormLabel>{t("search")}</FormLabel>
                 <Search></Search>
               </FormControl>
 
               <FormControl>
-                <FormLabel>Categories</FormLabel>
+                <FormLabel>{t("categories")}</FormLabel>
                 <div className="flex items-center gap-8">
                   <Link href={"/"} className="hidden md:block">
                     <Image
@@ -76,14 +85,14 @@ function SideNav() {
                             px={"3"}
                             borderRadius={"full"}
                           >
-                            {category.name.en}
+                            {category.name[locale]}
                           </Tag>
                         </Link>
                       ))}
 
                     <Link href={"/search?query=&categories="}>
                       <Tag p={"2"} px={"3"} borderRadius={"full"}>
-                        Explore
+                        {t("explore")}
                       </Tag>
                     </Link>
                   </div>

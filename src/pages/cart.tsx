@@ -11,7 +11,7 @@ import {
 import { LoadingOverlay } from "@mantine/core";
 import { type Product } from "@prisma/client";
 import { type GetStaticProps } from "next";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo } from "react";
@@ -20,6 +20,7 @@ import { paymentOptionLogos } from "~/components/base/Footer";
 import Layout from "~/components/layout/Layout";
 import useCurrency from "~/hooks/useCurrency";
 import { useCartStore } from "~/store/cart";
+import type { Locale } from "~/types/locale";
 import { api } from "~/utils/api";
 
 function Cart() {
@@ -28,6 +29,7 @@ function Cart() {
   const toast = useToast();
   const currency = useCurrency();
   const userAddresses = api.user.address.findMany.useQuery({});
+  const locale = useLocale() as Locale;
 
   const { data, isLoading } = api.product.getCart.useQuery({
     productIDs: cartStore.items.reduce(
@@ -125,7 +127,7 @@ function Cart() {
                         <div className="rounded-md border-2">
                           <Image
                             src={productImage?.url || ""}
-                            alt={product.name.en}
+                            alt={product.name[locale]}
                             width={100}
                             height={100}
                             className="aspect-square h-16 w-16 rounded-md object-contain "
@@ -133,7 +135,7 @@ function Cart() {
                         </div>
                         <VStack spacing={1} alignItems={"start"}>
                           <Link href={`/products/${product.id}`}>
-                            <Heading size="sm">{product.name.en}</Heading>
+                            <Heading size="sm">{product.name[locale]}</Heading>
                           </Link>
                           <Heading size="sm" color="pink.500">
                             {currency(product.price)
@@ -217,6 +219,5 @@ export const getStaticProps: GetStaticProps = async (context) => {
     },
   };
 };
-
 
 export default Cart;

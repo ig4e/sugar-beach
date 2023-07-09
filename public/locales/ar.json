@@ -230,5 +230,10 @@
     "edit": "تعديل",
     "cancel": "إلغاء",
     "submit": "إرسال"
+  },
+  "SideNav": {
+    "search": "البحث",
+    "categories": "التصنيفات",
+    "explore": "استكشاف"
   }
 }
