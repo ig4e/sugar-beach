@@ -10,7 +10,6 @@ import { SessionProvider } from "next-auth/react";
 import { NextIntlClientProvider } from "next-intl";
 import { type AppType } from "next/app";
 import { useRouter } from "next/router";
-import enMessages from "public/locales/en.json";
 import stylisRTLPlugin from "stylis-plugin-rtl";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -20,6 +19,9 @@ import { useLocalisationStore } from "~/store/localisation";
 import "~/styles/globals.css";
 import { customChakraTheme } from "~/theme";
 import { api } from "~/utils/api";
+
+import enMessages from "public/locales/en.json";
+import arMessages from "public/locales/ar.json";
 
 const MyApp: AppType<{ session: Session | null; messages: Messages }> = ({
   Component,
@@ -60,7 +62,9 @@ const MyApp: AppType<{ session: Session | null; messages: Messages }> = ({
 
   return (
     <div className="bg-zinc-100 !font-inter">
-      <NextIntlClientProvider messages={pageProps.messages ?? enMessages}>
+      <NextIntlClientProvider
+        messages={locale === "ar" ? arMessages : enMessages}
+      >
         <MantineProvider
           withGlobalStyles
           withNormalizeCSS

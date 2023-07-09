@@ -87,7 +87,10 @@ function MyAccount() {
                     <span className="font-semibold">{user.name}</span>
                   </div>
                 </div>
-                <EditProfile user={user} onRefetch={() => void session.update()}>
+                <EditProfile
+                  user={user}
+                  onRefetch={() => void session.update()}
+                >
                   <Button>{t("info.edit")}</Button>
                 </EditProfile>
               </HStack>
@@ -143,17 +146,4 @@ function MyAccount() {
   );
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  const locale = context.locale || "en";
-
-  const messages = (await import(
-    `public/locales/${locale}.json`
-  )) as unknown as { default: Messages };
-
-  return {
-    props: {
-      messages: messages.default,
-    },
-  };
-};
 export default MyAccount;

@@ -167,18 +167,4 @@ function SearchPage() {
   );
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  const locale = context.locale || "en";
-
-  const messages = (await import(
-    `public/locales/${locale}.json`
-  )) as unknown as { default: Messages };
-
-  return {
-    props: {
-      messages: messages.default,
-    },
-  };
-};
-
 export default SearchPage;

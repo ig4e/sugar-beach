@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { GetStaticProps } from "next";
 import { signIn, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -184,17 +183,4 @@ function SignIn() {
   );
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  const locale = context.locale || "en";
-
-  const messages = (await import(
-    `public/locales/${locale}.json`
-  )) as unknown as { default: Messages };
-
-  return {
-    props: {
-      messages: messages.default,
-    },
-  };
-};
 export default SignIn;

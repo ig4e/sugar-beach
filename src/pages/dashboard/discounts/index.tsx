@@ -15,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import dayjs from "dayjs";
-import type { GetStaticProps } from "next";
 import { useTranslations } from "next-intl";
 import ManageDiscount from "~/components/ManageDiscount";
 import AuthGaurd from "~/components/base/AuthGaurd";
@@ -26,7 +25,7 @@ function Index() {
   const toast = useToast();
   const allDiscountsQuery = api.discount.getAll.useQuery();
   const deleteDiscountHook = api.discount.delete.useMutation();
-  const t = useTranslations("Discounts")
+  const t = useTranslations("Discounts");
 
   function deleteDiscount(id: string) {
     deleteDiscountHook.mutate(
@@ -118,7 +117,9 @@ function Index() {
                 </Tbody>
                 <Tfoot>
                   <Tr>
-                    <Th>{allDiscountsQuery.data?.length || 0} {t("discounts")}</Th>
+                    <Th>
+                      {allDiscountsQuery.data?.length || 0} {t("discounts")}
+                    </Th>
                   </Tr>
                 </Tfoot>
               </Table>
@@ -129,19 +130,5 @@ function Index() {
     </AuthGaurd>
   );
 }
-
-export const getStaticProps: GetStaticProps = async (context) => {
-  const locale = context.locale || "en";
-
-  const messages = (await import(
-    `public/locales/${locale}.json`
-  )) as unknown as { default: Messages };
-
-  return {
-    props: {
-      messages: messages.default,
-    },
-  };
-};
 
 export default Index;

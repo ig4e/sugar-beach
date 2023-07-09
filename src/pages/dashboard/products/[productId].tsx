@@ -1,41 +1,26 @@
 import {
   Alert,
-  AlertDescription,
   AlertIcon,
   AlertTitle,
   Button,
   Divider,
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  FormLabel,
   HStack,
   Heading,
   IconButton,
-  InputGroup,
-  InputLeftAddon,
-  Stack,
-  Textarea,
-  useToast,
+  useToast
 } from "@chakra-ui/react";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MultiSelect, NumberInput, Select } from "@mantine/core";
 import { Description, Media, Name, ProductStatus } from "@prisma/client";
-import clsx from "clsx";
 import * as _ from "lodash";
-import { GetServerSideProps, GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
-import ManageMedia from "~/components/ManageMedia";
+import { useForm, useWatch } from "react-hook-form";
 import AuthGaurd from "~/components/base/AuthGaurd";
-import Input from "~/components/base/Input";
 import { SkeletonContext, SkeletonWrap } from "~/components/base/SkeletonWrap";
 import AdminLayout from "~/components/layout/AdminLayout";
-import { PRODUCT_STATUS } from "~/config/productConfig";
 import { api } from "~/utils/api";
 import { productSchema } from "~/validations/productSchema";
 
@@ -218,18 +203,6 @@ function AdminPageProduct() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const locale = context.locale || "en";
 
-  const messages = (await import(
-    `public/locales/${locale}.json`
-  )) as unknown as { default: Messages };
-
-  return {
-    props: {
-      messages: messages.default,
-    },
-  };
-};
 
 export default AdminPageProduct;

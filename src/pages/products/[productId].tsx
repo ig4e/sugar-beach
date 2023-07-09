@@ -13,7 +13,6 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { NumberInput, Spoiler } from "@mantine/core";
-import type { GetServerSideProps } from "next";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -278,18 +277,5 @@ function ProductPage() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const locale = context.locale || "en";
-
-  const messages = (await import(
-    `public/locales/${locale}.json`
-  )) as unknown as { default: Messages };
-
-  return {
-    props: {
-      messages: messages.default,
-    },
-  };
-};
 
 export default ProductPage;
