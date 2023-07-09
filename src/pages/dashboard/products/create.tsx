@@ -138,7 +138,12 @@ function CreateProduct() {
             <Heading size={"md"}>Add product</Heading>
           </div>
 
-          <form
+          <Alert status="warning">
+            <AlertIcon />
+            <AlertTitle>الخاصية غير متاحة مؤقتا</AlertTitle>
+          </Alert>
+
+          {/* <form
             noValidate
             id="new-product"
             className="flex grid-cols-6 flex-col gap-x-6 gap-y-4 pb-16 md:grid"
@@ -428,7 +433,7 @@ function CreateProduct() {
                 </FormHelperText>
               </FormControl>
             </div>
-          </form>
+          </form> */}
         </div>
       </AdminLayout>
     </AuthGaurd>
