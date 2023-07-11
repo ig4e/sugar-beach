@@ -11,7 +11,7 @@ function Feedback({ feedback }: { feedback: UserFeedback & { user: User } }) {
   return (
     <HStack spacing={4} alignItems={"start"}>
       <Avatar
-        src={feedback.user.image as string | undefined}
+        src={feedback.user.media?.url ?? feedback.user.image as string | undefined}
         name={feedback.user.name}
         size={"sm"}
       ></Avatar>
