@@ -18,7 +18,6 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { User } from "@prisma/client";
-import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";

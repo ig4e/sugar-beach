@@ -19,7 +19,6 @@ import {
   ShoppingBagIcon,
 } from "@heroicons/react/24/solid";
 import { signOut, useSession } from "next-auth/react";
-import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import MenuItem from "../base/MenuItem";

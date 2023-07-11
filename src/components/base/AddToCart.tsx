@@ -3,7 +3,6 @@ import { Button, HStack, Heading, IconButton } from "@chakra-ui/react";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { LoadingOverlay } from "@mantine/core";
-import { useTranslations } from "next-intl";
 import { useCartStore } from "~/store/cart";
 import { api } from "~/utils/api";
 

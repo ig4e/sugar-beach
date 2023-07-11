@@ -1,6 +1,5 @@
 import { useToast } from "@chakra-ui/react";
 import { UploadButton } from "@uploadthing/react";
-import { useTranslations } from "next-intl";
 import type { OurFileRouter } from "~/server/uploadthing";
 import { api } from "~/utils/api";
 

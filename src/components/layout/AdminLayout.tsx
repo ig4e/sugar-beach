@@ -7,7 +7,6 @@ import {
   TagIcon,
 } from "@heroicons/react/24/solid";
 import { AppShell, Burger, Header, MediaQuery, Navbar } from "@mantine/core";
-import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";

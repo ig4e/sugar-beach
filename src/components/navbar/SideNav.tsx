@@ -13,7 +13,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { Bars3Icon } from "@heroicons/react/24/solid";
-import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import Search from "~/components/navbar/Search";

@@ -14,7 +14,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCartStore } from "~/store/cart";
 import AddToCart from "../base/AddToCart";
-import { useLocale, useTranslations } from "next-intl";
 import type { Locale } from "~/types/locale";
 import { LogoSmallTransparent } from "../logos";
 

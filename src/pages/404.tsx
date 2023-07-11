@@ -1,10 +1,11 @@
 import { Button } from "@chakra-ui/react";
-import { useTranslations } from "next-intl";
 import Link from "next/link";
 import CenteredLayout from "~/components/layout/CenteredLayout";
 
+import useTranslation from "next-translate/useTranslation";
+
 function NotFound() {
-  const t = useTranslations("404");
+  const { t } = useTranslation("404");
   return (
     <CenteredLayout>
       <div className="flex flex-col gap-4 rounded-md p-8">
