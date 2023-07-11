@@ -4,8 +4,11 @@ import { useTranslations } from "next-intl";
 import type { OurFileRouter } from "~/server/uploadthing";
 import { api } from "~/utils/api";
 
+import useTranslation from "next-translate/useTranslation";
+
+
 export const AvatarUpload = ({ onRefetch }: { onRefetch: () => void }) => {
-  const t = useTranslations("AvatarUpload");
+  const {t} = useTranslation("account");
   const updateUserAvatar = api.user.updateUserAvatar.useMutation();
   const toast = useToast();
 
@@ -22,7 +25,7 @@ export const AvatarUpload = ({ onRefetch }: { onRefetch: () => void }) => {
           {
             onSuccess() {
               toast({
-                title: t("user-avatar-updated-success"),
+                title: t("AvatarUpload.user-avatar-updated-success"),
                 status: "success",
               });
 
@@ -30,7 +33,7 @@ export const AvatarUpload = ({ onRefetch }: { onRefetch: () => void }) => {
             },
             onError(error) {
               toast({
-                title: t("user-avatar-updated-error"),
+                title: t("AvatarUpload.user-avatar-updated-error"),
                 description: error.message,
                 status: "error",
               });
@@ -40,7 +43,7 @@ export const AvatarUpload = ({ onRefetch }: { onRefetch: () => void }) => {
       }}
       onUploadError={(error: Error) => {
         toast({
-          title: t("user-avatar-updated-upload-error"),
+          title: t("AvatarUpload.user-avatar-updated-upload-error"),
           description: error.message,
           status: "error",
         });

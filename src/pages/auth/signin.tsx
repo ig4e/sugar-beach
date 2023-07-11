@@ -14,7 +14,6 @@ import {
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn, useSession } from "next-auth/react";
-import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -43,6 +42,11 @@ const errorMessages = {
   Default: "Catch all, will apply, if none of the above matched",
 } as const;
 
+
+import useTranslation from "next-translate/useTranslation";
+
+
+
 function SignIn() {
   const session = useSession();
   const router = useRouter();
@@ -51,7 +55,7 @@ function SignIn() {
     mode: "all",
   });
 
-  const t = useTranslations("SignIn");
+  const { t } = useTranslation("signIn");
 
   const error = router.query.error as keyof typeof errorMessages | null;
 

@@ -4,17 +4,19 @@ import Cart from "~/components/navbar/Cart";
 import ChangeRegion from "~/components/navbar/ChangeRegion";
 
 import { Tag } from "@chakra-ui/react";
-import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import Search from "~/components/navbar/Search";
 import SideNav from "~/components/navbar/SideNav";
 import { api } from "~/utils/api";
 import { LogoSmallTransparent } from "../logos";
 
+import useTranslation from "next-translate/useTranslation";
+import { Locale } from "~/types/locale";
+
 function Navbar() {
-  const locale = useLocale() as "ar" | "en";
-  const t = useTranslations("Navbar");
   const categories = api.category.getAll.useQuery({ limit: 3 });
+  const { t, lang } = useTranslation("common");
+  const locale = lang as Locale;
 
   return (
     <nav className="sticky top-0 !z-[1000] bg-zinc-50 drop-shadow-lg">
@@ -28,7 +30,7 @@ function Navbar() {
           ></Image>
         </Link>
         <span className="hidden text-sm text-zinc-950 md:block">
-          {t("brand-copy")}
+          {t("Navbar.brand-copy")}
         </span>
         <ChangeRegion></ChangeRegion>
       </div>
@@ -68,7 +70,7 @@ function Navbar() {
 
             <Link href={"/search?query=&categories="}>
               <Tag p={"2"} px={"3"} borderRadius={"full"}>
-                {t("explore")}
+                {t("Navbar.explore")}
               </Tag>
             </Link>
           </div>

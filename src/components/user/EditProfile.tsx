@@ -31,6 +31,8 @@ export interface EditProfileFormValues {
   name?: string;
 }
 
+import useTranslation from "next-translate/useTranslation";
+
 function EditProfile({
   user,
   children,
@@ -41,7 +43,7 @@ function EditProfile({
   onRefetch: () => void;
 }) {
   const toast = useToast();
-  const t = useTranslations("EditProfile");
+  const { t } = useTranslation("account");
   const editUser = api.user.edit.useMutation();
 
   const {
@@ -72,7 +74,7 @@ function EditProfile({
       {
         onSuccess() {
           toast({
-            title: t("editProfile.success"),
+            title: t("EditProfile.editProfile.success"),
             status: "success",
           });
           onClose();
@@ -80,7 +82,7 @@ function EditProfile({
         },
         onError(error) {
           toast({
-            title: t("editProfile.error"),
+            title: t("EditProfile.editProfile.error"),
             description: error.message,
             status: "error",
           });
@@ -98,7 +100,7 @@ function EditProfile({
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{t("header")}</ModalHeader>
+          <ModalHeader>{t("EditProfile.header")}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form
@@ -126,14 +128,14 @@ function EditProfile({
                 </HStack>
 
                 <FormControl isInvalid={!!errors.name}>
-                  <FormLabel>{t("info.name")}</FormLabel>
+                  <FormLabel>{t("EditProfile.info.name")}</FormLabel>
                   <HStack>
                     <Input {...register("name")} />
                   </HStack>
                   <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
                 </FormControl>
                 <FormControl>
-                  <FormLabel>{t("info.email")}</FormLabel>
+                  <FormLabel>{t("EditProfile.info.email")}</FormLabel>
                   <HStack>
                     <Input isReadOnly value={user.email} />
                     <EditEmail onRefetch={onRefetch}></EditEmail>
@@ -145,10 +147,10 @@ function EditProfile({
 
           <ModalFooter>
             <Button mr={3} onClick={onClose} variant={"ghost"}>
-              {t("cancel")}
+              {t("EditProfile.cancel")}
             </Button>
             <Button form="edit-profile-form" type="submit">
-              {t("save")}
+              {t("EditProfile.save")}
             </Button>
           </ModalFooter>
         </ModalContent>

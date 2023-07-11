@@ -1,0 +1,8 @@
+{
+  "title": "Check your email!",
+  "description": "A sign-in link has been sent to your email address.",
+  "alert": {
+    "title": "Success!",
+    "description": "Sent the verification link to your email!"
+  }
+}

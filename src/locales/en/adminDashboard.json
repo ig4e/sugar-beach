@@ -1,0 +1,13 @@
+{
+  "AdminLayout": {
+    "routes": {
+      "home": "Home",
+      "products": "Products",
+      "orders": "Orders",
+      "featured": "Featured",
+      "discounts": "Discounts",
+      "categories": "Categories"
+    },
+    "management": "Management"
+  }
+}

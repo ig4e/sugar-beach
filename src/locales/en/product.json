@@ -1,0 +1,13 @@
+{
+  "in-stock": "In Stock",
+  "out-of-stock": "Out of Stock",
+  "left": "Left",
+  "sale": "Sale",
+  "description": "Description",
+  "quantity": "Quantity",
+  "purchase-limit": "Purchase Limit: 0 ~ ",
+  "no-description": "No Description",
+  "total": "Total",
+  "add-to-cart": "Add to Cart",
+  "buy-now": "Buy Now"
+}

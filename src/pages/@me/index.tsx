@@ -10,23 +10,22 @@ import {
   HStack,
   Heading,
   Stack,
-  VStack,
-  useDisclosure,
+  VStack
 } from "@chakra-ui/react";
 import { LoadingOverlay } from "@mantine/core";
-import type { GetStaticProps } from "next";
 import { signIn, useSession } from "next-auth/react";
-import { useTranslations } from "next-intl";
 import { Auth0Icon, DiscordIcon, GoogleIcon } from "~/components/base/Icons";
 import Input from "~/components/base/Input";
 import UserDashboardLayout from "~/components/layout/UserDashboardLayout";
 import EditProfile from "~/components/user/EditProfile";
 import { api } from "~/utils/api";
 
+import useTranslation from "next-translate/useTranslation";
+
 function MyAccount() {
   const session = useSession();
   const userLinkedPlatforms = api.user.getLinkedPlatforms.useQuery({});
-  const t = useTranslations("UserDashboardHome");
+  const { t } = useTranslation("accountHome");
   if (!session.data) return;
 
   const { user } = session.data;

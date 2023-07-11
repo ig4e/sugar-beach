@@ -1,0 +1,10 @@
+{
+  "info": {
+    "edit": "Edit",
+    "name": "Name",
+    "email": "Email"
+  },
+  "account-linking": "Account Linking",
+  "link": "Link",
+  "linked-to": "Linked to"
+}

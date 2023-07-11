@@ -7,9 +7,10 @@ import MoyasserLogo from "public/images/logos/payments/Moyasser.png";
 import StcPayLogo from "public/images/logos/payments/StcPay.png";
 import VisaLogo from "public/images/logos/payments/Visa.png";
 
-import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { LogoSmallTransparent } from "../logos";
+
+import useTranslation from "next-translate/useTranslation";
 
 export const paymentOptionLogos = [
   VisaLogo,
@@ -22,7 +23,7 @@ export const paymentOptionLogos = [
 ];
 
 function Footer() {
-  const t = useTranslations("Footer");
+  const { t } = useTranslation("common");
 
   return (
     <div className="bg-white">
@@ -34,7 +35,7 @@ function Footer() {
             alignItems={"center"}
           >
             <Heading size={"sm"} className="hidden whitespace-nowrap md:block">
-              {t("pay-with-ease")}
+              {t("Footer.pay-with-ease")}
             </Heading>
             <div className="flex flex-wrap items-center gap-2">
               {paymentOptionLogos.map((logo, index) => (
@@ -56,16 +57,16 @@ function Footer() {
 
         <div className="flex items-start gap-x-8 gap-y-2 md:gap-x-16 lg:gap-x-24">
           <div className="flex flex-col gap-2">
-            <span className="font-semibold">{t("about-us")}</span>
-            <span className="text-sm">{t("about-us")}</span>
-            <span className="text-sm">{t("contact-us")}</span>
-            <span className="text-sm">{t("support")}</span>
+            <span className="font-semibold">{t("Footer.about-us")}</span>
+            <span className="text-sm">{t("Footer.about-us")}</span>
+            <span className="text-sm">{t("Footer.contact-us")}</span>
+            <span className="text-sm">{t("Footer.support")}</span>
           </div>
           <div className="flex flex-col gap-2">
-            <span className=" font-semibold">{t("legal")}</span>
-            <span className="text-sm">{t("terms-of-use")}</span>
-            <span className="text-sm">{t("terms-of-sale")}</span>
-            <span className="text-sm">{t("privacy-policy")}</span>
+            <span className=" font-semibold">{t("Footer.legal")}</span>
+            <span className="text-sm">{t("Footer.terms-of-use")}</span>
+            <span className="text-sm">{t("Footer.terms-of-sale")}</span>
+            <span className="text-sm">{t("Footer.privacy-policy")}</span>
           </div>
         </div>
 
@@ -78,7 +79,7 @@ function Footer() {
           justifyContent={"end"}
         >
           <Heading size={"xs"} className="whitespace-nowrap">
-            {t("stay-updated-with-us")}
+            {t("Footer.stay-updated-with-us")}
           </Heading>
           <div className="flex flex-wrap items-center gap-3 text-xs">
             <svg

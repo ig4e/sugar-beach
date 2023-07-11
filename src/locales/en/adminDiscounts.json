@@ -1,0 +1,24 @@
+{
+  "discounts": "Discounts",
+  "code": "Code",
+  "amount": "Amount",
+  "expires-at": "Expiers At",
+  "actions": "Actions",
+
+  "ManageDiscount": {
+    "header-create": "Create new discount",
+    "header-edit": "Edit discount",
+    "discount": "Discount",
+    "add-discount": "Add Discount",
+    "discount-code": "Discount Code",
+    "generate": "Generate",
+    "discount-code-helper": "The discount code.",
+    "percentage": "Precentage",
+    "fixed-amount": "Fixed Amount",
+    "discount-amount-helper": "The Discount amount.",
+    "discount-expire-date": "Discount Expire Date",
+    "discount-expire-date-helper": "The date when the discount will expire.",
+    "save": "Save",
+    "cancel": "Cancel"
+  }
+}

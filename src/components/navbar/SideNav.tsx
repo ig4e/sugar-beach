@@ -20,12 +20,13 @@ import Search from "~/components/navbar/Search";
 import type { Locale } from "~/types/locale";
 import { api } from "~/utils/api";
 import { LogoSmallTransparent } from "../logos";
+import useTranslation from "next-translate/useTranslation";
 
 function SideNav() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const categories = api.category.getAll.useQuery({ limit: 50 });
-  const t = useTranslations("SideNav");
-  const locale = useLocale() as Locale;
+  const { t, lang } = useTranslation("common");
+  const locale = lang as Locale;
 
   return (
     <>
@@ -56,12 +57,12 @@ function SideNav() {
           <DrawerBody>
             <VStack alignItems={"start"}>
               <FormControl>
-                <FormLabel>{t("search")}</FormLabel>
+                <FormLabel>{t("SideNav.search")}</FormLabel>
                 <Search></Search>
               </FormControl>
 
               <FormControl>
-                <FormLabel>{t("categories")}</FormLabel>
+                <FormLabel>{t("SideNav.categories")}</FormLabel>
                 <div className="flex items-center gap-8">
                   <Link href={"/"} className="hidden md:block">
                     <Image
@@ -92,7 +93,7 @@ function SideNav() {
 
                     <Link href={"/search?query=&categories="}>
                       <Tag p={"2"} px={"3"} borderRadius={"full"}>
-                        {t("explore")}
+                        {t("SideNav.explore")}
                       </Tag>
                     </Link>
                   </div>

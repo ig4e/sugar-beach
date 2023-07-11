@@ -1,0 +1,11 @@
+{
+  "title": "Welcome",
+  "description": "Hi there! Sign up for an account and enjoy your shopping experience on Sugar Beach.",
+  "alert": {
+    "title": "Error!"
+  },
+  "email": "Email",
+  "sign-in": "Sign In",
+  "sign-in-loading": "Signing In...",
+  "sign-in-with": "Sign In With"
+}

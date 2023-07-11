@@ -18,6 +18,8 @@ import { LogoSmallTransparent } from "../logos";
 import Auth from "../navbar/Auth";
 import ChangeRegion from "../navbar/ChangeRegion";
 
+import useTranslation from "next-translate/useTranslation";
+
 const adminManagmentRoutesDefault = [
   { name: "products", href: "/dashboard/products", Icon: TagIcon },
   { name: "orders", href: "/dashboard/orders", Icon: InboxStackIcon },
@@ -31,7 +33,7 @@ const adminManagmentRoutesDefault = [
 ] as const;
 
 function AdminLayout({ children }: { children: ReactNode }) {
-  const t = useTranslations("AdminLayout");
+  const { t } = useTranslation("adminDashboard");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const adminManagmentRoutes = useMemo(() => {
@@ -72,12 +74,12 @@ function AdminLayout({ children }: { children: ReactNode }) {
             <div className="space-y-4">
               <div className="flex flex-col gap-2">
                 <h1 className="text-xs font-semibold uppercase text-pink-500">
-                  {t("routes.home")}
+                  {t("AdminLayout.routes.home")}
                 </h1>
                 <Link href={"/dashboard"}>
                   <MenuItem
                     size="sm"
-                    name={t("routes.home")}
+                    name={t("AdminLayout.routes.home")}
                     Icon={HomeModernIcon}
                   ></MenuItem>
                 </Link>
@@ -85,13 +87,13 @@ function AdminLayout({ children }: { children: ReactNode }) {
 
               <div className="flex flex-col gap-2">
                 <h1 className="text-xs font-semibold uppercase text-pink-500">
-                  {t("management")}
+                  {t("AdminLayout.management")}
                 </h1>
                 {adminManagmentRoutes.map((route) => (
                   <Link href={route.href} key={route.name}>
                     <MenuItem
                       size="sm"
-                      name={t(`routes.${route.name}`)}
+                      name={t(`AdminLayout.routes.${route.name}`)}
                       Icon={route.Icon}
                       active={route.active}
                     ></MenuItem>

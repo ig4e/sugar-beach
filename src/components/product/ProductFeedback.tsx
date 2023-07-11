@@ -33,6 +33,8 @@ export interface ProductFeedbackFormValues {
   score: number;
 }
 
+import useTranslation from "next-translate/useTranslation";
+
 function ProductFeedback({ productId }: { productId: string }) {
   const toast = useToast();
   const session = useSession();
@@ -49,7 +51,10 @@ function ProductFeedback({ productId }: { productId: string }) {
   const editProductFeedback = api.feedback.editProductFeedback.useMutation();
   const deleteProductFeedback =
     api.feedback.deleteProductFeedback.useMutation();
-  const t = useTranslations("ProductFeedback");
+
+  const isLoggedIn = session.status === "authenticated";
+
+  const { t, lang } = useTranslation("productFeedback");
 
   const {
     handleSubmit,
@@ -188,7 +193,10 @@ function ProductFeedback({ productId }: { productId: string }) {
                 </FormLabel>
                 <HStack spacing={4}>
                   <Avatar
-                    src={session.data?.user.image as string | undefined}
+                    src={
+                      session.data?.user.media?.url ??
+                      (session.data?.user.image as string | undefined)
+                    }
                     name={session.data?.user.name}
                     size={"md"}
                   ></Avatar>
@@ -213,6 +221,7 @@ function ProductFeedback({ productId }: { productId: string }) {
                       width={"full"}
                       placeholder={t("feedback-input.placeholder")}
                       focusBorderColor="pink.500"
+                      readOnly={!isLoggedIn}
                     ></Textarea>
                     <Controller
                       control={control}
@@ -233,6 +242,7 @@ function ProductFeedback({ productId }: { productId: string }) {
                           onBlur={field.onBlur}
                           size="lg"
                           color="pink"
+                          readOnly={!isLoggedIn}
                         ></Rating>
                       )}
                     ></Controller>
@@ -278,6 +288,7 @@ function ProductFeedback({ productId }: { productId: string }) {
                   maxW={"fit-content"}
                   isLoading={postProductFeedback.isLoading || isSubmitting}
                   loadingText="Submitting"
+                  isDisabled={!isLoggedIn}
                 >
                   {t("submit")}
                 </Button>

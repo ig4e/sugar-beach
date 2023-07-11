@@ -52,13 +52,17 @@ const steps = [
   { title: "third", description: "Complete" },
 ] as const;
 
+
+import useTranslation from "next-translate/useTranslation";
+
+
 function EditEmail({ onRefetch }: { onRefetch: () => void }) {
   const toast = useToast();
   const { isOpen, onClose, onOpen } = useDisclosure({});
   const sendEmailVerification =
     api.user.sendEmailChangeVerification.useMutation();
   const updateUserEmail = api.user.updateUserEmail.useMutation();
-  const t = useTranslations("EditEmail");
+  const {t} = useTranslation("account");
 
   const { activeStep, goToNext } = useSteps({
     index: 0,
@@ -85,14 +89,14 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
     sendEmailVerification.mutate(undefined, {
       onError(error) {
         toast({
-          title: t("email-verification.error"),
+          title: t("EditEmail.email-verification.error"),
           description: error.message,
           status: "error",
         });
       },
       onSuccess() {
         toast({
-          title: t("email-verification.success"),
+          title: t("EditEmail.email-verification.success"),
           status: "success",
         });
         goToNext();
@@ -106,14 +110,14 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
       {
         onError(error) {
           toast({
-            title: t("email-edit.error"),
+            title: t("EditEmail.email-edit.error"),
             description: error.message,
             status: "error",
           });
         },
         onSuccess() {
           toast({
-            title: t("email-edit.success"),
+            title: t("EditEmail.email-edit.success"),
             status: "success",
           });
           onRefetch();
@@ -125,11 +129,11 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
 
   return (
     <>
-      <Button onClick={onOpen}>{t("edit")}</Button>
+      <Button onClick={onOpen}>{t("EditEmail.edit")}</Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{t("header")}</ModalHeader>
+          <ModalHeader>{t("EditEmail.header")}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form
@@ -158,10 +162,10 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
 
                       <Box flexShrink="0">
                         <StepTitle>
-                          {t(`steps.${step.title}.meta.title`)}
+                          {t(`EditEmail.steps.${step.title}.meta.title`)}
                         </StepTitle>
                         <StepDescription>
-                          {t(`steps.${step.title}.meta.description`)}
+                          {t(`EditEmail.steps.${step.title}.meta.description`)}
                         </StepDescription>
                       </Box>
 
@@ -174,13 +178,13 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
                   <TabPanels>
                     <TabPanel>
                       <VStack spacing={4}>
-                        <Heading size="md">{t("steps.first.header")}</Heading>
+                        <Heading size="md">{t("EditEmail.steps.first.header")}</Heading>
 
                         <Button
                           onClick={() => handleSendEmailVerification()}
                           w="full"
                         >
-                          {t("steps.first.button")}
+                          {t("EditEmail.steps.first.button")}
                         </Button>
                       </VStack>
                     </TabPanel>
@@ -188,7 +192,7 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
                       <VStack spacing={4}>
                         <FormControl isInvalid={!!errors.code}>
                           <FormLabel>
-                            {t("steps.second.verification-code-input-label")}
+                            {t("EditEmail.steps.second.verification-code-input-label")}
                           </FormLabel>
                           <VStack alignItems={"start"}>
                             <Controller
@@ -211,11 +215,11 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
                               variant={"link"}
                               size="sm"
                             >
-                              {t("steps.second.verification-code-input-resend")}
+                              {t("EditEmail.steps.second.verification-code-input-resend")}
                             </Button>
                           </VStack>
                           <FormHelperText>
-                            {t("steps.second.verification-code-input-helper")}
+                            {t("EditEmail.steps.second.verification-code-input-helper")}
                           </FormHelperText>
                           <FormErrorMessage>
                             {errors.code?.message}
@@ -224,7 +228,7 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
 
                         <FormControl>
                           <FormLabel>
-                            {t("steps.second.new-email-input-label")}
+                            {t("EditEmail.steps.second.new-email-input-label")}
                           </FormLabel>
                           <VStack alignItems={"start"}>
                             <Input
@@ -233,14 +237,14 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
                             ></Input>
                           </VStack>
                           <FormHelperText>
-                            {t("steps.second.new-email-input-helper")}
+                            {t("EditEmail.steps.second.new-email-input-helper")}
                           </FormHelperText>
                         </FormControl>
                       </VStack>
                     </TabPanel>
                     <TabPanel>
                       <VStack spacing={4}>
-                        <Heading size="md">{t("steps.third.header")}</Heading>
+                        <Heading size="md">{t("EditEmail.steps.third.header")}</Heading>
                       </VStack>
                     </TabPanel>
                   </TabPanels>
@@ -251,12 +255,12 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
 
           <ModalFooter>
             <Button mr={3} onClick={onClose} variant={"ghost"}>
-              {t("cancel")}
+              {t("EditEmail.cancel")}
             </Button>
 
             {activeStep === 1 && (
               <Button type="submit" form="edit-email">
-                {t("submit")}
+                {t("EditEmail.submit")}
               </Button>
             )}
           </ModalFooter>

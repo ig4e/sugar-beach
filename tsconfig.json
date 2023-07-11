@@ -28,6 +28,6 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs"
-  ],
+, "i18n.js"  ],
   "exclude": ["node_modules"]
 }

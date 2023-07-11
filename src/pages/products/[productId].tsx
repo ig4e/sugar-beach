@@ -13,7 +13,6 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { NumberInput, Spoiler } from "@mantine/core";
-import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -27,6 +26,8 @@ import { useCartStore } from "~/store/cart";
 import type { Locale } from "~/types/locale";
 import { api } from "~/utils/api";
 
+import useTranslation from "next-translate/useTranslation";
+
 function ProductPage() {
   const router = useRouter();
   const productId = router.query.productId as string;
@@ -36,9 +37,9 @@ function ProductPage() {
   const { data, isLoading } = productQuery;
   const [quantity, setQuantity] = React.useState(1);
   const cartStore = useCartStore();
-  const locale = useLocale() as Locale;
 
-  const t = useTranslations("Product");
+  const { t, lang } = useTranslation("product");
+  const locale = lang as Locale;
 
   useEffect(() => {
     if (productId) {
@@ -276,6 +277,5 @@ function ProductPage() {
     </Layout>
   );
 }
-
 
 export default ProductPage;

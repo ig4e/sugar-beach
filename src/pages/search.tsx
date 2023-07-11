@@ -4,13 +4,11 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { LoadingOverlay } from "@mantine/core";
-import type { GetStaticProps } from "next";
-import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDebounce } from "usehooks-ts";
 import { SEO } from "~/components/SEO";
 import Layout from "~/components/layout/Layout";
@@ -19,49 +17,43 @@ import ProductCard from "~/components/product/ProductCard";
 import type { Locale } from "~/types/locale";
 import { api } from "~/utils/api";
 
+import useCurrency from "~/hooks/useCurrency";
+import { useSearchStore } from "~/store/search";
+
+import useTranslation from "next-translate/useTranslation";
+
 function SearchPage() {
+  const { t, lang } = useTranslation("search");
+  const locale = lang as Locale;
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const debouncedSearchQuery = useDebounce(searchQuery, 250);
+  const searchStore = useSearchStore();
+  const debouncedSearchQuery = useDebounce(searchStore.searchQuery, 500);
   const categoriesQuery = api.category.getAll.useQuery({ limit: 100 });
-  const productsQuery = api.product.getAll.useQuery({
+
+  const currency = useCurrency();
+
+  useEffect(() => {
+    searchStore.parseUrl(router.pathname);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.pathname]);
+
+  useEffect(() => {
+    void router.push(searchStore.generateUrl(), undefined, { shallow: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    searchStore.categoryIDs,
+    searchStore.searchQuery,
+    searchStore.priceRange,
+  ]);
+
+  const { data, isError, isLoading, refetch } = api.product.getAll.useQuery({
     limit: 100,
     searchQuery: debouncedSearchQuery,
-    categoryIDs: selectedCategories,
+    categoryIDs: searchStore.categoryIDs,
     status: "ACTIVE",
+    // minPrice: searchStore.priceRange.min ?? undefined,
+    // maxPrice: searchStore.priceRange.max ?? undefined,
   });
-
-  const t = useTranslations("Search");
-  const locale = useLocale() as Locale;
-
-  useEffect(() => {
-    setSearchQuery(router.query.query as string);
-  }, [router.query.query]);
-
-  useEffect(() => {
-    const urlCategories = router.query.categories as string;
-    if (urlCategories) {
-      const categories = urlCategories.split(",");
-      if (categories.length > 0) setSelectedCategories(categories);
-    }
-  }, [router.query.categories]);
-
-  useEffect(() => {
-    if (debouncedSearchQuery) {
-      void router.push(
-        `/search?query=${encodeURIComponent(
-          debouncedSearchQuery || ""
-        )}&categories=${selectedCategories.join(",")}`
-      );
-    } else {
-      void router.push(
-        `/search?query=${
-          (router.query.query as string) || ""
-        }&categories=${selectedCategories.join(",")}`
-      );
-    }
-  }, [debouncedSearchQuery, selectedCategories, !!router]);
 
   return (
     <Layout>
@@ -90,8 +82,8 @@ function SearchPage() {
                 border={"2px"}
                 borderColor={"gray.400"}
                 focusBorderColor="pink.400"
-                onChange={(e) => setSearchQuery(e.target.value)}
-                value={searchQuery}
+                onChange={(e) => searchStore.setSearchQuery(e.target.value)}
+                value={searchStore.searchQuery}
               ></Input>
             </InputGroup>
           </div>
@@ -109,15 +101,13 @@ function SearchPage() {
                     >
                       <div className="flex items-center gap-2">
                         <Checkbox
-                          isChecked={selectedCategories.includes(category.id)}
+                          isChecked={searchStore.categoryIDs.includes(
+                            category.id
+                          )}
                           onChange={(e) =>
-                            setSelectedCategories((state) => {
-                              if (e.target.checked) {
-                                return [...state, category.id];
-                              } else {
-                                return state.filter((id) => id !== category.id);
-                              }
-                            })
+                            e.target.checked
+                              ? searchStore.addCategory(category.id)
+                              : searchStore.removeCategory(category.id)
                           }
                           value={category.id}
                         ></Checkbox>
@@ -133,10 +123,57 @@ function SearchPage() {
                 })
               )}
             </VStack>
-            <h2 className="font-bold">{t("shop-by-price")}</h2>
+            {/* <h2 className="font-bold">{t("shop-by-price")}</h2>
+            {data && (
+              <VStack>
+                <RangeSlider
+                  // eslint-disable-next-line jsx-a11y/aria-proptypes
+                  aria-label={["min", "max"]}
+                  value={[
+                    searchStore.priceRange.min,
+                    searchStore.priceRange.max,
+                  ]}
+                  onChange={(val) =>
+                    searchStore.setPriceRange({
+                      min: val[0] ?? data.meta.priceRange.min ?? 0,
+                      max: val[1] ?? data.meta.priceRange.max ?? 0,
+                    })
+                  }
+                  max={data.meta.priceRange.max || undefined}
+                >
+                  <RangeSliderTrack>
+                    <RangeSliderFilledTrack />
+                  </RangeSliderTrack>
+                  <RangeSliderThumb index={0} />
+                  <RangeSliderThumb index={1} />
+                </RangeSlider>
+
+                <HStack>
+                  <NumberInput
+                    value={searchStore.priceRange.min}
+                    onChange={(value) =>
+                      searchStore.setPriceRange({
+                        min: Number(value) ?? undefined,
+                      })
+                    }
+                    formatter={(value) => currency(Number(value)).format()}
+                  ></NumberInput>
+                  <Text>To</Text>
+                  <NumberInput
+                    value={searchStore.priceRange.max}
+                    onChange={(value) =>
+                      searchStore.setPriceRange({
+                        max: Number(value) ?? undefined,
+                      })
+                    }
+                    formatter={(value) => currency(Number(value)).format()}
+                  ></NumberInput>
+                </HStack>
+              </VStack>
+            )} */}
           </div>
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="relative flex flex-col gap-4">
           <h2 className="text-2xl">
             {t("search-results")}{" "}
             {debouncedSearchQuery?.length > 0 && (
@@ -149,13 +186,11 @@ function SearchPage() {
             )}
           </h2>
 
-          <div className="relative grid h-full w-full gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            <LoadingOverlay
-              visible={productsQuery.isLoading}
-              overlayBlur={2}
-            ></LoadingOverlay>
-            {!productsQuery.isLoading &&
-              productsQuery.data?.items.map((product) => {
+          <LoadingOverlay visible={isLoading} overlayBlur={2}></LoadingOverlay>
+
+          <div className=" grid h-full w-full gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {!isLoading &&
+              data?.items.map((product) => {
                 return (
                   <ProductCard key={product.id} product={product}></ProductCard>
                 );

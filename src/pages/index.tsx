@@ -56,6 +56,7 @@ const HomePage: NextPage = () => {
             Keyboard,
             Autoplay,
           ]}
+          loop={true}
         >
           {featuredProducts.data?.items.map((item) => (
             <SwiperSlide key={item.id}>

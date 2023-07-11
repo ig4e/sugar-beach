@@ -1,0 +1,22 @@
+{
+  "customer-feedback": "Customer Feedbacks",
+  "edit-your-feedback": "Edit Your Feedback",
+  "add-your-feedback": "Add Your Feedback",
+  "discard": "Discard",
+  "delete": "Delete",
+  "submit": "Submit",
+  "submitting-feedback": "Submitting Feedback",
+  "feedback-input": {
+    "placeholder": "What did you like or dislike? What did it taste like?"
+  },
+  "errors": {
+    "feedback-add": "Error Adding Feedback",
+    "feedback-edit": "Error Editing Feedback",
+    "feedback-delete": "Error Deleting Feedback"
+  },
+  "success": {
+    "feedback-add": "Feedback Added Successfully!",
+    "feedback-edit": "Feedback Edited Successfully!",
+    "feedback-delete": "Feedback Deleted Successfully!"
+  }
+}

@@ -1,13 +1,14 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import { InputGroup } from "@chakra-ui/react";
-import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
 import React from "react";
 import Input from "../base/Input";
 
+import useTranslation from "next-translate/useTranslation";
+
 function Search() {
   const router = useRouter();
-  const t = useTranslations("Search");
+  const { t } = useTranslation("common");
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -28,7 +29,7 @@ function Search() {
             id="search"
             name="search"
             borderRadius={"full"}
-            placeholder={t("search")}
+            placeholder={t("Search.search")}
             width={"full"}
             type="search"
             tabIndex={1}

@@ -49,11 +49,13 @@ const accountOptions = [
   },
 ] as const;
 
+import useTranslation from "next-translate/useTranslation";
+
 function Auth({ variant = "avatar" }: { variant?: "avatar" | "menu" }) {
   const { status, data } = useSession();
   const user = data?.user as User;
   const router = useRouter();
-  const t = useTranslations("Auth");
+  const { t } = useTranslation("common");
 
   if (status === "authenticated" && user) {
     const userAvatar = user.media?.url ?? user.image ?? LogoLargeDynamicPath;
@@ -128,7 +130,7 @@ function Auth({ variant = "avatar" }: { variant?: "avatar" | "menu" }) {
                     <Link href={option.href} key={option.name}>
                       <MenuItem
                         Icon={option.Icon}
-                        name={t(`routes.${option.name}`)}
+                        name={t(`Auth.routes.${option.name}`)}
                         active={router.pathname === option.href}
                         variant="ghost"
                       ></MenuItem>
@@ -146,7 +148,7 @@ function Auth({ variant = "avatar" }: { variant?: "avatar" | "menu" }) {
                 colorScheme="red"
                 onClick={() => void signOut()}
               >
-                <span>{t("sign-out")}</span>
+                <span>{t("Auth.sign-out")}</span>
               </Button>
             </PopoverBody>
           </PopoverContent>
@@ -165,7 +167,7 @@ function Auth({ variant = "avatar" }: { variant?: "avatar" | "menu" }) {
   return (
     <Link href={"/auth/signin"}>
       <Button colorScheme="gray">
-        <span className="text-sm font-semibold">{t("sign-in")}</span>
+        <span className="text-sm font-semibold">{t("Auth.sign-in")}</span>
       </Button>
     </Link>
   );

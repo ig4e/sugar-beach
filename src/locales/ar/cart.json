@@ -1,0 +1,17 @@
+{
+  "your-order": "Your Order",
+  "items-count": "items",
+  "order-summary": "Order Summary",
+  "check-out": "Check Out",
+  "available-payment-methods": "Available Payment Methods",
+  "cart-empty": {
+    "heading": "Looking for something?",
+    "text": "Add your favorite items to your cart.",
+    "button": "Keep Shopping"
+  },
+  "errors": {
+    "quantity": {
+      "not-enough": "Insufficient product quantity in stock"
+    }
+  }
+}

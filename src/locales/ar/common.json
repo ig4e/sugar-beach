@@ -1,0 +1,46 @@
+{
+  "Navbar": {
+    "brand-copy": "© 2023 Sugar Beach",
+    "explore": "استكشف"
+  },
+  "Footer": {
+    "pay-with-ease": "ادفع بسهولة",
+    "about-us": "من نحن",
+    "contact-us": "اتصل بنا",
+    "support": "الدعم",
+    "legal": "قانوني",
+    "terms-of-use": "شروط الاستخدام",
+    "terms-of-sale": "شروط البيع",
+    "privacy-policy": "سياسة الخصوصية",
+    "stay-updated-with-us": "ابقى على اطلاع",
+    "brand-copy": "© 2023 Sugar Beach"
+  },
+  "ChangeRegion": {
+    "drawer": {
+      "header": "إعدادات التوطين",
+      "body": {
+        "choose-country": "اختر البلد",
+        "choose-language": "اختر اللغة"
+      },
+      "footer": {
+        "confirm": "تأكيد",
+        "cancel": "إلغاء"
+      }
+    }
+  },
+  "Auth": {
+    "routes": {
+      "my-account": "حسابي",
+      "my-orders": "طلباتي",
+      "my-addresses": "عناويني",
+      "admin-dashboard": "لوحة التحكم للمشرف"
+    },
+    "sign-in": "تسجيل الدخول",
+    "sign-out": "تسجيل الخروج"
+  },
+  "SideNav": {
+    "search": "البحث",
+    "categories": "التصنيفات",
+    "explore": "استكشف"
+  }
+}

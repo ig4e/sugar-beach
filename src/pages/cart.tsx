@@ -10,8 +10,6 @@ import {
 } from "@chakra-ui/react";
 import { LoadingOverlay } from "@mantine/core";
 import { type Product } from "@prisma/client";
-import { type GetStaticProps } from "next";
-import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo } from "react";
@@ -23,13 +21,15 @@ import { useCartStore } from "~/store/cart";
 import type { Locale } from "~/types/locale";
 import { api } from "~/utils/api";
 
+import useTranslation from "next-translate/useTranslation";
+
 function Cart() {
-  const t = useTranslations("Cart");
+  const { t, lang } = useTranslation("cart");
   const cartStore = useCartStore();
   const toast = useToast();
   const currency = useCurrency();
   const userAddresses = api.user.address.findMany.useQuery({});
-  const locale = useLocale() as Locale;
+  const locale = lang as Locale;
 
   const { data, isLoading } = api.product.getCart.useQuery({
     productIDs: cartStore.items.reduce(
@@ -95,11 +95,7 @@ function Cart() {
             <div className="space-y-4">
               <HStack justifyContent={"space-between"}>
                 <Heading size="md">{t("your-order")}</Heading>
-                <Text>
-                  {t("items-count", {
-                    itemsCount: dataWithCartQuantity.length,
-                  })}
-                </Text>
+                <Text>{dataWithCartQuantity.length} {t("items-count")}</Text>
               </HStack>
               <div className="flex h-full flex-col gap-4">
                 <VStack

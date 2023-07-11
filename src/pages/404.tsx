@@ -1,5 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import type { GetStaticProps } from "next";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import CenteredLayout from "~/components/layout/CenteredLayout";

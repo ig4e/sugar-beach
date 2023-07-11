@@ -13,9 +13,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { PlusIcon } from "@heroicons/react/24/solid";
-import { GetStaticProps } from "next";
 import ManageAddress from "~/components/address/ManageAddress";
-import AuthGaurd from "~/components/base/AuthGaurd";
 import UserDashboardLayout from "~/components/layout/UserDashboardLayout";
 import { COUNTRIES_NAME } from "~/config/commonConfig";
 import { api } from "~/utils/api";

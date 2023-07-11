@@ -1,0 +1,64 @@
+{
+  "EditProfile": {
+    "header": "Edit Profile",
+    "info": {
+      "edit": "Edit",
+      "name": "Name",
+      "email": "Email"
+    },
+    "editProfile": {
+      "success": "Profile edited successfully!",
+      "error": "Failed to edit profile"
+    },
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "AvatarUpload": {
+    "user-avatar-updated-success": "Successfully updated your avatar",
+    "user-avatar-updated-error": "Failed to update your avatar",
+    "user-avatar-updated-upload-error": "Failed to upload your avatar"
+  },
+  "EditEmail": {
+    "header": "Edit Email",
+    "email-verification": {
+      "error": "Failed to send email verification",
+      "success": "Successfuly sent email verification!"
+    },
+    "email-edit": {
+      "error": "Failed to edit email!",
+      "success": "Successfuly edited email!"
+    },
+    "steps": {
+      "first": {
+        "meta": {
+          "title": "First",
+          "description": "Verify your email"
+        },
+        "header": "We’ll need to verify your old email address",
+        "button": "Send Verification code"
+      },
+      "second": {
+        "meta": {
+          "title": "Second",
+          "description": "Add your new email"
+        },
+        "verification-code-input-label": "Verification code",
+        "verification-code-input-resend": "Didn’t receive a code or it expired? Resend it.",
+        "verification-code-input-helper": "heck your email: we sent you a verification code. Enter it here to verify you’re really you.",
+        "new-email-input-label": "New Email",
+        "new-email-input-helper": "Your new email address."
+      },
+      "third": {
+        "meta": {
+          "title": "Third",
+          "description": "Complete"
+        },
+        "header": "Your email address has been changed!"
+      }
+    },
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "submit": "Submit"
+  }
+}

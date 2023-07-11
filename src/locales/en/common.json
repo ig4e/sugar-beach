@@ -1,0 +1,59 @@
+{
+  "Navbar": {
+    "brand-copy": "© 2023 Sugar Beach",
+    "explore": "Explore"
+  },
+  "Footer": {
+    "pay-with-ease": "Pay With Ease",
+    "about-us": "About Us",
+    "contact-us": "Contact Us",
+    "support": "Support",
+    "legal": "Legal",
+    "terms-of-use": "Terms of Use",
+    "terms-of-sale": "Terms of Sale",
+    "privacy-policy": "Privacy Policy",
+    "stay-updated-with-us": "Stay Updated With Us",
+    "brand-copy": "© 2023 Sugar Beach"
+  },
+  "ChangeRegion": {
+    "drawer": {
+      "header": "Localization Settings",
+      "body": {
+        "choose-country": "Choose Country",
+        "choose-language": "Choose Language"
+      },
+      "footer": {
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      }
+    }
+  },
+  "Auth": {
+    "routes": {
+      "my-account": "My Account",
+      "my-orders": "My Orders",
+      "my-addresses": "My Addresses",
+      "admin-dashboard": "Admin Dashboard"
+    },
+    "sign-in": "Sign In",
+    "sign-out": "Sign Out"
+  },
+  "SideNav": {
+    "search": "Search",
+    "categories": "Categories",
+    "explore": "Explore"
+  },
+  "ProductCard": {
+    "sale": "Sale",
+    "add-to-cart": "Add to Cart",
+    "buy-now": "Buy Now"
+  },
+  "Search": {
+    "search": "Search",
+    "category": "Category",
+    "shop-by-price": "Shop By Price",
+    "search-results": "Search Results",
+    "for": "for",
+    "to": "To"
+  }
+}

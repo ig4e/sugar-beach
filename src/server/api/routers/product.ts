@@ -10,6 +10,8 @@ import { utapi } from "uploadthing/server";
 import { mediaSchema } from "~/server/commonZod";
 import { TRPCError } from "@trpc/server";
 
+import type { Prisma } from "@prisma/client";
+
 const productInput = z.object({
   media: mediaSchema.array().min(1),
   name: zodName,
@@ -71,6 +73,8 @@ export const productRouter = createTRPCRouter({
           })
           .nullish(),
         productIDs: z.string().uuid().array().nullish(),
+        minPrice: z.number().nullish(),
+        maxPrice: z.number().nullish(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -95,8 +99,21 @@ export const productRouter = createTRPCRouter({
               },
               { $project: { _id: 1 } },
             ],
-          })) as any as { _id: string }[])
+          })) as unknown as { _id: string }[])
         : undefined;
+
+      const filter: Prisma.ProductWhereInput = {
+        id: query
+          ? { in: query.map((item) => item._id) }
+          : input.productIDs
+          ? { in: input.productIDs }
+          : undefined,
+        categoryIDs: input.categoryIDs
+          ? { hasEvery: input.categoryIDs }
+          : undefined,
+        status: input.status ? { equals: input.status } : undefined,
+        price: { gte: input.minPrice ?? 0, lte: input.maxPrice ?? undefined },
+      };
 
       let items = await ctx.prisma.product.findMany({
         take: limit + 1, // get an extra item at the end which we'll use as next cursor
@@ -108,21 +125,25 @@ export const productRouter = createTRPCRouter({
           : {
               id: "asc",
             },
-        where: {
-          id: query
-            ? { in: query.map((item) => item._id) }
-            : input.productIDs
-            ? { in: input.productIDs }
-            : undefined,
-          categoryIDs: input.categoryIDs
-            ? { hasEvery: input.categoryIDs }
-            : undefined,
-          status: input.status ? { equals: input.status } : undefined,
-        },
+        where: filter,
         include: {
           categories: true,
         },
       });
+
+      const productPriceAggregate = await ctx.prisma.product.aggregate({
+        where: filter,
+        _min: { price: true },
+        _max: { price: true },
+      });
+
+      const meta = {
+        totalCount: await ctx.prisma.product.count({ where: filter }),
+        priceRange: {
+          max: productPriceAggregate._max.price,
+          min: productPriceAggregate._min.price,
+        },
+      };
 
       if (query) {
         const sortedItems = query
@@ -134,10 +155,11 @@ export const productRouter = createTRPCRouter({
       let nextCursor: typeof cursor | undefined = undefined;
       if (items.length > limit) {
         const nextItem = items.pop();
-        nextCursor = nextItem!.id;
+        nextCursor = nextItem?.id;
       }
 
       return {
+        meta,
         items,
         nextCursor,
       };

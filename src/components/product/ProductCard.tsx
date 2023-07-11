@@ -18,16 +18,18 @@ import { useLocale, useTranslations } from "next-intl";
 import type { Locale } from "~/types/locale";
 import { LogoSmallTransparent } from "../logos";
 
+import useTranslation from "next-translate/useTranslation";
+
 function ProductCard({
   product,
 }: {
   product: Product & { categories: Category[] };
 }) {
+  const { t, lang } = useTranslation("common");
   const cartStore = useCartStore();
   const productImage = product.media[0]?.url || LogoSmallTransparent;
   const router = useRouter();
-  const locale = useLocale() as Locale;
-  const t = useTranslations("ProductCard");
+  const locale = lang as Locale;
 
   return (
     <Card>
@@ -54,7 +56,7 @@ function ProductCard({
             <Heading size="md">{product.name[locale]}</Heading>
             <HStack flexWrap={"wrap"}>
               {product.compareAtPrice && (
-                <Badge colorScheme="red">{t("sale")}</Badge>
+                <Badge colorScheme="red">{t("ProductCard.sale")}</Badge>
               )}
               {product.categories.map((category) => (
                 <Badge key={category.id}>{category.name[locale]}</Badge>
@@ -86,7 +88,7 @@ function ProductCard({
               void router.push("/cart");
             }}
           >
-            {t("buy-now")}
+            {t("ProductCard.buy-now")}
           </Button>
         </VStack>
       </CardBody>

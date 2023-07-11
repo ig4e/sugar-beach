@@ -7,7 +7,6 @@ import {
 import "@uploadthing/react/styles.css";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-import { NextIntlClientProvider } from "next-intl";
 import { type AppType } from "next/app";
 import { useRouter } from "next/router";
 import stylisRTLPlugin from "stylis-plugin-rtl";
@@ -20,10 +19,8 @@ import "~/styles/globals.css";
 import { customChakraTheme } from "~/theme";
 import { api } from "~/utils/api";
 
-import enMessages from "public/locales/en.json";
-import arMessages from "public/locales/ar.json";
 
-const MyApp: AppType<{ session: Session | null; messages: Messages }> = ({
+const MyApp: AppType<{ session: Session }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
@@ -62,24 +59,20 @@ const MyApp: AppType<{ session: Session | null; messages: Messages }> = ({
 
   return (
     <div className="bg-zinc-100 !font-inter">
-      <NextIntlClientProvider
-        messages={locale === "ar" ? arMessages : enMessages}
+      <MantineProvider
+        withGlobalStyles
+        withNormalizeCSS
+        theme={customMantineTheme}
+        emotionCache={rtl ? rtlCache : undefined}
       >
-        <MantineProvider
-          withGlobalStyles
-          withNormalizeCSS
-          theme={customMantineTheme}
-          emotionCache={rtl ? rtlCache : undefined}
-        >
-          <ChakraProvider theme={chakraTheme}>
-            <SessionProvider session={session}>
-              <CurrencyContext.Provider value={{ currency }}>
-                <Component {...pageProps} />
-              </CurrencyContext.Provider>
-            </SessionProvider>
-          </ChakraProvider>
-        </MantineProvider>
-      </NextIntlClientProvider>
+        <ChakraProvider theme={chakraTheme}>
+          <SessionProvider session={session}>
+            <CurrencyContext.Provider value={{ currency }}>
+              <Component {...pageProps} />
+            </CurrencyContext.Provider>
+          </SessionProvider>
+        </ChakraProvider>
+      </MantineProvider>
     </div>
   );
 };

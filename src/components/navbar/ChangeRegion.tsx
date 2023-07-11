@@ -20,18 +20,20 @@ import {
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { SegmentedControl } from "@mantine/core";
 import type { Countries } from "@prisma/client";
-import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { COUNTRIES } from "~/config/commonConfig";
 import { useStore } from "~/hooks/useStore";
 import { useLocalisationStore } from "~/store/localisation";
 
+import useTranslation from "next-translate/useTranslation";
+import { Locale } from "~/types/locale";
+
 function ChangeRegion() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const t = useTranslations("ChangeRegion");
-  const locale = useLocale();
+  const { t, lang } = useTranslation("common");
+  const locale = lang as Locale;
   const router = useRouter();
   const localisation = useStore(useLocalisationStore, (state) => state);
 
@@ -42,6 +44,15 @@ function ChangeRegion() {
     country: localisation?.country ?? "SA",
     language: locale,
   });
+
+  useEffect(() => {
+    if (localisation)
+      setLocalisation((state) => ({
+        ...state,
+        country: localisation?.country,
+      }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [!!localisation]);
 
   const onConfirm = useCallback(() => {
     if (localisation) {
@@ -79,17 +90,22 @@ function ChangeRegion() {
         <ChevronDownIcon className="h-5 w-5 text-zinc-900" />
       </Button>
 
-      <Drawer isOpen={isOpen} placement={locale === "ar" ? "left" : "right"} onClose={onClose} size="sm">
+      <Drawer
+        isOpen={isOpen}
+        placement={locale === "ar" ? "left" : "right"}
+        onClose={onClose}
+        size="sm"
+      >
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>{t("drawer.header")}</DrawerHeader>
+          <DrawerHeader>{t("ChangeRegion.drawer.header")}</DrawerHeader>
 
           <DrawerBody>
             <VStack spacing={4}>
               <FormControl>
                 <VStack alignItems={"start"}>
-                  <FormLabel>{t("drawer.body.choose-country")}</FormLabel>
+                  <FormLabel>{t("ChangeRegion.drawer.body.choose-country")}</FormLabel>
 
                   <RadioGroup
                     value={currentLocalisation.country}
@@ -126,7 +142,7 @@ function ChangeRegion() {
                 </VStack>
               </FormControl>
               <FormControl>
-                <FormLabel>{t("drawer.body.choose-language")}</FormLabel>
+                <FormLabel>{t("ChangeRegion.drawer.body.choose-language")}</FormLabel>
 
                 <SegmentedControl
                   className="!w-full"
@@ -147,9 +163,9 @@ function ChangeRegion() {
           <DrawerFooter>
             <HStack>
               <Button variant="outline" onClick={onClose}>
-                {t("drawer.footer.cancel")}
+                {t("ChangeRegion.drawer.footer.cancel")}
               </Button>
-              <Button onClick={onConfirm}>{t("drawer.footer.confirm")}</Button>
+              <Button onClick={onConfirm}>{t("ChangeRegion.drawer.footer.confirm")}</Button>
             </HStack>
           </DrawerFooter>
         </DrawerContent>

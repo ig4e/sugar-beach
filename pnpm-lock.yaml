@@ -136,15 +136,24 @@ dependencies:
   lodash:
     specifier: ^4.17.21
     version: 4.17.21
+  mobx:
+    specifier: ^6.9.0
+    version: 6.9.0
+  mobx-react-lite:
+    specifier: ^3.4.3
+    version: 3.4.3(mobx@6.9.0)(react-dom@18.2.0)(react@18.2.0)
   next:
     specifier: ^13.4.6
     version: 13.4.6(react-dom@18.2.0)(react@18.2.0)
   next-auth:
     specifier: ^4.22.1
     version: 4.22.1(next@13.4.6)(nodemailer@6.9.3)(react-dom@18.2.0)(react@18.2.0)
-  next-intl:
-    specifier: ^2.17.4
-    version: 2.17.4(next@13.4.6)(react@18.2.0)
+  next-translate:
+    specifier: ^2.4.4
+    version: 2.4.4(next@13.4.6)(react@18.2.0)
+  next-translate-plugin:
+    specifier: ^2.4.4
+    version: 2.4.4(next-translate@2.4.4)
   nodemailer:
     specifier: ^6.9.3
     version: 6.9.3
@@ -163,6 +172,9 @@ dependencies:
   react-hook-form:
     specifier: ^7.45.0
     version: 7.45.0(react@18.2.0)
+  react-hook-form-mantine:
+    specifier: ^1.0.10
+    version: 1.0.10(@mantine/core@6.0.14)(react-dom@18.2.0)(react-hook-form@7.45.0)(react@18.2.0)
   resend:
     specifier: ^0.16.0
     version: 0.16.0
@@ -1817,59 +1829,6 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       tabbable: 6.1.2
-    dev: false
-
-  /@formatjs/ecma402-abstract@1.11.4:
-    resolution: {integrity: sha512-EBikYFp2JCdIfGEb5G9dyCkTGDmC57KSHhRQOC3aYxoPWVZvfWCDjZwkGYHN7Lis/fmuWl906bnNTJifDQ3sXw==}
-    dependencies:
-      '@formatjs/intl-localematcher': 0.2.25
-      tslib: 2.5.3
-    dev: false
-
-  /@formatjs/ecma402-abstract@1.17.0:
-    resolution: {integrity: sha512-6ueQTeJZtwKjmh23bdkq/DMqH4l4bmfvtQH98blOSbiXv/OUiyijSW6jU22IT8BNM1ujCaEvJfTtyCYVH38EMQ==}
-    dependencies:
-      '@formatjs/intl-localematcher': 0.4.0
-      tslib: 2.5.3
-    dev: false
-
-  /@formatjs/fast-memoize@1.2.1:
-    resolution: {integrity: sha512-Rg0e76nomkz3vF9IPlKeV+Qynok0r7YZjL6syLz4/urSg0IbjPZCB/iYUMNsYA643gh4mgrX3T7KEIFIxJBQeg==}
-    dependencies:
-      tslib: 2.5.3
-    dev: false
-
-  /@formatjs/icu-messageformat-parser@2.1.0:
-    resolution: {integrity: sha512-Qxv/lmCN6hKpBSss2uQ8IROVnta2r9jd3ymUEIjm2UyIkUCHVcbUVRGL/KS/wv7876edvsPe+hjHVJ4z8YuVaw==}
-    dependencies:
-      '@formatjs/ecma402-abstract': 1.11.4
-      '@formatjs/icu-skeleton-parser': 1.3.6
-      tslib: 2.5.3
-    dev: false
-
-  /@formatjs/icu-skeleton-parser@1.3.6:
-    resolution: {integrity: sha512-I96mOxvml/YLrwU2Txnd4klA7V8fRhb6JG/4hm3VMNmeJo1F03IpV2L3wWt7EweqNLES59SZ4d6hVOPCSf80Bg==}
-    dependencies:
-      '@formatjs/ecma402-abstract': 1.11.4
-      tslib: 2.5.3
-    dev: false
-
-  /@formatjs/intl-localematcher@0.2.25:
-    resolution: {integrity: sha512-YmLcX70BxoSopLFdLr1Ds99NdlTI2oWoLbaUW2M406lxOIPzE1KQhRz2fPUkq34xVZQaihCoU29h0KK7An3bhA==}
-    dependencies:
-      tslib: 2.5.3
-    dev: false
-
-  /@formatjs/intl-localematcher@0.2.32:
-    resolution: {integrity: sha512-k/MEBstff4sttohyEpXxCmC3MqbUn9VvHGlZ8fauLzkbwXmVrEeyzS+4uhrvAk9DWU9/7otYWxyDox4nT/KVLQ==}
-    dependencies:
-      tslib: 2.5.3
-    dev: false
-
-  /@formatjs/intl-localematcher@0.4.0:
-    resolution: {integrity: sha512-bRTd+rKomvfdS4QDlVJ6TA/Jx1F2h/TBVO5LjvhQ7QPPHp19oPNMIum7W2CMEReq/zPxpmCeB31F9+5gl/qtvw==}
-    dependencies:
-      tslib: 2.5.3
     dev: false
 
   /@heroicons/react@2.0.18(react@18.2.0):
@@ -4754,15 +4713,6 @@ packages:
     engines: {node: '>= 0.10'}
     dev: false
 
-  /intl-messageformat@9.13.0:
-    resolution: {integrity: sha512-7sGC7QnSQGa5LZP7bXLDhVDtQOeKGeBFGHF2Y8LVBwYZoQZCgWeKoPGTa5GMG8g/TzDgeXuYJQis7Ggiw2xTOw==}
-    dependencies:
-      '@formatjs/ecma402-abstract': 1.11.4
-      '@formatjs/fast-memoize': 1.2.1
-      '@formatjs/icu-messageformat-parser': 2.1.0
-      tslib: 2.5.3
-    dev: false
-
   /invariant@2.2.4:
     resolution: {integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==}
     dependencies:
@@ -5235,6 +5185,28 @@ packages:
       minimist: 1.2.8
     dev: false
 
+  /mobx-react-lite@3.4.3(mobx@6.9.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-NkJREyFTSUXR772Qaai51BnE1voWx56LOL80xG7qkZr6vo8vEaLF3sz1JNUVh+rxmUzxYaqOhfuxTfqUh0FXUg==}
+    peerDependencies:
+      mobx: ^6.1.0
+      react: ^16.8.0 || ^17 || ^18
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      mobx: 6.9.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /mobx@6.9.0:
+    resolution: {integrity: sha512-HdKewQEREEJgsWnErClfbFoVebze6rGazxFLU/XUyrII8dORfVszN1V0BMRnQSzcgsNNtkX8DHj3nC6cdWE9YQ==}
+    dev: false
+
   /ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
     dev: true
@@ -5268,11 +5240,6 @@ packages:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
 
-  /negotiator@0.6.3:
-    resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
-    engines: {node: '>= 0.6'}
-    dev: false
-
   /next-auth@4.22.1(next@13.4.6)(nodemailer@6.9.3)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-NTR3f6W7/AWXKw8GSsgSyQcDW6jkslZLH8AiZa5PQ09w1kR8uHtR9rez/E9gAq/o17+p0JYHE8QjF3RoniiObA==}
     peerDependencies:
@@ -5299,18 +5266,26 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /next-intl@2.17.4(next@13.4.6)(react@18.2.0):
-    resolution: {integrity: sha512-GlB7mBC/+wsuvEuRqyMxmQi8PBGMSfHUz/RDdqazl8BOFuaNXijJ6btpZ4FAlonJcXMOroONmP/L0/c6zqYZOQ==}
-    engines: {node: '>=10'}
+  /next-translate-plugin@2.4.4(next-translate@2.4.4):
+    resolution: {integrity: sha512-8olUhdy52IPwLlogrs0KP/FijMZ0Ijf+mWLZtOaFJ7vhCWLSKAE0eb9vYBI+N3T3jjyedC+ufo6g/d4Y5e1HBg==}
+    engines: {node: '>=14.15.0'}
+    requiresBuild: true
     peerDependencies:
-      next: ^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      next-translate: '>= 2.4.1'
     dependencies:
-      '@formatjs/intl-localematcher': 0.2.32
-      negotiator: 0.6.3
+      next-translate: 2.4.4(next@13.4.6)(react@18.2.0)
+      typescript: 4.5.2
+    dev: false
+
+  /next-translate@2.4.4(next@13.4.6)(react@18.2.0):
+    resolution: {integrity: sha512-WuHT8gSgkIDMyxuvIjRFZMfXjbGz8xjpuEBerChVy+ORkfo9xoUagS2FXyrXORyQmE5ifsWmKVUgiyy9NN5Ygg==}
+    engines: {node: '>=16.10.0'}
+    peerDependencies:
+      next: '>= 13.2.5'
+      react: '>= 18.0.0'
+    dependencies:
       next: 13.4.6(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
-      use-intl: 2.17.4(react@18.2.0)
     dev: false
 
   /next@13.4.6(react-dom@18.2.0)(react@18.2.0):
@@ -6072,6 +6047,20 @@ packages:
       react-clientside-effect: 1.2.6(react@18.2.0)
       use-callback-ref: 1.3.0(@types/react@18.2.13)(react@18.2.0)
       use-sidecar: 1.1.2(@types/react@18.2.13)(react@18.2.0)
+    dev: false
+
+  /react-hook-form-mantine@1.0.10(@mantine/core@6.0.14)(react-dom@18.2.0)(react-hook-form@7.45.0)(react@18.2.0):
+    resolution: {integrity: sha512-sTKVZ31n5Waxt7B/U9u9EpfI1TVqKUV6MI+2W9h0XxbMbINR0n4/QmhBPJguHbyTOgWT8G0IgYDVZiqh/lUyYg==}
+    peerDependencies:
+      '@mantine/core': ^6.0.0
+      react: ^18.2.0
+      react-dom: ^18.2.0
+      react-hook-form: ^7.43
+    dependencies:
+      '@mantine/core': 6.0.14(@emotion/react@11.11.1)(@mantine/hooks@6.0.14)(@types/react@18.2.13)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-hook-form: 7.45.0(react@18.2.0)
     dev: false
 
   /react-hook-form@7.45.0(react@18.2.0):
@@ -6916,6 +6905,12 @@ packages:
       is-typed-array: 1.1.10
     dev: true
 
+  /typescript@4.5.2:
+    resolution: {integrity: sha512-5BlMof9H1yGt0P8/WF+wPNw6GfctgGjXp5hkblpyT+8rkASSmkUKMXrxR0Xg8ThVCi/JnHQiKXeBaEwCeQwMFw==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: false
+
   /typescript@5.1.3:
     resolution: {integrity: sha512-XH627E9vkeqhlZFQuL+UsyAXEnibT0kWR2FWONlr4sTjvxyJYnyefgrkyECLzM5NenmKzRAy2rR/OlYLA1HkZw==}
     engines: {node: '>=14.17'}
@@ -7021,17 +7016,6 @@ packages:
     dependencies:
       '@babel/runtime': 7.22.5
       dequal: 2.0.3
-      react: 18.2.0
-    dev: false
-
-  /use-intl@2.17.4(react@18.2.0):
-    resolution: {integrity: sha512-iaMdznvvagqo6ubBSKRgaLdHKjXBv7979pQMotOic63kNXEQECwyBqECeuKqEUtM40WdROxpAnbxw/ctWmVxGw==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      '@formatjs/ecma402-abstract': 1.17.0
-      intl-messageformat: 9.13.0
       react: 18.2.0
     dev: false
 

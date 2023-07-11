@@ -5,7 +5,6 @@ import {
   AlertTitle,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
-import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -13,10 +12,12 @@ import { useEffect } from "react";
 import CenteredLayout from "~/components/layout/CenteredLayout";
 import { LogoSmallTransparent } from "~/components/logos";
 
+import useTranslation from "next-translate/useTranslation";
+
 function VerifyRequest() {
   const session = useSession();
   const router = useRouter();
-  const t = useTranslations("VerifyRequest");
+  const { t } = useTranslation("verifyRequest");
 
   useEffect(() => {
     if (session.status === "authenticated") {

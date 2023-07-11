@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 import MenuItem from "../base/MenuItem";
 import Layout from "./Layout";
 import AuthGaurd from "../base/AuthGaurd";
-import { useTranslations } from "next-intl";
 import { type ReactNode } from "react";
 const accountOptions = [
   { name: "my-account", href: "/@me", Icon: Cog6ToothIcon },
@@ -16,8 +15,10 @@ const accountOptions = [
   { name: "my-addresses", href: "/@me/addresses", Icon: HomeModernIcon },
 ] as const;
 
+import useTranslation from "next-translate/useTranslation";
+
 function UserDashboardLayout({ children }: { children: ReactNode }) {
-  const t = useTranslations("Auth");
+  const { t } = useTranslation("common");
   const router = useRouter();
 
   return (
@@ -29,7 +30,7 @@ function UserDashboardLayout({ children }: { children: ReactNode }) {
               return (
                 <Link href={option.href} key={option.name}>
                   <MenuItem
-                    name={t(`routes.${option.name}`)}
+                    name={t(`Auth.routes.${option.name}`)}
                     Icon={option.Icon}
                     variant="ghost"
                     size="md"

@@ -7,13 +7,15 @@ import { useTranslations } from "next-intl";
 import { useCartStore } from "~/store/cart";
 import { api } from "~/utils/api";
 
+import useTranslation from 'next-translate/useTranslation'
+
 function AddToCart({ productId }: { productId: string }) {
   const cartStore = useCartStore();
   const cartItem = cartStore.items.find((item) => item.id === productId);
   const { data: product } = api.product.get.useQuery({
     id: productId,
   });
-  const t = useTranslations("ProductCard")
+  const {t} = useTranslation("common")
 
   if (!product)
     return (
@@ -67,7 +69,7 @@ function AddToCart({ productId }: { productId: string }) {
           w={"full"}
           onClick={() => cartStore.addItem(productId)}
         >
-          {t("add-to-cart")}
+          {t("ProductCard.add-to-cart")}
         </Button>
       )}
     </div>

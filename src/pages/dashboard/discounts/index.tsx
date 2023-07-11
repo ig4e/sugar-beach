@@ -15,17 +15,19 @@ import {
 } from "@chakra-ui/react";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import dayjs from "dayjs";
-import { useTranslations } from "next-intl";
 import ManageDiscount from "~/components/ManageDiscount";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/layout/AdminLayout";
 import { api } from "~/utils/api";
 
+import useTranslation from "next-translate/useTranslation";
+
+
 function Index() {
   const toast = useToast();
   const allDiscountsQuery = api.discount.getAll.useQuery();
   const deleteDiscountHook = api.discount.delete.useMutation();
-  const t = useTranslations("Discounts");
+  const { t } = useTranslation("adminDiscounts");
 
   function deleteDiscount(id: string) {
     deleteDiscountHook.mutate(

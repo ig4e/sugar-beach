@@ -1,3 +1,7 @@
+
+import nextTranslate from "next-translate-plugin";
+
+
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
  * for Docker builds.
@@ -27,4 +31,6 @@ const config = {
     esmExternals: false, // THIS IS THE FLAG THAT MATTERS
   },
 };
-export default config;
+
+
+export default nextTranslate(config);
