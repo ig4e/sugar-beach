@@ -1,4 +1,11 @@
-import { Heading, Text, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  Divider,
+  HStack,
+  Heading,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/layout/AdminLayout";
 import StaffTable from "~/components/staff/StaffTable";
@@ -9,7 +16,10 @@ function StaffPage() {
       <AdminLayout>
         <div className="space-y-4">
           <VStack alignItems={"start"}>
-            <Heading size={"md"}>Staff</Heading>
+            <HStack justifyContent={"space-between"} w="full">
+              <Heading size={"md"}>Staff</Heading>
+              <Button>Add staff</Button>
+            </HStack>
             <Text>
               Take control of access to Sugar Beach&apos;s administrative
               dashboard (Restricted to users with an ADMIN role only)
@@ -17,6 +27,8 @@ function StaffPage() {
           </VStack>
 
           <StaffTable></StaffTable>
+
+          <Divider></Divider>
         </div>
       </AdminLayout>
     </AuthGaurd>

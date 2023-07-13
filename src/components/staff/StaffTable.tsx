@@ -31,13 +31,13 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
-  Text
+  Text,
 } from "@chakra-ui/react";
 
 import {
   AdjustmentsHorizontalIcon,
   CheckIcon,
-  EyeSlashIcon
+  EyeSlashIcon,
 } from "@heroicons/react/20/solid";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
@@ -46,6 +46,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { api } from "~/utils/api";
 import Input from "../base/Input";
 import { LogoLargeDynamicPath } from "../logos";
+import { LoadingOverlay } from "@mantine/core";
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -147,7 +148,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center justify-between py-4">
+      <div className="flex items-center justify-between gap-4 py-4">
         <Input
           placeholder="Filter emails..."
           value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
@@ -287,10 +288,15 @@ function StaffTable() {
     }
   }, [dataPages]);
 
-  if (!data) return;
+  if (!data)
+    return (
+      <div className="relative min-h-[25rem]">
+        <LoadingOverlay visible overlayBlur={2}></LoadingOverlay>
+      </div>
+    );
 
   return (
-    <div>
+    <div className="">
       <DataTable columns={columns} data={data}></DataTable>
     </div>
   );
