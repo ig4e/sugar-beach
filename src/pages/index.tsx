@@ -15,10 +15,15 @@ import {
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Layout from "~/components/layout/Layout";
+import ProductCard from "~/components/product/ProductCard";
+import ProductRow from "~/components/product/ProductRow";
 import { api } from "~/utils/api";
 
 const HomePage: NextPage = () => {
   const featuredProducts = api.featured.getAll.useQuery({});
+  const newProducts = api.product.getAll.useQuery({
+    orderBy: { key: "createdAt", type: "desc" },
+  });
 
   return (
     <Layout>
@@ -100,21 +105,14 @@ const HomePage: NextPage = () => {
           </Swiper>
         </div>
 
-        <section>
-          <div>
-            <h3 className="text-2xl font-bold">EXCLUSIVE OFFERS</h3>
-            <Text>
-              Don't miss our limited-time offers! Discover current deals today!
-            </Text>
-          </div>
-        </section>
-
-        <section>
-          <div>
-            <h3 className="text-2xl font-bold">NEW ARRIVALS</h3>
-            <Text>Check out our latest products and discover new tastes</Text>
-          </div>
-        </section>
+        {newProducts.data && (
+          <ProductRow
+            title="NEW ARRIVALS"
+            description="Check out our latest products and discover new tastes"
+            products={newProducts.data?.items}
+            href={"/search?query=&categories=&min=0&max=0&orderBy=createdAt&orderType=desc"}
+          ></ProductRow>
+        )}
       </div>
     </Layout>
   );

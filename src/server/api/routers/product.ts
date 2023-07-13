@@ -68,7 +68,7 @@ export const productRouter = createTRPCRouter({
         status: z.enum(["ACTIVE", "DRAFT", "ARCHIVED"]).nullish(),
         orderBy: z
           .object({
-            key: z.enum(["name", "price", "createdAt", "editedAt"]),
+            key: z.enum(["id", "price", "createdAt", "updatedAt"]),
             type: z.enum(["asc", "desc"]),
           })
           .nullish(),

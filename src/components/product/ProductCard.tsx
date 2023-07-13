@@ -31,7 +31,7 @@ function ProductCard({
   const locale = lang as Locale;
 
   return (
-    <Card>
+    <Card height={"full"}>
       <CardBody
         display={"flex"}
         flexDirection={"column"}
@@ -45,19 +45,25 @@ function ProductCard({
             justifyContent={"start"}
             alignItems={"start"}
           >
-            <Image
-              src={productImage}
-              width={256}
-              height={256}
-              alt={product.name[locale]}
-              className="max-h-40 w-full rounded-md object-cover"
-            />
-            <Heading size="md">{product.name[locale]}</Heading>
+            <div className="h-full max-h-40 w-full overflow-hidden rounded-md border">
+              <Image
+                src={productImage}
+                width={256}
+                height={256}
+                alt={product.name[locale]}
+                className="h-full max-h-40 w-full rounded-md object-cover"
+              />
+            </div>
+
+            <Heading size="md" className="line-clamp-2">
+              {product.name[locale]}
+            </Heading>
+
             <HStack flexWrap={"wrap"}>
               {product.compareAtPrice && (
                 <Badge colorScheme="red">{t("ProductCard.sale")}</Badge>
               )}
-              {product.categories.map((category) => (
+              {product.categories.slice(0, 4).map((category) => (
                 <Badge key={category.id}>{category.name[locale]}</Badge>
               ))}
             </HStack>

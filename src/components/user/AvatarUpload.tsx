@@ -14,6 +14,7 @@ export const AvatarUpload = ({ onRefetch }: { onRefetch: () => void }) => {
   return (
     <UploadButton<OurFileRouter>
       endpoint="userMedia"
+      
       onClientUploadComplete={(res) => {
         if (!res) return;
         const avatar = res[0];

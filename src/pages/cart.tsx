@@ -107,7 +107,7 @@ function Cart() {
                   mb={16}
                   spacing={4}
                 >
-                  <Heading>{t("cart-empty.heading")}</Heading>
+                  <Heading className="line-clamp-1">{t("cart-empty.heading")}</Heading>
                   <Text>{t("cart-empty.text")}</Text>
 
                   <Link href={"/"}>

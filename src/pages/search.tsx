@@ -1,12 +1,16 @@
-import { SearchIcon } from "@chakra-ui/icons";
+import { ArrowDownIcon, ArrowUpIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   Checkbox,
+  Divider,
+  HStack,
+  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
-  VStack
+  Stack,
+  VStack,
 } from "@chakra-ui/react";
-import { LoadingOverlay } from "@mantine/core";
+import { LoadingOverlay, Select } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDebounce } from "usehooks-ts";
@@ -21,6 +25,7 @@ import useCurrency from "~/hooks/useCurrency";
 import { useSearchStore } from "~/store/search";
 
 import useTranslation from "next-translate/useTranslation";
+import { ORDER_BY_KEYS } from "~/config/searchConfig";
 
 function SearchPage() {
   const { t, lang } = useTranslation("search");
@@ -33,9 +38,10 @@ function SearchPage() {
   const currency = useCurrency();
 
   useEffect(() => {
-    searchStore.parseUrl(router.pathname);
+    console.log(router.asPath);
+    searchStore.parseUrl(router.asPath);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.pathname]);
+  }, [router.asPath]);
 
   useEffect(() => {
     void router.push(searchStore.generateUrl(), undefined, { shallow: true });
@@ -44,6 +50,7 @@ function SearchPage() {
     searchStore.categoryIDs,
     searchStore.searchQuery,
     searchStore.priceRange,
+    searchStore.orderBy,
   ]);
 
   const { data, isError, isLoading, refetch } = api.product.getAll.useQuery({
@@ -51,6 +58,7 @@ function SearchPage() {
     searchQuery: debouncedSearchQuery,
     categoryIDs: searchStore.categoryIDs,
     status: "ACTIVE",
+    orderBy: { key: searchStore.orderBy.key, type: searchStore.orderBy.type },
     // minPrice: searchStore.priceRange.min ?? undefined,
     // maxPrice: searchStore.priceRange.max ?? undefined,
   });
@@ -174,19 +182,69 @@ function SearchPage() {
           </div>
         </div>
         <div className="relative flex flex-col gap-4">
-          <h2 className="text-2xl">
-            {t("search-results")}{" "}
-            {debouncedSearchQuery?.length > 0 && (
-              <span>
-                {t("for")}{" "}
-                <span className="font-bold text-pink-400">
-                  &quot;{debouncedSearchQuery}&quot;
-                </span>
-              </span>
-            )}
-          </h2>
+          <Stack
+            direction={["column", "row"]}
+            alignItems={"start"}
+            justifyContent={"space-between"}
+          >
+            <div>
+              <h2 className="text-2xl">
+                {t("search-results")}{" "}
+                {debouncedSearchQuery?.length > 0 && (
+                  <span>
+                    {t("for")}{" "}
+                    <span className="font-bold text-pink-400">
+                      &quot;{debouncedSearchQuery}&quot;
+                    </span>
+                  </span>
+                )}
+              </h2>
+            </div>
 
-          <LoadingOverlay visible={isLoading} overlayBlur={2}></LoadingOverlay>
+            <HStack>
+              {typeof window !== "undefined" && (
+                <Select
+                  data={ORDER_BY_KEYS}
+                  w={"fit"}
+                  value={searchStore.orderBy.key}
+                  onChange={(val) =>
+                    searchStore.setOrderBy({
+                      key: val as "id" | "price" | "createdAt" | "updatedAt",
+                    })
+                  }
+                ></Select>
+              )}
+              <IconButton
+                aria-label="sort"
+                size="sm"
+                borderRadius={"full"}
+                colorScheme="gray"
+                onClick={() =>
+                  searchStore.setOrderBy({
+                    type: searchStore.orderBy.type === "desc" ? "asc" : "desc",
+                  })
+                }
+                icon={
+                  searchStore.orderBy.type === "desc" ? (
+                    <ArrowDownIcon className="h-6 w-6"></ArrowDownIcon>
+                  ) : (
+                    <ArrowUpIcon className="h-6 w-6"></ArrowUpIcon>
+                  )
+                }
+              ></IconButton>
+            </HStack>
+          </Stack>
+
+          <Divider></Divider>
+
+          {isLoading && (
+            <div className="relative min-h-[400px]">
+              <LoadingOverlay
+                visible={isLoading}
+                overlayBlur={2}
+              ></LoadingOverlay>
+            </div>
+          )}
 
           <div className=" grid h-full w-full gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {!isLoading &&
