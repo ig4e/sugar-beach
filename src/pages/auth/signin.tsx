@@ -42,10 +42,7 @@ const errorMessages = {
   Default: "Catch all, will apply, if none of the above matched",
 } as const;
 
-
 import useTranslation from "next-translate/useTranslation";
-
-
 
 function SignIn() {
   const session = useSession();

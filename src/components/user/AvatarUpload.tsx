@@ -11,8 +11,6 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { UploadButton } from "@uploadthing/react";
-import type { OurFileRouter } from "~/server/uploadthing";
 import { api } from "~/utils/api";
 
 import useTranslation from "next-translate/useTranslation";
@@ -23,9 +21,8 @@ import { useRef, useState } from "react";
 import type { Crop, PixelCrop } from "react-image-crop";
 import ReactCrop from "react-image-crop";
 
-import { useUploadThing } from "~/utils/uploadthing";
-import Input from "../base/Input";
 import { FileButton } from "@mantine/core";
+import { useUploadThing } from "~/utils/uploadthing";
 
 export function AvatarUpload(props: { onRefetch: () => void }) {
   const { isOpen, onClose, onOpen } = useDisclosure();

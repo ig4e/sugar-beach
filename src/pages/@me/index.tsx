@@ -10,7 +10,7 @@ import {
   HStack,
   Heading,
   Stack,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { LoadingOverlay } from "@mantine/core";
 import { signIn, useSession } from "next-auth/react";
@@ -21,6 +21,7 @@ import EditProfile from "~/components/user/EditProfile";
 import { api } from "~/utils/api";
 
 import useTranslation from "next-translate/useTranslation";
+import { LogoLargeDynamicPath } from "~/components/logos";
 
 function MyAccount() {
   const session = useSession();
@@ -77,7 +78,9 @@ function MyAccount() {
                   >
                     <Avatar
                       name={user.name}
-                      src={user.media?.url || user.image!}
+                      src={
+                        user.media?.url ?? user.image ?? LogoLargeDynamicPath
+                      }
                       bg={"pink.500"}
                       size="md"
                     ></Avatar>

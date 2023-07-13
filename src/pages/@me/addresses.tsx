@@ -19,33 +19,19 @@ import UserDashboardLayout from "~/components/layout/UserDashboardLayout";
 import { COUNTRIES_NAME } from "~/config/commonConfig";
 import { api } from "~/utils/api";
 
-/*
-
-  fullName: z.string(),
-  phoneNumber: z.string(),
-  type: z.enum(["HOME", "OFFICE"]),
-  country: z.enum(["BH", "KW", "OM", "QA", "SA", "AE"]),
-  streetName: z.string(),
-  buildingNumber: z.string(),
-  city: z.string(),
-  area: z.string(),
-  province: z.string(),
-  nearestLandmark: z.string(),
-*/
-
 function Addresses() {
   const { t } = useTranslation("accountAddresses");
   const toast = useToast();
   const userAddresses = api.user.address.findMany.useQuery({});
   const deleteUserAddress = api.user.address.delete.useMutation({
-    onSuccess(data, variables, context) {
+    onSuccess() {
       toast({
         title: t("address-delete.success"),
         status: "success",
       });
       void userAddresses.refetch();
     },
-    onError(error, variables, context) {
+    onError(error) {
       toast({
         title: t("address-delete.error"),
         status: "error",

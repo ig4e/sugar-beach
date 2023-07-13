@@ -1,4 +1,3 @@
-import { Heading, Text } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import type { NextPage } from "next";
@@ -16,7 +15,6 @@ import {
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Layout from "~/components/layout/Layout";
-import ProductCard from "~/components/product/ProductCard";
 import ProductRow from "~/components/product/ProductRow";
 import { api } from "~/utils/api";
 

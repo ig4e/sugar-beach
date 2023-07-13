@@ -22,7 +22,6 @@ import { api } from "~/utils/api";
 
 import useTranslation from "next-translate/useTranslation";
 
-
 function Index() {
   const toast = useToast();
   const allDiscountsQuery = api.discount.getAll.useQuery();
