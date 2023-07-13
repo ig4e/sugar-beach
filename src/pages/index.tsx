@@ -81,7 +81,7 @@ const HomePage: NextPage = () => {
                       quality={100}
                       alt="image"
                       className={clsx(
-                        "hidden aspect-[1000/300] h-full w-full rounded-xl object-cover transition duration-1000 md:block md:max-h-96",
+                        "hidden aspect-[1000/300] h-full w-full rounded-xl bg-gray-400 object-cover transition duration-1000 md:block md:max-h-96",
                         {
                           "opacity-50": !isActive,
                         }
@@ -97,7 +97,7 @@ const HomePage: NextPage = () => {
                       quality={100}
                       alt="image"
                       className={clsx(
-                        "aspect-square h-full w-full rounded-xl object-cover transition duration-1000 md:hidden",
+                        "aspect-square h-full w-full rounded-xl bg-gray-400 object-cover transition duration-1000 md:hidden",
                         {
                           "opacity-50": !isActive,
                         }

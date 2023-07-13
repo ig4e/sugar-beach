@@ -10,6 +10,25 @@
     @apply !w-10 !bg-pink-500 !opacity-100 !transition-all;
   }
 
+  ::-webkit-scrollbar {
+    @apply h-2 w-3;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-xl bg-pink-500;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    @apply rounded-xl bg-pink-600;
+  }
+
   :root {
     --swiper-pagination-bullet-border-radius: 0.25rem !important;
     --swiper-pagination-bullet-inactive-color: #ffffff !important;

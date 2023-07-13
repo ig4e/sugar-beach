@@ -19,7 +19,6 @@ import "~/styles/globals.css";
 import { customChakraTheme } from "~/theme";
 import { api } from "~/utils/api";
 
-
 const MyApp: AppType<{ session: Session }> = ({
   Component,
   pageProps: { session, ...pageProps },
@@ -52,13 +51,20 @@ const MyApp: AppType<{ session: Session }> = ({
     },
     fontFamily: "Inter, Noto Kufi Arabic, sans-serif",
     dir: rtl ? "rtl" : "ltr",
+    breakpoints: {
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1400px",
+    },
   };
 
   const currency = useLocalisationStore((state) => state.currency);
   const chakraTheme = customChakraTheme(rtl ? "rtl" : "ltr");
 
   return (
-    <div className="bg-zinc-100 !font-inter">
+    <div className="!font-inter bg-zinc-100">
       <MantineProvider
         withGlobalStyles
         withNormalizeCSS
