@@ -3,10 +3,10 @@ import React, { useMemo } from "react";
 import {
   flexRender,
   getCoreRowModel,
-  useReactTable,
-  getPaginationRowModel,
-  type ColumnFiltersState,
   getFilteredRowModel,
+  getPaginationRowModel,
+  useReactTable,
+  type ColumnFiltersState,
   type VisibilityState,
 } from "@tanstack/react-table";
 
@@ -20,38 +20,32 @@ import {
 } from "@/components/ui/table";
 
 import {
+  Avatar,
+  Badge,
+  Button,
+  HStack,
+  Heading,
+  IconButton,
   Menu,
   MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
   MenuDivider,
-  IconButton,
-  Heading,
-  Badge,
-  HStack,
-  Avatar,
-  Text,
-  Button,
-  InputGroup,
-  InputLeftElement,
+  MenuItem,
+  MenuList,
+  Text
 } from "@chakra-ui/react";
 
-import type { ColumnDef } from "@tanstack/react-table";
-import type { User } from "@prisma/client";
-import { api } from "~/utils/api";
-import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import {
   AdjustmentsHorizontalIcon,
   CheckIcon,
-  EyeIcon,
-  EyeSlashIcon,
+  EyeSlashIcon
 } from "@heroicons/react/20/solid";
-import { LogoLargeDynamicPath } from "../logos";
-import Input from "../base/Input";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
+import type { User } from "@prisma/client";
+import type { ColumnDef } from "@tanstack/react-table";
+import { api } from "~/utils/api";
+import Input from "../base/Input";
+import { LogoLargeDynamicPath } from "../logos";
 
 export const columns: ColumnDef<User>[] = [
   {
