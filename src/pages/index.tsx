@@ -14,7 +14,9 @@ import {
 } from "swiper";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { SEO } from "~/components/SEO";
 import Layout from "~/components/layout/Layout";
+import { LogoLargeDynamicPath } from "~/components/logos";
 import ProductRow from "~/components/product/ProductRow";
 import { api } from "~/utils/api";
 
@@ -33,6 +35,11 @@ const HomePage: NextPage = () => {
 
   return (
     <Layout>
+      <SEO
+        title={"Sugar Beach | Best sweets"}
+        openGraphType="website"
+        image={LogoLargeDynamicPath}
+      ></SEO>
       <div className="relative my-8 space-y-8">
         <div>
           <Swiper
