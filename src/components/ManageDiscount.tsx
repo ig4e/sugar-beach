@@ -38,7 +38,6 @@ import { discountSchema } from "~/validations/discountSchema";
 
 import useTranslation from "next-translate/useTranslation";
 
-
 type DiscountFormValues = {
   code: string;
   amount: number;
@@ -58,7 +57,7 @@ function ManageDiscount({
   const createDiscountHook = api.discount.create.useMutation();
   const editDiscountHook = api.discount.edit.useMutation();
   const [isPrecentage, setIsPrecentage] = React.useState(true);
-  const {t} = useTranslation("adminDiscounts");
+  const { t } = useTranslation("adminDiscounts");
 
   const {
     register,
@@ -77,6 +76,9 @@ function ManageDiscount({
         | undefined,
 
       expiresAt: new Date(discount?.expiresAt || ""),
+    },
+    resetOptions: {
+      keepDirtyValues: true,
     },
   });
 
@@ -149,7 +151,9 @@ function ManageDiscount({
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            {action === "create" ? t("ManageDiscount.header-create") : t("ManageDiscount.header-edit")}
+            {action === "create"
+              ? t("ManageDiscount.header-create")
+              : t("ManageDiscount.header-edit")}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -173,7 +177,9 @@ function ManageDiscount({
                     {t("ManageDiscount.generate")}
                   </Button>
                 </HStack>
-                <FormHelperText>{t("ManageDiscount.discount-code-helper")}</FormHelperText>
+                <FormHelperText>
+                  {t("ManageDiscount.discount-code-helper")}
+                </FormHelperText>
                 <FormErrorMessage>{errors.code?.message}</FormErrorMessage>
               </FormControl>
 
@@ -221,12 +227,16 @@ function ManageDiscount({
                   </InputGroup>
                 </VStack>
 
-                <FormHelperText>{t("ManageDiscount.discount-amount-helper")}</FormHelperText>
+                <FormHelperText>
+                  {t("ManageDiscount.discount-amount-helper")}
+                </FormHelperText>
                 <FormErrorMessage>{errors.amount?.message}</FormErrorMessage>
               </FormControl>
 
               <FormControl isInvalid={!!errors.expiresAt} isRequired>
-                <FormLabel>{t("ManageDiscount.discount-expire-date")}</FormLabel>
+                <FormLabel>
+                  {t("ManageDiscount.discount-expire-date")}
+                </FormLabel>
                 <Input
                   type="date"
                   min={0}

@@ -58,6 +58,9 @@ function ManageCategory({
     mode: "onChange",
     resolver: zodResolver(categorySchema),
     defaultValues: category?.name,
+    resetOptions: {
+      keepDirtyValues: true,
+    },
   });
 
   const onSubmit = handleSubmit(async (data) => {

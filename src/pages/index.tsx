@@ -16,7 +16,7 @@ import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { SEO } from "~/components/SEO";
 import Layout from "~/components/layout/Layout";
-import { LogoLargeDynamicPath } from "~/components/logos";
+import { LogoLarge, LogoLargeDynamicPath } from "~/components/logos";
 import ProductRow from "~/components/product/ProductRow";
 import { api } from "~/utils/api";
 
@@ -83,13 +83,29 @@ const HomePage: NextPage = () => {
                 {({ isActive }) => (
                   <Link href={`/products/${item.productId}`}>
                     <Image
-                      src={item.media[0]?.url || ""}
+                      src={item.media[0]?.url ?? LogoLarge}
                       width={1040}
                       height={384}
                       quality={100}
                       alt="image"
                       className={clsx(
-                        "aspect-[1040/364] h-full  w-full rounded-xl object-cover transition duration-1000 md:max-h-96",
+                        "hidden aspect-[1000/300] h-full w-full rounded-xl object-cover transition duration-1000 md:block md:max-h-96",
+                        {
+                          "opacity-50": !isActive,
+                        }
+                      )}
+                    ></Image>
+
+                    <Image
+                      src={
+                        item.media[1]?.url ?? item.media[0]?.url ?? LogoLarge
+                      }
+                      width={1040}
+                      height={384}
+                      quality={100}
+                      alt="image"
+                      className={clsx(
+                        "aspect-square h-full w-full rounded-xl object-cover transition duration-1000 md:hidden",
                         {
                           "opacity-50": !isActive,
                         }

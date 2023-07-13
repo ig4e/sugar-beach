@@ -74,6 +74,9 @@ function ManageFeatured({
       productId: featured?.productId || "",
       media: featured?.media || [],
     },
+    resetOptions: {
+      keepDirtyValues: true,
+    },
   });
 
   const { isOpen, onOpen, onClose } = useDisclosure({
@@ -164,7 +167,7 @@ function ManageFeatured({
                   placeholder="Search products"
                 />
 
-                <div className="relative grid min-h-[5rem] grid-cols-2 lg:grid-cols-3 gap-2 rounded border border-dashed p-2">
+                <div className="relative grid min-h-[5rem] grid-cols-2 gap-2 rounded border border-dashed p-2 lg:grid-cols-3">
                   <LoadingOverlay
                     visible={productsQuery.isLoading}
                     overlayBlur={2}
@@ -196,7 +199,7 @@ function ManageFeatured({
                         alt={product.name.en}
                       ></Image>
                       <div>
-                        <h2 className="text-lg font-semibold line-clamp-2">
+                        <h2 className="line-clamp-2 text-lg font-semibold">
                           {product.name.en}
                         </h2>
                         <h1 className="text-base font-bold text-pink-600">
@@ -222,12 +225,20 @@ function ManageFeatured({
                       endpoint="featuredMedia"
                       onChange={field.onChange}
                       value={field.value}
-                      max={1}
+                      max={2}
                     />
                   )}
                 ></Controller>
 
-                <FormHelperText>The Featured media.</FormHelperText>
+                <FormHelperText fontWeight={"semibold"}>
+                  The Featured media. Minimum one image, recommended 2 Images.
+                  <br />
+                  The first with 10 / 3 aspect ratio for desktop preferably 1000
+                  x 300 px.
+                  <br />
+                  The Second 1 / 1 aspect ration for mobile preferably 356 x 356
+                  px.
+                </FormHelperText>
                 <FormErrorMessage>{errors.media?.message}</FormErrorMessage>
               </FormControl>
             </form>

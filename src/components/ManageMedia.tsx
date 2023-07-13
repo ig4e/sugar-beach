@@ -213,9 +213,9 @@ const ManageMedia = forwardRef(
             .map((_, index) => (
               <div
                 key={`placeholder-${index}`}
-                className="relative flex aspect-square flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed p-2 text-center"
+                className="relative col-span-2 row-span-2 flex aspect-square flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed p-2 text-center md:col-span-1 md:row-span-1"
               >
-                <Badge position={"absolute"} top={2} left={2} zIndex={30}>
+                <Badge position={"absolute"} top={4} left={4} zIndex={30}>
                   Uploading
                 </Badge>
                 <Skeleton className="h-full w-full"></Skeleton>
