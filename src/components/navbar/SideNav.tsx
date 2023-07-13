@@ -32,7 +32,7 @@ function SideNav() {
       <div className="block md:hidden">
         <IconButton
           variant="ghost"
-          icon={<Bars3Icon className="h-6 w-6"></Bars3Icon>}
+          icon={<Bars3Icon className="h-7 w-7"></Bars3Icon>}
           aria-label="menu"
           colorScheme="gray"
           onClick={onOpen}

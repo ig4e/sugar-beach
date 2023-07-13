@@ -3,7 +3,7 @@ import Auth from "~/components/navbar/Auth";
 import Cart from "~/components/navbar/Cart";
 import ChangeRegion from "~/components/navbar/ChangeRegion";
 
-import { Tag } from "@chakra-ui/react";
+import { HStack, IconButton, Tag } from "@chakra-ui/react";
 import Link from "next/link";
 import Search from "~/components/navbar/Search";
 import SideNav from "~/components/navbar/SideNav";
@@ -15,6 +15,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useScroll } from "~/hooks/useScroll";
 import clsx from "clsx";
 import { useMemo } from "react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 function Navbar() {
   const categories = api.category.getAll.useQuery({ limit: 3 });
@@ -64,7 +65,17 @@ function Navbar() {
               ></Image>
             </Link>
 
-            <SideNav></SideNav>
+            <HStack>
+              <SideNav></SideNav>
+              <Link href={"/search"}>
+                <IconButton
+                  icon={<MagnifyingGlassIcon className="h-5 w-5 stroke-[3]" />}
+                  aria-label="Search"
+                  colorScheme="gray"
+                  variant={"ghost"}
+                ></IconButton>
+              </Link>
+            </HStack>
 
             <div className="hidden items-center gap-4 md:flex">
               {categories.data &&

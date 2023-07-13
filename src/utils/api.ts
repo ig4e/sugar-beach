@@ -57,8 +57,7 @@ export const api = createTRPCNext<AppRouter>({
             if (!ctx?.req?.headers) {
               return {};
             }
-            // To use SSR properly, you need to forward client headers to the server
-            // This is so you can pass through things like cookies when we're server-side rendering
+
             return {
               cookie: ctx.req.headers.cookie,
             };
@@ -68,12 +67,22 @@ export const api = createTRPCNext<AppRouter>({
     };
   },
   ssr: true,
-
-  /**
-   * Whether tRPC should await queries when server rendering pages.
-   *
-   * @see https://trpc.io/docs/nextjs#ssr-boolean-default-false
-   */
+  responseMeta(opts) {
+    const { clientErrors } = opts;
+    if (clientErrors && clientErrors.length) {
+      // propagate http first error from API calls
+      return {
+        status: clientErrors?.[0].data?.httpStatus ?? 500,
+      };
+    }
+    // cache request for 1 day + revalidate once every second
+    const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
+    return {
+      headers: {
+        "cache-control": `s-maxage=1, stale-while-revalidate=${ONE_DAY_IN_SECONDS}`,
+      },
+    };
+  },
 });
 
 /**
