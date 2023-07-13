@@ -41,7 +41,7 @@ function MenuItem({
         })}
       />
       <span
-        className={clsx("font-medium transition", {
+        className={clsx("font-medium transition whitespace-nowrap overflow-hidden text-ellipsis", {
           "text-sm": size === "sm",
           "text-base": size === "md",
           "text-lg": size === "lg",
