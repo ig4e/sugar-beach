@@ -67,7 +67,7 @@ function Navbar() {
 
             <HStack>
               <SideNav></SideNav>
-              <Link href={"/search"}>
+              <Link href={"/search"} className="md:hidden">
                 <IconButton
                   icon={<MagnifyingGlassIcon className="h-5 w-5 stroke-[3]" />}
                   aria-label="Search"
