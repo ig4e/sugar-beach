@@ -65,17 +65,9 @@ const HomePage: NextPage = () => {
               nextEl: "#slide-next",
               prevEl: "#slide-prev",
             }}
-            mousewheel={true}
             keyboard={true}
             a11y={{ enabled: true }}
-            modules={[
-              Navigation,
-              Pagination,
-              Mousewheel,
-              A11y,
-              Keyboard,
-              Autoplay,
-            ]}
+            modules={[Navigation, Pagination, A11y, Keyboard, Autoplay]}
             loop={true}
           >
             {featuredProducts.data?.items.map((item) => (

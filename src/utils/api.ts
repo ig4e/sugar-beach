@@ -72,7 +72,7 @@ export const api = createTRPCNext<AppRouter>({
     if (clientErrors && clientErrors.length) {
       // propagate http first error from API calls
       return {
-        status: clientErrors?.[0].data?.httpStatus ?? 500,
+        status: clientErrors?.[0]?.data?.httpStatus ?? 500,
       };
     }
     // cache request for 1 day + revalidate once every second
