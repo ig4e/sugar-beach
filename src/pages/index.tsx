@@ -48,7 +48,7 @@ const HomePage: NextPage = () => {
             onSlideChange={() => console.log("slide change")}
             onSwiper={(swiper) => console.log(swiper)}
             centeredSlides={true}
-            className="h-full max-h-96 overflow-hidden rounded-xl"
+            className="aspect-square h-full max-h-[354] overflow-hidden rounded-xl md:aspect-auto md:max-h-96"
             speed={500}
             pagination={{
               clickable: true,
@@ -84,7 +84,7 @@ const HomePage: NextPage = () => {
                       quality={100}
                       alt="image"
                       className={clsx(
-                        "aspect-[1040/364] h-full max-h-96 w-full rounded-xl object-cover transition duration-1000",
+                        "aspect-[1040/364] h-full  w-full rounded-xl object-cover transition duration-1000 md:max-h-96",
                         {
                           "opacity-50": !isActive,
                         }

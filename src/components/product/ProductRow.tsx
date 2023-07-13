@@ -22,12 +22,14 @@ function ProductRow({
     <section className="space-y-4">
       <div className="flex items-start justify-between">
         <VStack alignItems={"start"} spacing={0}>
-          <h3 className="text-2xl font-bold">{title}</h3>
-          <Text>{description}</Text>
+          <h3 className="font-bold md:text-2xl">{title}</h3>
+          <p className="text-xs font-medium text-muted-foreground md:text-base">
+            {description}
+          </p>
         </VStack>
 
         <Link href={href}>
-          <Button borderRadius={"full"} size={"sm"}>
+          <Button borderRadius={"full"} size={{ base: "xs", md: "sm" }}>
             View more
           </Button>
         </Link>
@@ -60,7 +62,7 @@ function ProductRow({
             </SwiperSlide>
           ))}
         </Swiper>
-        <button
+        {/* <button
           id="slide-prev-new"
           className="absolute inset-y-0 left-2 z-40 my-auto max-h-fit rounded-full bg-zinc-800 p-2 transition hover:bg-zinc-900 active:bg-zinc-800/50 disabled:opacity-50 disabled:hover:bg-zinc-700"
         >
@@ -72,7 +74,7 @@ function ProductRow({
           className="absolute inset-y-0 right-2 z-40 my-auto max-h-fit rounded-full bg-zinc-800 p-2 transition hover:bg-zinc-900 active:bg-zinc-800/50 disabled:opacity-50 disabled:hover:bg-zinc-700"
         >
           <ChevronRightIcon className="h-5 w-5 text-white"></ChevronRightIcon>
-        </button>
+        </button> */}
       </div>
     </section>
   );
