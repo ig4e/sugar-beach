@@ -6,22 +6,25 @@ import { LoadingOverlay } from "@mantine/core";
 import { useCartStore } from "~/store/cart";
 import { api } from "~/utils/api";
 
-import useTranslation from 'next-translate/useTranslation'
+import useTranslation from "next-translate/useTranslation";
+import { useStore } from "~/hooks/useStore";
 
 function AddToCart({ productId }: { productId: string }) {
-  const cartStore = useCartStore();
-  const cartItem = cartStore.items.find((item) => item.id === productId);
+  const cartStore = useStore(useCartStore, (state) => state);
+  const { t } = useTranslation("common");
+
   const { data: product } = api.product.get.useQuery({
     id: productId,
   });
-  const {t} = useTranslation("common")
 
-  if (!product)
+  if (!cartStore || !product)
     return (
       <div className="relative min-h-[2.5rem] min-w-[8rem]">
         <LoadingOverlay visible overlayBlur={2} />
       </div>
     );
+
+  const cartItem = cartStore.items.find((item) => item.id === productId);
 
   return (
     <div className="w-full">

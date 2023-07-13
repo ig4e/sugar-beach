@@ -1,5 +1,6 @@
 import { HStack, useDisclosure } from "@chakra-ui/react";
 import {
+  FingerPrintIcon,
   HomeModernIcon,
   InboxStackIcon,
   RectangleGroupIcon,
@@ -28,6 +29,11 @@ const adminManagmentRoutesDefault = [
     name: "categories",
     href: "/dashboard/categories",
     Icon: RectangleGroupIcon,
+  },
+  {
+    name: "staff",
+    href: "/dashboard/staff",
+    Icon: FingerPrintIcon,
   },
 ] as const;
 

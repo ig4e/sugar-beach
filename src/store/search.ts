@@ -80,7 +80,7 @@ export const useSearchStore = create<SearchState>()(
       const categories = params.get("categories") || "";
       const min = Number(params.get("min") || "0");
       const max = Number(params.get("max") || "0");
-      
+
       const orderBy = params.get("orderBy") || "id";
       const orderType = params.get("orderType") || "desc";
 

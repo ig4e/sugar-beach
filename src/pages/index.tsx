@@ -2,6 +2,7 @@ import { Heading, Text } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import type { NextPage } from "next";
+import useTranslation from "next-translate/useTranslation";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -20,9 +21,16 @@ import ProductRow from "~/components/product/ProductRow";
 import { api } from "~/utils/api";
 
 const HomePage: NextPage = () => {
+  const { t } = useTranslation("home");
   const featuredProducts = api.featured.getAll.useQuery({});
   const newProducts = api.product.getAll.useQuery({
     orderBy: { key: "createdAt", type: "desc" },
+  });
+  const popularProducts = api.product.getAll.useQuery({
+    orderBy: { key: "visits", type: "desc" },
+  });
+  const onSaleProducts = api.product.getAll.useQuery({
+    onSale: true,
   });
 
   return (
@@ -105,12 +113,36 @@ const HomePage: NextPage = () => {
           </Swiper>
         </div>
 
+        {onSaleProducts.data && (
+          <ProductRow
+            title={t("sections.on-sale.title")}
+            description={t("sections.on-sale.description")}
+            products={onSaleProducts.data?.items}
+            href={
+              "/search?query=&categories=&min=0&max=0&orderBy=visits&orderType=desc"
+            }
+          ></ProductRow>
+        )}
+
+        {popularProducts.data && (
+          <ProductRow
+            title={t("sections.popular.title")}
+            description={t("sections.popular.description")}
+            products={popularProducts.data?.items}
+            href={
+              "/search?query=&categories=&min=0&max=0&orderBy=visits&orderType=desc"
+            }
+          ></ProductRow>
+        )}
+
         {newProducts.data && (
           <ProductRow
-            title="NEW ARRIVALS"
-            description="Check out our latest products and discover new tastes"
+            title={t("sections.new.title")}
+            description={t("sections.new.description")}
             products={newProducts.data?.items}
-            href={"/search?query=&categories=&min=0&max=0&orderBy=createdAt&orderType=desc"}
+            href={
+              "/search?query=&categories=&min=0&max=0&orderBy=createdAt&orderType=desc"
+            }
           ></ProductRow>
         )}
       </div>

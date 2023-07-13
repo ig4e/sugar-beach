@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "on-sale": {
+      "title": "SWEET DEALS BONANZA",
+      "description": "Score big savings on our on-sale delights! Explore the tempting treats at discounted prices today!"
+    },
+    "popular": {
+      "title": "IRRESISTIBLE SWEET STARS",
+      "description": "Discover our most sought-after treats! Indulge in the popular products that shine bright with sweetness!"
+    },
+    "new": {
+      "title": "NEW ARRIVALS",
+      "description": "Check out our latest products and discover new tastes"
+    }
+  }
+}

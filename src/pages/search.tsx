@@ -21,7 +21,6 @@ import ProductCard from "~/components/product/ProductCard";
 import type { Locale } from "~/types/locale";
 import { api } from "~/utils/api";
 
-import useCurrency from "~/hooks/useCurrency";
 import { useSearchStore } from "~/store/search";
 
 import useTranslation from "next-translate/useTranslation";
@@ -35,10 +34,7 @@ function SearchPage() {
   const debouncedSearchQuery = useDebounce(searchStore.searchQuery, 500);
   const categoriesQuery = api.category.getAll.useQuery({ limit: 100 });
 
-  const currency = useCurrency();
-
   useEffect(() => {
-    console.log(router.asPath);
     searchStore.parseUrl(router.asPath);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.asPath]);
@@ -53,7 +49,7 @@ function SearchPage() {
     searchStore.orderBy,
   ]);
 
-  const { data, isError, isLoading, refetch } = api.product.getAll.useQuery({
+  const { data, isLoading } = api.product.getAll.useQuery({
     limit: 100,
     searchQuery: debouncedSearchQuery,
     categoryIDs: searchStore.categoryIDs,
@@ -201,9 +197,10 @@ function SearchPage() {
               </h2>
             </div>
 
-            <HStack>
+            <HStack alignItems={"end"}>
               {typeof window !== "undefined" && (
                 <Select
+                  label={t("sort-by")}
                   data={ORDER_BY_KEYS}
                   w={"fit"}
                   value={searchStore.orderBy.key}
@@ -231,6 +228,7 @@ function SearchPage() {
                     <ArrowUpIcon className="h-6 w-6"></ArrowUpIcon>
                   )
                 }
+                mb="1"
               ></IconButton>
             </HStack>
           </Stack>

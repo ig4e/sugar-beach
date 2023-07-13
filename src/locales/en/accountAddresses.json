@@ -1,0 +1,13 @@
+{
+  "title": "My Addresses",
+  "HOME": "Home",
+  "OFFICE": "Office",
+  "phone-number": "Phone Number: ",
+  "edit": "Edit",
+  "delete": "Delete",
+  "add-new-address": "Add New Address",
+  "address-delete": {
+    "success": "Address deleted successfuly!",
+    "error": "Failed to delete address."
+  }
+}

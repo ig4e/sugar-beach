@@ -68,13 +68,14 @@ export const productRouter = createTRPCRouter({
         status: z.enum(["ACTIVE", "DRAFT", "ARCHIVED"]).nullish(),
         orderBy: z
           .object({
-            key: z.enum(["id", "price", "createdAt", "updatedAt"]),
+            key: z.enum(["id", "price", "createdAt", "updatedAt", "visits"]),
             type: z.enum(["asc", "desc"]),
           })
           .nullish(),
         productIDs: z.string().uuid().array().nullish(),
         minPrice: z.number().nullish(),
         maxPrice: z.number().nullish(),
+        onSale: z.boolean().nullish(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -113,6 +114,7 @@ export const productRouter = createTRPCRouter({
           : undefined,
         status: input.status ? { equals: input.status } : undefined,
         price: { gte: input.minPrice ?? 0, lte: input.maxPrice ?? undefined },
+        compareAtPrice: input.onSale ? { gt: 0 } : undefined,
       };
 
       let items = await ctx.prisma.product.findMany({

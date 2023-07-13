@@ -218,7 +218,7 @@ function AdminPageProduct() {
 
             <Alert status="warning">
               <AlertIcon />
-              <AlertTitle>الخاصية غير متاحة مؤقتا</AlertTitle>
+              <AlertTitle>الخاصية جارى تطويرها</AlertTitle>
             </Alert>
 
             <form

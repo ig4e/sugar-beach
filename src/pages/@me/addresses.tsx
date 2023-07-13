@@ -13,6 +13,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { PlusIcon } from "@heroicons/react/24/solid";
+import useTranslation from "next-translate/useTranslation";
 import ManageAddress from "~/components/address/ManageAddress";
 import UserDashboardLayout from "~/components/layout/UserDashboardLayout";
 import { COUNTRIES_NAME } from "~/config/commonConfig";
@@ -33,19 +34,20 @@ import { api } from "~/utils/api";
 */
 
 function Addresses() {
+  const { t } = useTranslation("accountAddresses");
   const toast = useToast();
   const userAddresses = api.user.address.findMany.useQuery({});
   const deleteUserAddress = api.user.address.delete.useMutation({
     onSuccess(data, variables, context) {
       toast({
-        title: "Address Deleted",
+        title: t("address-delete.success"),
         status: "success",
       });
       void userAddresses.refetch();
     },
     onError(error, variables, context) {
       toast({
-        title: "Failed to delete address",
+        title: t("address-delete.error"),
         status: "error",
         description: error.message,
       });
@@ -57,7 +59,7 @@ function Addresses() {
       <div className="grid gap-8">
         <Card>
           <CardHeader>
-            <Heading size={"sm"}>My Addresses</Heading>
+            <Heading size={"sm"}>{t("title")}</Heading>
           </CardHeader>
           <Divider></Divider>
           <CardBody>
@@ -79,7 +81,7 @@ function Addresses() {
                         <Heading size={"xs"}>{address.fullName}</Heading>
                         <HStack>
                           <Badge>{index === 0 ? "Default" : "Secondary"}</Badge>
-                          <Badge colorScheme="blue">{address.type}</Badge>
+                          <Badge colorScheme="blue">{t(address.type)}</Badge>
                         </HStack>
                       </VStack>
                     </CardHeader>
@@ -99,7 +101,8 @@ function Addresses() {
                         </Text>
 
                         <Text fontSize="sm">
-                          Phone number:{address.phoneNumber.code}{" "}
+                          {t("phone-number")}
+                          {address.phoneNumber.code}{" "}
                           {address.phoneNumber.number}
                         </Text>
                       </VStack>
@@ -109,7 +112,7 @@ function Addresses() {
                       <HStack justifyContent={"end"}>
                         <ManageAddress
                           onRefetch={() => void userAddresses.refetch()}
-                          Trigger={<Button size="sm">Edit</Button>}
+                          Trigger={<Button size="sm">{t("edit")}</Button>}
                           action="edit"
                           address={address}
                         ></ManageAddress>
@@ -123,7 +126,7 @@ function Addresses() {
                           }
                           isLoading={deleteUserAddress.isLoading}
                         >
-                          Delete
+                          {t("delete")}
                         </Button>
                       </HStack>
                     </CardFooter>
@@ -141,7 +144,7 @@ function Addresses() {
                   >
                     <VStack>
                       <PlusIcon className="h-8 w-8"></PlusIcon>
-                      <Heading size="sm">Add New Address</Heading>
+                      <Heading size="sm">{t("add-new-address")}</Heading>
                     </VStack>
                   </Button>
                 }

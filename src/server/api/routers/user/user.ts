@@ -14,6 +14,42 @@ import { v4 } from "uuid";
 import { utapi } from "uploadthing/server";
 
 export const userRouter = createTRPCRouter({
+  getStaff: protectedAdminProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).nullish(),
+        cursor: z.string().uuid().optional(),
+        excludeIDs: z.array(z.string().uuid()).nullish(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const limit = input.limit ?? 50;
+      const { cursor } = input;
+
+      const items = await ctx.prisma.user.findMany({
+        take: limit + 1, // get an extra item at the end which we'll use as next cursor
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: {
+          id: "asc",
+        },
+        where: {
+          role: { in: ["ADMIN", "STAFF"] },
+          id: input.excludeIDs ? { notIn: input.excludeIDs } : undefined,
+        },
+      });
+
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (items.length > limit) {
+        const nextItem = items.pop();
+        nextCursor = nextItem!.id;
+      }
+
+      return {
+        items,
+        nextCursor,
+      };
+    }),
+
   getLinkedPlatforms: protectedProcedure
     .input(z.object({}))
     .query(async ({ ctx }) => {
