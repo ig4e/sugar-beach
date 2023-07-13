@@ -1,0 +1,22 @@
+{
+  "customer-feedback": "آراء العملاء",
+  "edit-your-feedback": "تعديل رأيك",
+  "add-your-feedback": "إضافة رأيك",
+  "discard": "تجاهل",
+  "delete": "حذف",
+  "submit": "إرسال",
+  "submitting-feedback": "جارٍ إرسال الرأي",
+  "feedback-input": {
+    "placeholder": "ما الذي أعجبك أو لم يعجبك؟ كيف كانت الطعم؟"
+  },
+  "errors": {
+    "feedback-add": "خطأ في إضافة الرأي",
+    "feedback-edit": "خطأ في تعديل الرأي",
+    "feedback-delete": "خطأ في حذف الرأي"
+  },
+  "success": {
+    "feedback-add": "تمت إضافة الرأي بنجاح!",
+    "feedback-edit": "تم تعديل الرأي بنجاح!",
+    "feedback-delete": "تم حذف الرأي بنجاح!"
+  }
+}

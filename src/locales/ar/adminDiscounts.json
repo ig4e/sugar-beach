@@ -1,0 +1,24 @@
+{
+  "discounts": "الخصومات",
+  "code": "الكود",
+  "amount": "المبلغ",
+  "expires-at": "تنتهي في",
+  "actions": "الإجراءات",
+
+  "ManageDiscount": {
+    "header-create": "إنشاء خصم جديد",
+    "header-edit": "تعديل الخصم",
+    "discount": "الخصم",
+    "add-discount": "إضافة خصم",
+    "discount-code": "كود الخصم",
+    "generate": "توليد",
+    "discount-code-helper": "كود الخصم.",
+    "percentage": "نسبة مئوية",
+    "fixed-amount": "مبلغ ثابت",
+    "discount-amount-helper": "مبلغ الخصم.",
+    "discount-expire-date": "تاريخ انتهاء الخصم",
+    "discount-expire-date-helper": "تاريخ انتهاء الخصم.",
+    "save": "حفظ",
+    "cancel": "إلغاء"
+  }
+}

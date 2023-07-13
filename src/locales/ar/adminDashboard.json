@@ -1,0 +1,14 @@
+{
+  "AdminLayout": {
+    "routes": {
+      "home": "الصفحة الرئيسية",
+      "products": "المنتجات",
+      "orders": "الطلبات",
+      "featured": "مميز",
+      "discounts": "الخصومات",
+      "categories": "الفئات",
+      "staff": "الموظفون"
+    },
+    "management": "الإدارة"
+  }
+}

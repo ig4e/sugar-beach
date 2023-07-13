@@ -1,0 +1,64 @@
+{
+  "EditProfile": {
+    "header": "تعديل الملف الشخصي",
+    "info": {
+      "edit": "تعديل",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني"
+    },
+    "editProfile": {
+      "success": "تم تعديل الملف الشخصي بنجاح!",
+      "error": "فشل في تعديل الملف الشخصي"
+    },
+    "edit": "تعديل",
+    "save": "حفظ",
+    "cancel": "إلغاء"
+  },
+  "AvatarUpload": {
+    "user-avatar-updated-success": "تم تحديث صورتك الشخصية بنجاح",
+    "user-avatar-updated-error": "فشل في تحديث صورتك الشخصية",
+    "user-avatar-updated-upload-error": "فشل في تحميل صورتك الشخصية"
+  },
+  "EditEmail": {
+    "header": "تعديل البريد الإلكتروني",
+    "email-verification": {
+      "error": "فشل في إرسال التحقق من البريد الإلكتروني",
+      "success": "تم إرسال التحقق من البريد الإلكتروني بنجاح!"
+    },
+    "email-edit": {
+      "error": "فشل في تعديل البريد الإلكتروني!",
+      "success": "تم تعديل البريد الإلكتروني بنجاح!"
+    },
+    "steps": {
+      "first": {
+        "meta": {
+          "title": "الخطوة الأولى",
+          "description": "تحقق من بريدك الإلكتروني"
+        },
+        "header": "سنحتاج إلى التحقق من عنوان بريدك الإلكتروني القديم",
+        "button": "إرسال رمز التحقق"
+      },
+      "second": {
+        "meta": {
+          "title": "الخطوة الثانية",
+          "description": "أضف بريدك الإلكتروني الجديد"
+        },
+        "verification-code-input-label": "رمز التحقق",
+        "verification-code-input-resend": "لم تستلم الرمز أو انتهت صلاحيته؟ أعد إرساله.",
+        "verification-code-input-helper": "تحقق من بريدك الإلكتروني: لقد أرسلنا لك رمز التحقق. أدخله هنا للتحقق من هويتك.",
+        "new-email-input-label": "البريد الإلكتروني الجديد",
+        "new-email-input-helper": "عنوان بريدك الإلكتروني الجديد."
+      },
+      "third": {
+        "meta": {
+          "title": "الخطوة الثالثة",
+          "description": "اكتمال"
+        },
+        "header": "تم تغيير عنوان البريد الإلكتروني الخاص بك!"
+      }
+    },
+    "edit": "تعديل",
+    "cancel": "إلغاء",
+    "submit": "إرسال"
+  }
+}

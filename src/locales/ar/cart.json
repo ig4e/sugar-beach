@@ -1,17 +1,17 @@
 {
-  "your-order": "Your Order",
-  "items-count": "items",
-  "order-summary": "Order Summary",
-  "check-out": "Check Out",
-  "available-payment-methods": "Available Payment Methods",
+  "your-order": "طلبك",
+  "items-count": "عناصر",
+  "order-summary": "ملخص الطلب",
+  "check-out": "اتمام الشراء",
+  "available-payment-methods": "طرق الدفع المتاحة",
   "cart-empty": {
-    "heading": "Looking for something?",
-    "text": "Add your favorite items to your cart.",
-    "button": "Keep Shopping"
+    "heading": "هل تبحث عن شيء؟",
+    "text": "أضف العناصر المفضلة لديك إلى سلة التسوق.",
+    "button": "مواصلة التسوق"
   },
   "errors": {
     "quantity": {
-      "not-enough": "Insufficient product quantity in stock"
+      "not-enough": "كمية المنتج المتوفرة غير كافية في المخزون"
     }
   }
 }

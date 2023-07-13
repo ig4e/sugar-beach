@@ -8,9 +8,8 @@ import {
   A11y,
   Autoplay,
   Keyboard,
-  Mousewheel,
   Navigation,
-  Pagination,
+  Pagination
 } from "swiper";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";

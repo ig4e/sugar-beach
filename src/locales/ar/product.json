@@ -1,0 +1,13 @@
+{
+  "in-stock": "متوفر",
+  "out-of-stock": "غير متوفر",
+  "left": "متبقي",
+  "sale": "تخفيض",
+  "description": "الوصف",
+  "quantity": "الكمية",
+  "purchase-limit": "الحد الأقصى للشراء: 0 ~ ",
+  "no-description": "لا يوجد وصف",
+  "total": "الإجمالي",
+  "add-to-cart": "أضف إلى السلة",
+  "buy-now": "شراء الآن"
+}
