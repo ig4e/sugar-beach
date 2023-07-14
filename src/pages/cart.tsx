@@ -22,6 +22,7 @@ import type { Locale } from "~/types/locale";
 import { api } from "~/utils/api";
 
 import useTranslation from "next-translate/useTranslation";
+import ManageAddress from "~/components/address/ManageAddress";
 
 function Cart() {
   const { t, lang } = useTranslation("cart");
@@ -81,10 +82,6 @@ function Cart() {
     return currency(total ?? 0);
   }, [dataWithCartQuantity, currency]);
 
-  if (!isLoading && !data) {
-    return <div>Err... Loading...</div>;
-  }
-
   const isCartEmpty = (dataWithCartQuantity?.length ?? 0) <= 0;
 
   return (
@@ -95,7 +92,9 @@ function Cart() {
             <div className="space-y-4">
               <HStack justifyContent={"space-between"}>
                 <Heading size="md">{t("your-order")}</Heading>
-                <Text>{dataWithCartQuantity.length} {t("items-count")}</Text>
+                <Text>
+                  {dataWithCartQuantity.length} {t("items-count")}
+                </Text>
               </HStack>
               <div className="flex h-full flex-col gap-4">
                 <VStack
@@ -107,7 +106,9 @@ function Cart() {
                   mb={16}
                   spacing={4}
                 >
-                  <Heading className="line-clamp-1">{t("cart-empty.heading")}</Heading>
+                  <Heading className="line-clamp-1">
+                    {t("cart-empty.heading")}
+                  </Heading>
                   <Text>{t("cart-empty.text")}</Text>
 
                   <Link href={"/"}>
@@ -164,7 +165,19 @@ function Cart() {
                       {totalPrice.format()}
                     </Heading>
 
-                    <Button isDisabled={isCartEmpty}>{t("check-out")}</Button>
+                    {userAddresses.data.length > 0 ? (
+                      <Button isDisabled={isCartEmpty}>{t("check-out")}</Button>
+                    ) : (
+                      <ManageAddress
+                        Trigger={
+                          <Button isDisabled={isCartEmpty}>
+                            {t("add-address")}
+                          </Button>
+                        }
+                        action="create"
+                        onRefetch={() => void userAddresses.refetch()}
+                      ></ManageAddress>
+                    )}
                   </HStack>
                 </CardBody>
               </Card>

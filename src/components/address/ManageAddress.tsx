@@ -26,6 +26,7 @@ import { Controller, useForm } from "react-hook-form";
 import Input from "~/components/base/Input";
 import { ADDRESS_TYPE } from "~/config/addressConfig";
 import { COUNTRIES } from "~/config/commonConfig";
+import { useLocalisationStore } from "~/store/localisation";
 import { api } from "~/utils/api";
 import { addressSchema } from "~/validations/addressSchema";
 
@@ -54,6 +55,7 @@ function ManageAddress({
   address?: UserShippingAddress;
 }) {
   const toast = useToast();
+  const localisation = useLocalisationStore();
 
   const {
     register,
@@ -69,7 +71,7 @@ function ManageAddress({
       phoneCode: address?.phoneNumber?.code ?? "",
       phoneNumber: address?.phoneNumber?.number ?? "",
       type: address?.type ?? "HOME",
-      country: address?.country ?? "BH",
+      country: address?.country ?? localisation.country ?? "SA",
       streetName: address?.streetName ?? "",
       buildingNumber: address?.buildingNumber ?? "",
       city: address?.city ?? "",
@@ -181,6 +183,7 @@ function ManageAddress({
                         onChange={(value) =>
                           field.onChange(value as AddressFormValues["country"])
                         }
+                        searchable
                         error={!!errors.country}
                         data={COUNTRIES.map((c) => ({
                           value: c.code,
@@ -218,6 +221,7 @@ function ManageAddress({
                       render={({ field }) => (
                         <Select
                           {...field}
+                          searchable
                           onChange={(value) => field.onChange(value || "")}
                           data={COUNTRIES.map((c) => ({
                             value: c.mobileCode,

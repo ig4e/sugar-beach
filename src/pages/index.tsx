@@ -44,7 +44,7 @@ const HomePage: NextPage = () => {
             }}
             autoplay={true}
             centeredSlides={true}
-            className="aspect-square h-full max-h-[354px] overflow-hidden rounded-xl md:aspect-auto md:max-h-96"
+            className="aspect-square h-full overflow-hidden rounded-xl sm:aspect-auto sm:max-h-96"
             speed={500}
             pagination={{
               clickable: true,
@@ -73,7 +73,7 @@ const HomePage: NextPage = () => {
                       alt="image"
                       loading="lazy"
                       className={clsx(
-                        "hidden aspect-[1024/384] h-full w-full max-w-5xl rounded-xl bg-gray-400 object-cover transition duration-1000 md:block md:max-h-96",
+                        "hidden aspect-[1024/384] h-full w-full max-w-5xl rounded-xl bg-gray-400 object-cover transition duration-1000 sm:block md:max-h-96",
                         {
                           "opacity-50": !isActive,
                         }
@@ -89,7 +89,7 @@ const HomePage: NextPage = () => {
                       alt="image"
                       loading="lazy"
                       className={clsx(
-                        "aspect-square h-full max-h-[384px] w-full max-w-sm rounded-xl bg-gray-400 object-cover transition duration-1000 md:hidden",
+                        "aspect-square h-full max-h-[32rem] w-full max-w-lg rounded-xl bg-gray-400 object-cover transition duration-1000 sm:hidden",
                         {
                           "opacity-50": !isActive,
                         }

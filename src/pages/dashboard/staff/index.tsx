@@ -8,9 +8,21 @@ import {
 } from "@chakra-ui/react";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import AdminLayout from "~/components/layout/AdminLayout";
+import AddStaff from "~/components/staff/AddStaff";
 import StaffTable from "~/components/staff/StaffTable";
+import { api } from "~/utils/api";
+import { useMemo } from "react";
 
 function StaffPage() {
+  const { data: dataPages, refetch } = api.user.getStaff.useInfiniteQuery({});
+
+  const data = useMemo(() => {
+    if (dataPages) {
+      return dataPages.pages.flatMap((page) => page.items);
+    }
+    return [];
+  }, [dataPages]);
+
   return (
     <AuthGaurd allowedLevel="ADMIN">
       <AdminLayout>
@@ -18,7 +30,10 @@ function StaffPage() {
           <VStack alignItems={"start"}>
             <HStack justifyContent={"space-between"} w="full">
               <Heading size={"md"}>Staff</Heading>
-              <Button>Add staff</Button>
+              <AddStaff
+                trigger={<Button>Add staff</Button>}
+                onRefetch={() => void refetch()}
+              ></AddStaff>
             </HStack>
             <Text>
               Take control of access to Sugar Beach&apos;s administrative
@@ -26,7 +41,7 @@ function StaffPage() {
             </Text>
           </VStack>
 
-          <StaffTable></StaffTable>
+          <StaffTable data={data} refetch={() => void refetch()}></StaffTable>
 
           <Divider></Divider>
         </div>

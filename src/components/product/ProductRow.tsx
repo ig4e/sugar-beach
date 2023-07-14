@@ -38,7 +38,7 @@ function ProductRow({
         <Swiper
           spaceBetween={24}
           breakpoints={{
-            0: { slidesPerView: 1 },
+            0: { slidesPerView: 1.2 },
             768: { slidesPerView: 3 },
             1024: { slidesPerView: 5 },
           }}

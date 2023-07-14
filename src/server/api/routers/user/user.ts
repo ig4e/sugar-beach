@@ -15,10 +15,18 @@ import { utapi } from "uploadthing/server";
 
 export const userRouter = createTRPCRouter({
   get: protectedProcedure
-    .input(z.object({ id: z.string().uuid() }))
+    .input(
+      z.object({
+        id: z.string().uuid().nullish(),
+        email: z.string().email().nullish(),
+      })
+    )
     .query(async ({ ctx, input }) => {
       const user = await ctx.prisma.user.findUnique({
-        where: { id: input.id },
+        where: {
+          id: input.id ? input.id : undefined,
+          email: input.email ? input.email : undefined,
+        },
       });
 
       if (!user)

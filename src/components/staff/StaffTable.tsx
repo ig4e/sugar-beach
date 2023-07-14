@@ -210,8 +210,7 @@ export function DataTable<TData, TValue>({
   );
 }
 
-function StaffTable() {
-  const { data: dataPages, refetch } = api.user.getStaff.useInfiniteQuery({});
+function StaffTable({ data, refetch }: { data: User[]; refetch: () => void }) {
   const columns: ColumnDef<User>[] = [
     {
       accessorKey: "name",
@@ -292,12 +291,6 @@ function StaffTable() {
       },
     },
   ];
-
-  const data = useMemo(() => {
-    if (dataPages) {
-      return dataPages.pages.flatMap((page) => page.items);
-    }
-  }, [dataPages]);
 
   if (!data)
     return (
