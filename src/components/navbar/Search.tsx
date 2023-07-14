@@ -41,6 +41,7 @@ function Search() {
         <button
           type="submit"
           className="h-full rounded-e-full bg-[#EDF2F7] transition group-focus-within:bg-white"
+          name="Submit search"
         >
           <div className="flex h-full items-center justify-center rounded-full bg-[#EDF2F7] pe-4 ps-4 group-focus-within:bg-pink-400">
             <SearchIcon

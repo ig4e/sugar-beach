@@ -17,7 +17,7 @@ function Cart() {
         size={16}
         processing={isCartFull}
       >
-        <Button colorScheme="gray" variant="ghost" p={0} className="relative">
+        <Button colorScheme="gray" variant="ghost" p={0} className="relative" name="cart">
           <ShoppingCartIcon className="h-6 w-6"></ShoppingCartIcon>
         </Button>
       </Indicator>
