@@ -55,6 +55,7 @@
     "@types/lodash": "^4.14.195",
     "@types/uuid": "^9.0.2",
     "@uploadthing/react": "^5.1.0",
+    "@vercel/analytics": "^1.0.1",
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
     "currency.js": "^2.0.4",

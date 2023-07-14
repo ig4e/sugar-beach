@@ -18,6 +18,7 @@ import { useLocalisationStore } from "~/store/localisation";
 import "~/styles/globals.css";
 import { customChakraTheme } from "~/theme";
 import { api } from "~/utils/api";
+import { Analytics } from "@vercel/analytics/react";
 
 const MyApp: AppType<{ session: Session }> = ({
   Component,
@@ -73,6 +74,7 @@ const MyApp: AppType<{ session: Session }> = ({
           </ChakraProvider>
         </MantineProvider>
       </SessionProvider>
+      <Analytics />
     </div>
   );
 };
