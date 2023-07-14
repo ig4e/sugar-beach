@@ -56,7 +56,7 @@ function ProductRow({
         >
           {products.map((product) => (
             <SwiperSlide key={product.id} className="h-full">
-              <ProductCard product={product}></ProductCard>
+              <ProductCard product={product} maxWidth="xs"></ProductCard>
             </SwiperSlide>
           ))}
         </Swiper>

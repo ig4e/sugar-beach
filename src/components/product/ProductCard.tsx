@@ -21,8 +21,10 @@ import useTranslation from "next-translate/useTranslation";
 
 function ProductCard({
   product,
+  maxWidth,
 }: {
   product: Product & { categories: Category[] };
+  maxWidth?: "xs" | "sm" | "md" | "lg";
 }) {
   const { t, lang } = useTranslation("common");
   const cartStore = useCartStore();
@@ -31,7 +33,7 @@ function ProductCard({
   const locale = lang as Locale;
 
   return (
-    <Card height={"full"} maxW={"xs"}>
+    <Card height={"full"} maxW={maxWidth ? maxWidth : undefined}>
       <CardBody
         display={"flex"}
         flexDirection={"column"}
