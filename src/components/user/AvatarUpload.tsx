@@ -26,13 +26,19 @@ import ReactCrop from "react-image-crop";
 
 import { FileButton } from "@mantine/core";
 import { useUploadThing } from "~/utils/uploadthing";
+import { useSession } from "next-auth/react";
 
 export function AvatarUpload(props: { onRefetch: () => void }) {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const session = useSession();
   const { t } = useTranslation("account");
   const updateUserAvatar = api.user.updateUserAvatar.useMutation();
   const toast = useToast();
   const [src, setSrc] = useState<string>();
+  const { isOpen, onClose, onOpen } = useDisclosure({
+    onClose() {
+      setSrc("");
+    },
+  });
 
   const { isUploading, startUpload } = useUploadThing("userMedia", {
     onClientUploadComplete: (res) => {
@@ -77,7 +83,12 @@ export function AvatarUpload(props: { onRefetch: () => void }) {
   const imageRef = useRef<HTMLImageElement>(null);
 
   async function uploadImage() {
-    if (!imageRef.current || !storedCrop) return;
+    if (!imageRef.current || !storedCrop)
+      return toast({
+        title: "Error",
+        description: "Please crop the image first",
+        status: "error",
+      });
     const canvas = cropImage(imageRef.current, storedCrop);
 
     const blob = await new Promise<Blob>((res, rej) => {
@@ -85,7 +96,14 @@ export function AvatarUpload(props: { onRefetch: () => void }) {
         blob ? res(blob) : rej("No blob");
       });
     });
-    const file = new File([blob], "cropped.png", { type: "image/png" });
+
+    const file = new File(
+      [blob],
+      session?.data?.user
+        ? `${session.data.user.id}-avatar.png`
+        : "cropped.png",
+      { type: "image/png" }
+    );
 
     await startUpload([file]);
   }
