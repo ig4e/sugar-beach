@@ -12,9 +12,15 @@ import AddStaff from "~/components/staff/AddStaff";
 import StaffTable from "~/components/staff/StaffTable";
 import { api } from "~/utils/api";
 import { useMemo } from "react";
+import { useSession } from "next-auth/react";
 
 function StaffPage() {
-  const { data: dataPages, refetch } = api.user.getStaff.useInfiniteQuery({});
+  const { data: sessionData } = useSession({ required: true });
+  const user = sessionData?.user;
+
+  const { data: dataPages, refetch } = api.user.getStaff.useInfiniteQuery({
+    excludeIDs: user ? [user.id] : undefined,
+  });
 
   const data = useMemo(() => {
     if (dataPages) {

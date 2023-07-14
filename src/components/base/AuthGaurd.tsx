@@ -12,25 +12,25 @@ function AuthGaurd({
   children: ReactNode;
   allowedLevel?: UserRole;
 }) {
-  // const router = useRouter();
-  // const { data, status } = useSession({
-  //   required: true,
-  //   onUnauthenticated: () => {
-  //     return void router.push(
-  //       "/auth/signin?redirect=" + encodeURIComponent(router.asPath)
-  //     );
-  //   },
-  // });
+  const router = useRouter();
+  const { data, status } = useSession({
+    required: true,
+    onUnauthenticated: () => {
+      return void router.push(
+        "/auth/signin?redirect=" + encodeURIComponent(router.asPath)
+      );
+    },
+  });
 
-  // useEffect(() => {
-  //   if (status === "loading") return;
-  //   const userRole = (data?.user as User)?.role;
-  //   const allowedLevelIndex = levels.indexOf(allowedLevel);
-  //   const userLevelIndex = levels.indexOf(userRole);
-  //   if (userLevelIndex < allowedLevelIndex) {
-  //     void router.push("/auth/signin");
-  //   }
-  // }, [data, status, router, allowedLevel]);
+  useEffect(() => {
+    if (status === "loading") return;
+    const userRole = (data?.user as User)?.role;
+    const allowedLevelIndex = levels.indexOf(allowedLevel);
+    const userLevelIndex = levels.indexOf(userRole);
+    if (userLevelIndex < allowedLevelIndex) {
+      void router.push("/auth/signin");
+    }
+  }, [data, status, router, allowedLevel]);
 
   return children;
 }
