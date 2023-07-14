@@ -51,9 +51,7 @@ const steps = [
   { title: "third", description: "Complete" },
 ] as const;
 
-
 import useTranslation from "next-translate/useTranslation";
-
 
 function EditEmail({ onRefetch }: { onRefetch: () => void }) {
   const toast = useToast();
@@ -61,7 +59,7 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
   const sendEmailVerification =
     api.user.sendEmailChangeVerification.useMutation();
   const updateUserEmail = api.user.updateUserEmail.useMutation();
-  const {t} = useTranslation("account");
+  const { t } = useTranslation("account");
 
   const { activeStep, goToNext } = useSteps({
     index: 0,
@@ -84,7 +82,7 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
     ),
   });
 
-  function handleSendEmailVerification() {
+  function handleSendEmailVerification(goNext = false) {
     sendEmailVerification.mutate(undefined, {
       onError(error) {
         toast({
@@ -98,7 +96,7 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
           title: t("EditEmail.email-verification.success"),
           status: "success",
         });
-        goToNext();
+        goNext && goToNext();
       },
     });
   }
@@ -177,10 +175,12 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
                   <TabPanels>
                     <TabPanel>
                       <VStack spacing={4}>
-                        <Heading size="md">{t("EditEmail.steps.first.header")}</Heading>
+                        <Heading size="md">
+                          {t("EditEmail.steps.first.header")}
+                        </Heading>
 
                         <Button
-                          onClick={() => handleSendEmailVerification()}
+                          onClick={() => handleSendEmailVerification(true)}
                           w="full"
                         >
                           {t("EditEmail.steps.first.button")}
@@ -191,7 +191,9 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
                       <VStack spacing={4}>
                         <FormControl isInvalid={!!errors.code}>
                           <FormLabel>
-                            {t("EditEmail.steps.second.verification-code-input-label")}
+                            {t(
+                              "EditEmail.steps.second.verification-code-input-label"
+                            )}
                           </FormLabel>
                           <VStack alignItems={"start"}>
                             <Controller
@@ -214,11 +216,15 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
                               variant={"link"}
                               size="sm"
                             >
-                              {t("EditEmail.steps.second.verification-code-input-resend")}
+                              {t(
+                                "EditEmail.steps.second.verification-code-input-resend"
+                              )}
                             </Button>
                           </VStack>
                           <FormHelperText>
-                            {t("EditEmail.steps.second.verification-code-input-helper")}
+                            {t(
+                              "EditEmail.steps.second.verification-code-input-helper"
+                            )}
                           </FormHelperText>
                           <FormErrorMessage>
                             {errors.code?.message}
@@ -243,7 +249,9 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
                     </TabPanel>
                     <TabPanel>
                       <VStack spacing={4}>
-                        <Heading size="md">{t("EditEmail.steps.third.header")}</Heading>
+                        <Heading size="md">
+                          {t("EditEmail.steps.third.header")}
+                        </Heading>
                       </VStack>
                     </TabPanel>
                   </TabPanels>

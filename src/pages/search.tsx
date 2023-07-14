@@ -31,20 +31,20 @@ function SearchPage() {
   const locale = lang as Locale;
   const router = useRouter();
   const searchStore = useSearchStore();
-  const debouncedSearchQuery = useDebounce(searchStore.searchQuery, 500);
   const categoriesQuery = api.category.getAll.useQuery({ limit: 100 });
+  const debouncedSearchQuery = useDebounce(searchStore.searchQuery, 500);
 
   useEffect(() => {
-    searchStore.parseUrl(router.asPath);
+    searchStore.parseUrl(window.location.search);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.asPath]);
+  }, [window.location.search]);
 
   useEffect(() => {
     void router.push(searchStore.generateUrl(), undefined, { shallow: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    debouncedSearchQuery,
     searchStore.categoryIDs,
-    searchStore.searchQuery,
     searchStore.priceRange,
     searchStore.orderBy,
   ]);

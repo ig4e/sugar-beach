@@ -5,19 +5,21 @@ import React from "react";
 import Input from "../base/Input";
 
 import useTranslation from "next-translate/useTranslation";
+import { useSearchStore } from "~/store/search";
 
 function Search() {
   const router = useRouter();
   const { t } = useTranslation("common");
+  const searchState = useSearchStore();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    void router.push(
-      `/search?query=${
-        (e.currentTarget as unknown as { search: { value: string } }).search
-          .value
-      }`
+
+    searchState.setSearchQuery(
+      (e.currentTarget as unknown as { search: { value: string } }).search.value
     );
+
+    void router.push(searchState.generateUrl());
   }
 
   return (
