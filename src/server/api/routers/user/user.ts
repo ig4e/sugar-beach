@@ -118,6 +118,18 @@ export const userRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      if (ctx.session.user.role !== "ADMIN")
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You do not have permission to perform this action",
+        });
+
+      if (ctx.session.user.id === input.id)
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You do not have permission to perform this action",
+        });
+
       const user = await ctx.prisma.user.update({
         where: { id: input.id },
         data: {

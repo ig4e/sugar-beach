@@ -20,7 +20,12 @@ import {
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MultiSelect, NumberInput, Select } from "@mantine/core";
+import {
+  LoadingOverlay,
+  MultiSelect,
+  NumberInput,
+  Select,
+} from "@mantine/core";
 import {
   type Description,
   type Media,
@@ -120,6 +125,15 @@ function CreateProduct() {
       console.log(error);
     }
   });
+
+  if (typeof window === "undefined")
+    return (
+      <AuthGaurd allowedLevel="STAFF">
+        <AdminLayout>
+          <LoadingOverlay visible></LoadingOverlay>
+        </AdminLayout>
+      </AuthGaurd>
+    );
 
   return (
     <AuthGaurd allowedLevel="STAFF">
