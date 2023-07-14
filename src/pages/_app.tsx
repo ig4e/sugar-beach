@@ -51,7 +51,6 @@ const MyApp: AppType<{ session: Session }> = ({
     },
     fontFamily: "Inter, Noto Kufi Arabic, sans-serif",
     dir: rtl ? "rtl" : "ltr",
-   
   };
 
   const currency = useLocalisationStore((state) => state.currency);
@@ -59,20 +58,21 @@ const MyApp: AppType<{ session: Session }> = ({
 
   return (
     <div className="!font-inter bg-zinc-100">
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={customMantineTheme}
-        emotionCache={rtl ? rtlCache : undefined}
-      >
-        <ChakraProvider theme={chakraTheme}>
-          <SessionProvider session={session}>
+      <SessionProvider session={session}>
+        <MantineProvider
+          withGlobalStyles
+          withNormalizeCSS
+          withCSSVariables
+          theme={customMantineTheme}
+          emotionCache={rtl ? rtlCache : undefined}
+        >
+          <ChakraProvider theme={chakraTheme}>
             <CurrencyContext.Provider value={{ currency }}>
               <Component {...pageProps} />
             </CurrencyContext.Provider>
-          </SessionProvider>
-        </ChakraProvider>
-      </MantineProvider>
+          </ChakraProvider>
+        </MantineProvider>
+      </SessionProvider>
     </div>
   );
 };

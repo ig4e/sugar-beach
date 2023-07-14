@@ -271,18 +271,19 @@ function ManageDiscount({
             <HStack>
               <Button
                 isLoading={isSubmitting}
+                colorScheme="red"
+                onClick={onClose}
+                variant={"outline"}
+              >
+                {t("ManageDiscount.cancel")}
+              </Button>
+              <Button
+                isLoading={isSubmitting}
                 loadingText="Saving"
                 type="submit"
                 form="discount-form"
               >
                 {t("ManageDiscount.save")}
-              </Button>
-              <Button
-                isLoading={isSubmitting}
-                colorScheme="red"
-                onClick={onClose}
-              >
-                {t("ManageDiscount.cancel")}
               </Button>
             </HStack>
           </ModalFooter>

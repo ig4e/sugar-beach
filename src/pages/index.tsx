@@ -4,13 +4,7 @@ import type { NextPage } from "next";
 import useTranslation from "next-translate/useTranslation";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  A11y,
-  Autoplay,
-  Keyboard,
-  Navigation,
-  Pagination
-} from "swiper";
+import { A11y, Autoplay, Keyboard, Navigation, Pagination } from "swiper";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { SEO } from "~/components/SEO";
@@ -49,10 +43,8 @@ const HomePage: NextPage = () => {
               1024: { slidesPerView: 1.4 },
             }}
             autoplay={true}
-            onSlideChange={() => console.log("slide change")}
-            onSwiper={(swiper) => console.log(swiper)}
             centeredSlides={true}
-            className="aspect-square h-full max-h-[354] overflow-hidden rounded-xl md:aspect-auto md:max-h-96"
+            className="aspect-square h-full max-h-[354px] overflow-hidden rounded-xl md:aspect-auto md:max-h-96"
             speed={500}
             pagination={{
               clickable: true,
@@ -75,12 +67,13 @@ const HomePage: NextPage = () => {
                   <Link href={`/products/${item.productId}`}>
                     <Image
                       src={item.media[0]?.url ?? LogoLarge}
-                      width={1040}
+                      width={1024}
                       height={384}
                       quality={100}
                       alt="image"
+                      loading="lazy"
                       className={clsx(
-                        "hidden aspect-[1000/300] h-full w-full rounded-xl bg-gray-400 object-cover transition duration-1000 md:block md:max-h-96",
+                        "hidden aspect-[1024/384] h-full w-full max-w-5xl rounded-xl bg-gray-400 object-cover transition duration-1000 md:block md:max-h-96",
                         {
                           "opacity-50": !isActive,
                         }
@@ -91,12 +84,12 @@ const HomePage: NextPage = () => {
                       src={
                         item.media[1]?.url ?? item.media[0]?.url ?? LogoLarge
                       }
-                      width={1040}
+                      width={384}
                       height={384}
-                      quality={100}
                       alt="image"
+                      loading="lazy"
                       className={clsx(
-                        "aspect-square h-full w-full rounded-xl bg-gray-400 object-cover transition duration-1000 md:hidden",
+                        "aspect-square h-full max-h-[384px] w-full max-w-sm rounded-xl bg-gray-400 object-cover transition duration-1000 md:hidden",
                         {
                           "opacity-50": !isActive,
                         }

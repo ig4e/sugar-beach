@@ -65,7 +65,28 @@ function ChangeRegion() {
     }
   }, [localisation, currentLocalisation, router]);
 
-  if (!localisation) return;
+  if (!localisation)
+    return (
+      <Button
+        colorScheme="gray"
+        className="flex items-center gap-2"
+        size={"sm"}
+      >
+        <Image
+          src={`https://flagcdn.com/w40/sa.webp`}
+          alt={"sa"}
+          width={44}
+          height={44}
+          className="h-5 w-8 rounded object-cover"
+        />
+        <div className="flex items-center gap-1 text-sm">
+          <span className="font-semibold">{locale.toLocaleUpperCase()}</span>
+          <span>/</span>
+          <span className="font-semibold">SAR</span>
+        </div>
+        <ChevronDownIcon className="h-5 w-5 text-zinc-900" />
+      </Button>
+    );
 
   return (
     <>
@@ -105,7 +126,9 @@ function ChangeRegion() {
             <VStack spacing={4}>
               <FormControl>
                 <VStack alignItems={"start"}>
-                  <FormLabel>{t("ChangeRegion.drawer.body.choose-country")}</FormLabel>
+                  <FormLabel>
+                    {t("ChangeRegion.drawer.body.choose-country")}
+                  </FormLabel>
 
                   <RadioGroup
                     value={currentLocalisation.country}
@@ -142,7 +165,9 @@ function ChangeRegion() {
                 </VStack>
               </FormControl>
               <FormControl>
-                <FormLabel>{t("ChangeRegion.drawer.body.choose-language")}</FormLabel>
+                <FormLabel>
+                  {t("ChangeRegion.drawer.body.choose-language")}
+                </FormLabel>
 
                 <SegmentedControl
                   className="!w-full"
@@ -165,7 +190,9 @@ function ChangeRegion() {
               <Button variant="outline" onClick={onClose}>
                 {t("ChangeRegion.drawer.footer.cancel")}
               </Button>
-              <Button onClick={onConfirm}>{t("ChangeRegion.drawer.footer.confirm")}</Button>
+              <Button onClick={onConfirm}>
+                {t("ChangeRegion.drawer.footer.confirm")}
+              </Button>
             </HStack>
           </DrawerFooter>
         </DrawerContent>

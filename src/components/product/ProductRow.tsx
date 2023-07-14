@@ -43,13 +43,11 @@ function ProductRow({
             1024: { slidesPerView: 5 },
           }}
           autoplay={true}
-          onSlideChange={() => console.log("slide change")}
-          onSwiper={(swiper) => console.log(swiper)}
           speed={500}
           keyboard={true}
           a11y={{ enabled: true }}
           modules={[Navigation, Pagination, A11y, Keyboard, Autoplay]}
-          className="!grid !h-full "
+          className="!grid !h-full"
           navigation={{
             enabled: true,
             nextEl: "#slide-next-new",
@@ -62,19 +60,6 @@ function ProductRow({
             </SwiperSlide>
           ))}
         </Swiper>
-        {/* <button
-          id="slide-prev-new"
-          className="absolute inset-y-0 left-2 z-40 my-auto max-h-fit rounded-full bg-zinc-800 p-2 transition hover:bg-zinc-900 active:bg-zinc-800/50 disabled:opacity-50 disabled:hover:bg-zinc-700"
-        >
-          <ChevronLeftIcon className="h-5 w-5 text-white "></ChevronLeftIcon>
-        </button>
-
-        <button
-          id="slide-next-new"
-          className="absolute inset-y-0 right-2 z-40 my-auto max-h-fit rounded-full bg-zinc-800 p-2 transition hover:bg-zinc-900 active:bg-zinc-800/50 disabled:opacity-50 disabled:hover:bg-zinc-700"
-        >
-          <ChevronRightIcon className="h-5 w-5 text-white"></ChevronRightIcon>
-        </button> */}
       </div>
     </section>
   );

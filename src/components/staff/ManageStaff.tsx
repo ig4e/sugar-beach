@@ -19,26 +19,42 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { LoadingOverlay, Select } from "@mantine/core";
-import type { ReactElement } from "react";
-import { RouterInputs, api } from "~/utils/api";
+import { useEffect, type ReactElement } from "react";
+import { type RouterInputs, api } from "~/utils/api";
 import { LogoLargeDynamicPath } from "../logos";
 
-function ManageStaff(props: { userId: string; trigger: ReactElement }) {
+function ManageStaff(props: {
+  userId: string;
+  trigger: ReactElement;
+  onRefetch: () => void;
+}) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     data: user,
     isLoading,
     isError,
+    error,
   } = api.user.get.useQuery({
     id: props.userId,
   });
+
+  useEffect(() => {
+    if (isError) {
+      toast({
+        title: "Error loading user",
+        description: error.message,
+      });
+    }
+  }, [isError, error, toast]);
+
   const editUserRoleMutation = api.user.editRole.useMutation({
     onSuccess() {
       toast({
         title: "User role updated",
         status: "success",
       });
+      props.onRefetch();
       onClose();
     },
     onError(error) {
@@ -92,7 +108,12 @@ function ManageStaff(props: { userId: string; trigger: ReactElement }) {
                       <FormLabel>Role</FormLabel>
                       <Select
                         defaultValue={user.role}
-                        data={["ADMIN", "STAFF", "USER"]}
+                        data={[
+                          { value: "ADMIN", label: "Admin" },
+                          { value: "STAFF", label: "Staff" },
+                          { value: "USER", label: "User" },
+                        ]}
+                        searchable={true}
                         onChange={(role) =>
                           role &&
                           editUserRoleMutation.mutate({
@@ -109,10 +130,15 @@ function ManageStaff(props: { userId: string; trigger: ReactElement }) {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="red" mr={3} onClick={onClose}>
+            <Button
+              colorScheme="red"
+              mr={3}
+              onClick={onClose}
+              variant={"outline"}
+            >
               Close
             </Button>
-            <Button>Save</Button>
+            <Button onClick={onClose}>Save</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

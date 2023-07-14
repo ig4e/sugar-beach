@@ -248,18 +248,19 @@ function ManageFeatured({
             <HStack>
               <Button
                 isLoading={isSubmitting}
+                colorScheme="red"
+                onClick={onClose}
+                variant={"outline"}
+              >
+                Cancel
+              </Button>
+              <Button
+                isLoading={isSubmitting}
                 loadingText="Saving"
                 type="submit"
                 form="featured-form"
               >
                 Save
-              </Button>
-              <Button
-                isLoading={isSubmitting}
-                colorScheme="red"
-                onClick={onClose}
-              >
-                Cancel
               </Button>
             </HStack>
           </ModalFooter>

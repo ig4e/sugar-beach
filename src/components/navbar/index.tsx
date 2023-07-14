@@ -51,7 +51,7 @@ function Navbar() {
           className={clsx(
             "container sticky top-4 !z-[1000] mx-auto flex items-center justify-between gap-4 py-4 transition-all duration-500",
             {
-              "max-w-full md:px-4 lg:px-5 xl:px-6": takeFullWidth,
+              "max-w-full px-[1rem]": takeFullWidth,
             }
           )}
         >

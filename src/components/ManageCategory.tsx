@@ -139,18 +139,19 @@ function ManageCategory({
             <HStack>
               <Button
                 isLoading={isSubmitting}
+                colorScheme="red"
+                onClick={onClose}
+                variant={"outline"}
+              >
+                Cancel
+              </Button>
+              <Button
+                isLoading={isSubmitting}
                 loadingText="Saving"
                 type="submit"
                 form="category-form"
               >
                 Save
-              </Button>
-              <Button
-                isLoading={isSubmitting}
-                colorScheme="red"
-                onClick={onClose}
-              >
-                Cancel
               </Button>
             </HStack>
           </ModalFooter>

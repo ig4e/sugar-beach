@@ -31,7 +31,7 @@ function ProductCard({
   const locale = lang as Locale;
 
   return (
-    <Card height={"full"}>
+    <Card height={"full"} maxW={"xs"}>
       <CardBody
         display={"flex"}
         flexDirection={"column"}
@@ -49,7 +49,7 @@ function ProductCard({
               <Image
                 src={productImage}
                 width={256}
-                height={256}
+                height={128}
                 alt={product.name[locale]}
                 className="h-full max-h-40 w-full rounded-md object-cover"
               />

@@ -32,7 +32,6 @@ function Search() {
             placeholder={t("Search.search")}
             width={"full"}
             type="search"
-            tabIndex={1}
             border={"0px"}
             borderColor={"gray.400"}
             focusBorderColor="pink.400"
