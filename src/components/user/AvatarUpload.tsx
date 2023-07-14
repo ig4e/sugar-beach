@@ -1,6 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import {
   Button,
+  FormControl,
+  FormHelperText,
+  FormLabel,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -95,14 +98,20 @@ export function AvatarUpload(props: { onRefetch: () => void }) {
           <ModalHeader>Edit Avatar</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ReactCrop
-              aspect={1}
-              crop={crop}
-              onChange={(_, percent) => setCrop(percent)}
-              onComplete={(c) => setStoredCrop(c)}
-            >
-              <img ref={imageRef} src={src} alt="Crop me" />
-            </ReactCrop>
+            <FormControl>
+              <FormLabel>Crop Avatar</FormLabel>
+              <ReactCrop
+                aspect={1}
+                crop={crop}
+                onChange={(_, percent) => setCrop(percent)}
+                onComplete={(c) => setStoredCrop(c)}
+              >
+                <img ref={imageRef} src={src} alt="Crop me" />
+              </ReactCrop>
+              <FormHelperText>
+                Move to select and crop the avatar to your liking
+              </FormHelperText>
+            </FormControl>
           </ModalBody>
           <ModalFooter>
             <Button
