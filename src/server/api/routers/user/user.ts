@@ -14,6 +14,19 @@ import { v4 } from "uuid";
 import { utapi } from "uploadthing/server";
 
 export const userRouter = createTRPCRouter({
+  get: protectedProcedure
+    .input(z.object({ id: z.string().uuid() }))
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.prisma.user.findUnique({
+        where: { id: input.id },
+      });
+
+      if (!user)
+        throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+
+      return user;
+    }),
+
   getStaff: protectedAdminProcedure
     .input(
       z.object({
@@ -83,6 +96,24 @@ export const userRouter = createTRPCRouter({
         where: { id: ctx.session.user.id },
         data: {
           name: input.name,
+        },
+      });
+
+      return user;
+    }),
+
+  editRole: protectedAdminProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        role: z.enum(["ADMIN", "STAFF", "USER"]),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.prisma.user.update({
+        where: { id: input.id },
+        data: {
+          role: input.role,
         },
       });
 

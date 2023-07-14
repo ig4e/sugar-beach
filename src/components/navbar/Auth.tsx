@@ -123,7 +123,8 @@ function Auth({ variant = "avatar" }: { variant?: "avatar" | "menu" }) {
             <PopoverBody className=" z-50 space-y-4" zIndex={1000}>
               <div className="grid grid-cols-2 gap-4">
                 {accountOptions.map((option) => {
-                  if (option.admin && user.role !== "ADMIN") return null;
+                  if (option.admin && !["ADMIN", "STAFF"].includes(user.role))
+                    return null;
 
                   return (
                     <Link href={option.href} key={option.name}>

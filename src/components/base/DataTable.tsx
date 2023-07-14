@@ -1,5 +1,24 @@
-import React, { useMemo } from "react";
-
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Button,
+  HStack,
+  Heading,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+} from "@chakra-ui/react";
+import { CheckIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import type { ColumnDef } from "@tanstack/react-table";
 import {
   flexRender,
   getCoreRowModel,
@@ -9,120 +28,8 @@ import {
   type ColumnFiltersState,
   type VisibilityState,
 } from "@tanstack/react-table";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
-import {
-  Avatar,
-  Badge,
-  Button,
-  HStack,
-  Heading,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
-  Text,
-} from "@chakra-ui/react";
-
-import {
-  AdjustmentsHorizontalIcon,
-  CheckIcon,
-  EyeSlashIcon,
-} from "@heroicons/react/20/solid";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
-import type { User } from "@prisma/client";
-import type { ColumnDef } from "@tanstack/react-table";
-import { api } from "~/utils/api";
+import React from "react";
 import Input from "../base/Input";
-import { LogoLargeDynamicPath } from "../logos";
-import { LoadingOverlay } from "@mantine/core";
-import ManageStaff from "./ManageStaff";
-
-export const columns: ColumnDef<User>[] = [
-  {
-    accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => {
-      const user = row.original;
-      const userImage = user.media?.url ?? user.image ?? LogoLargeDynamicPath;
-
-      return (
-        <HStack>
-          <Avatar src={userImage} name={user.name} size="sm"></Avatar>
-          <Text>{row.renderValue("name")}</Text>
-        </HStack>
-      );
-    },
-  },
-  {
-    accessorKey: "email",
-    header: "Email",
-  },
-  {
-    accessorKey: "role",
-    header: "Role",
-    cell: ({ row }) => {
-      return <Badge>{row.renderValue("role")}</Badge>;
-    },
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const user = row.original;
-
-      return (
-        <Menu placement="bottom-end">
-          <MenuButton
-            w={"fit-content"}
-            as={IconButton}
-            size="sm"
-            aria-label="actions"
-            colorScheme="gray"
-            icon={
-              <EllipsisHorizontalIcon className="h-5 w-5"></EllipsisHorizontalIcon>
-            }
-          ></MenuButton>
-          <MenuList>
-            <Heading
-              size="xs"
-              px={3}
-              py={1}
-              display={"flex"}
-              alignItems={"center"}
-            >
-              <span className="inline-block max-w-[5rem] overflow-hidden text-ellipsis whitespace-nowrap">
-                {user.name}
-              </span>
-              &apos;s actions
-            </Heading>
-            <MenuDivider></MenuDivider>
-            <ManageStaff
-              trigger={
-                <MenuItem
-                  icon={<AdjustmentsHorizontalIcon className="h-4 w-4" />}
-                >
-                  Manage
-                </MenuItem>
-              }
-              userId={user.id}
-            ></ManageStaff>
-          </MenuList>
-        </Menu>
-      );
-    },
-  },
-];
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -285,27 +192,4 @@ export function DataTable<TData, TValue>({
   );
 }
 
-function StaffTable() {
-  const { data: dataPages } = api.user.getStaff.useInfiniteQuery({});
-
-  const data = useMemo(() => {
-    if (dataPages) {
-      return dataPages.pages.flatMap((page) => page.items);
-    }
-  }, [dataPages]);
-
-  if (!data)
-    return (
-      <div className="relative min-h-[25rem]">
-        <LoadingOverlay visible overlayBlur={2}></LoadingOverlay>
-      </div>
-    );
-
-  return (
-    <div className="">
-      <DataTable columns={columns} data={data}></DataTable>
-    </div>
-  );
-}
-
-export default StaffTable;
+export default DataTable;
