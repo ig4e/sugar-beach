@@ -62,7 +62,7 @@ function AdminLayout({ children }: { children: ReactNode }) {
       navbarOffsetBreakpoint="md"
       navbar={
         <Navbar p="xs" width={{ base: 256 }} hidden={!isOpen}>
-          <div className="block md:hidden">
+          <MediaQuery largerThan="md" styles={{ display: "none" }}>
             <Navbar.Section mb="md">
               <Link href={"/"}>
                 <Image
@@ -73,7 +73,7 @@ function AdminLayout({ children }: { children: ReactNode }) {
                 ></Image>
               </Link>
             </Navbar.Section>
-          </div>
+          </MediaQuery>
 
           <Navbar.Section grow>
             <div className="space-y-4">
@@ -118,14 +118,14 @@ function AdminLayout({ children }: { children: ReactNode }) {
           <div
             style={{ display: "flex", alignItems: "center", height: "100%" }}
           >
-            <div className="block md:hidden">
+            <MediaQuery largerThan="md" styles={{ display: "none" }}>
               <Burger
                 opened={isOpen}
                 onClick={() => (isOpen ? onClose() : onOpen())}
                 size="sm"
                 mr="xl"
               />
-            </div>
+            </MediaQuery>
 
             <HStack justifyContent={"space-between"} width={"full"}>
               <HStack spacing={4}>
