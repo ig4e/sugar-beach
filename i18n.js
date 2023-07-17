@@ -5,6 +5,7 @@ module.exports = {
     "*": ["common"],
     "/": ["home"],
     "/cart": ["cart"],
+    "/checkout": ["checkout"],
     "/search": ["search"],
     "rgx:^/products": ["product", "productFeedback"],
     "rgx:^/@me": ["account"],

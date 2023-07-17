@@ -2,9 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import {
   createTRPCRouter,
-  publicProcedure,
-  protectedProcedure,
-  protectedAdminProcedure,
+  protectedProcedure
 } from "~/server/api/trpc";
 
 const addressInput = z.object({

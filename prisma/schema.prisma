@@ -2,8 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["jsonProtocol"]
+    provider = "prisma-client-js"
 }
 
 datasource db {
@@ -95,7 +94,6 @@ model Product {
     quantity         Int
     status           ProductStatus
     feedback         UserFeedback[]
-    orders           Order[]
     categories       Category[]                   @relation(references: [id], fields: [categoryIDs])
     type             String
     visits           Int                          @default(0)
@@ -104,6 +102,7 @@ model Product {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
+    orders      ProductOnOrder[]
     categoryIDs String[]
     featured    Featured[]
 }
@@ -122,25 +121,50 @@ model Featured {
 
 model Order {
     id              String              @id @default(uuid()) @map("_id")
-    status          OrderStatus
-    product         Product             @relation(fields: [productId], references: [id])
+    status          OrderStatus         @default(ORDER_PLACED)
+    paymentStatus   PaymentStatus       @default(PENDING)
     user            User                @relation(fields: [userId], references: [id])
     shippingAddress UserShippingAddress @relation(fields: [userShippingAddressId], references: [id])
+    products        ProductOnOrder[]
+    additionalNotes String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    productId             String
     userId                String
     userShippingAddressId String
+    invoice               OrderInvoice @relation(fields: [invoiceId], references: [id])
+    invoiceId             String       @unique
+}
+
+model OrderInvoice {
+    id        String @id @default(uuid()) @map("_id")
+    order     Order?
+    invoiceId String @unique
+    url       String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model ProductOnOrder {
+    id             String  @id @default(uuid()) @map("_id")
+    order          Order   @relation(fields: [orderId], references: [id])
+    product        Product @relation(fields: [productId], references: [id])
+    price          Float
+    compareAtPrice Float?
+    quantity       Int
+
+    productId String
+    orderId   String
 }
 
 model UserFeedback {
     id      String  @id @default(uuid()) @map("_id")
     content String
     score   Float
-    user    User    @relation(fields: [userId], references: [id])
-    product Product @relation(fields: [productId], references: [id])
+    user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -234,9 +258,9 @@ type PhoneNumber {
 }
 
 enum OrderStatus {
-    CANCELLED
     ORDER_PLACED
     PROCESSING
+    CANCELLED
     PREPARING_TO_SHIP
     SHIPPED
     DELIVERED
@@ -272,4 +296,10 @@ enum FeaturedStatus {
     ACTIVE
     DRAFT
     ARCHIVED
+}
+
+enum PaymentStatus {
+    PENDING
+    CANCELLED
+    PAID
 }

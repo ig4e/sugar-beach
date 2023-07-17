@@ -4,6 +4,7 @@ import { badgeTheme } from "./components/badge";
 import { buttonTheme } from "./components/button";
 import { checkboxTheme } from "./components/checkbox";
 import { inputTheme } from "./components/input";
+import { dividerTheme } from "./components/divider";
 
 export const customChakraTheme = (dir: "ltr" | "rtl" = "ltr") =>
   extendTheme(
@@ -27,6 +28,7 @@ export const customChakraTheme = (dir: "ltr" | "rtl" = "ltr") =>
         Checkbox: checkboxTheme,
         Input: inputTheme,
         Alert: alertTheme,
+        Divider: dividerTheme,
       },
       direction: dir,
       breakpoints: {

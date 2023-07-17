@@ -166,7 +166,11 @@ function Cart() {
                     </Heading>
 
                     {userAddresses.data.length > 0 ? (
-                      <Button isDisabled={isCartEmpty}>{t("check-out")}</Button>
+                      <Link href={"/checkout"}>
+                        <Button isDisabled={isCartEmpty}>
+                          {t("check-out")}
+                        </Button>
+                      </Link>
                     ) : (
                       <ManageAddress
                         Trigger={

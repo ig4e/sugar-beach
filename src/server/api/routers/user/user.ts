@@ -1,17 +1,16 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import ChangeEmail from "~/email/templates/verification/ChangeEmail";
 import {
   createTRPCRouter,
-  publicProcedure,
-  protectedProcedure,
   protectedAdminProcedure,
+  protectedProcedure,
 } from "~/server/api/trpc";
-import { addressRouter } from "./address";
 import { resend } from "~/server/resend";
-import ChangeEmail from "~/email/templates/verification/ChangeEmail";
+import { addressRouter } from "./address";
 
-import { v4 } from "uuid";
 import { utapi } from "uploadthing/server";
+import { v4 } from "uuid";
 
 export const userRouter = createTRPCRouter({
   get: protectedProcedure
@@ -62,7 +61,7 @@ export const userRouter = createTRPCRouter({
       let nextCursor: typeof cursor | undefined = undefined;
       if (items.length > limit) {
         const nextItem = items.pop();
-        nextCursor = nextItem!.id;
+        if (nextItem) nextCursor = nextItem.id;
       }
 
       return {
@@ -191,6 +190,7 @@ export const userRouter = createTRPCRouter({
       });
 
       return {
+        id: data.id,
         message: "Email sent",
       };
     } catch (error) {

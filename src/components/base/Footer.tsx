@@ -14,12 +14,10 @@ import useTranslation from "next-translate/useTranslation";
 
 export const paymentOptionLogos = [
   VisaLogo,
+  MasterCardLogo,
   MadaLogo,
   ApplePayLogo,
-  MasterCardLogo,
   StcPayLogo,
-  AmericanExpressLogo,
-  MoyasserLogo,
 ];
 
 function Footer() {
@@ -39,15 +37,19 @@ function Footer() {
             </Heading>
             <div className="flex flex-wrap items-center gap-2">
               {paymentOptionLogos.map((logo, index) => (
-                <Image
-                  width={128}
-                  height={64}
-                  quality={100}
-                  src={logo}
-                  alt="Payment method"
+                <div
                   key={`payment-logo-${index}`}
-                  className="h-8 w-16 object-cover"
-                />
+                  className="rounded-md border p-0.5"
+                >
+                  <Image
+                    width={128}
+                    height={64}
+                    quality={100}
+                    src={logo}
+                    alt="Payment method"
+                    className="h-8 w-16 object-cover"
+                  />
+                </div>
               ))}
             </div>
           </Stack>
