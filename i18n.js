@@ -11,6 +11,7 @@ module.exports = {
     "rgx:^/@me": ["account"],
     "/@me": ["accountHome"],
     "/@me/addresses": ["accountAddresses"],
+    "/@me/orders": ["accountOrders"],
     "rgx:^/dashboard": ["adminDashboard"],
     "/dashboard/discounts": ["adminDashboard", "adminDiscounts"],
     "/auth/signin": ["signIn"],

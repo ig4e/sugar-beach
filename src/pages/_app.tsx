@@ -58,7 +58,7 @@ const MyApp: AppType<{ session: Session }> = ({
   const chakraTheme = customChakraTheme(rtl ? "rtl" : "ltr");
 
   return (
-    <div className="!font-inter bg-zinc-100">
+    <div className="!font-sans bg-zinc-100">
       <SessionProvider session={session}>
         <MantineProvider
           withGlobalStyles

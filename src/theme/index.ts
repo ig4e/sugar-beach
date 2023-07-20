@@ -5,10 +5,14 @@ import { buttonTheme } from "./components/button";
 import { checkboxTheme } from "./components/checkbox";
 import { inputTheme } from "./components/input";
 import { dividerTheme } from "./components/divider";
+import { headingTheme } from "./components/heading";
 
 export const customChakraTheme = (dir: "ltr" | "rtl" = "ltr") =>
   extendTheme(
     {
+      fonts: {
+        body: "Inter, Noto Kufi Arabic, sans-serif",
+      },
       colors: {
         pink: {
           100: "#fce7f3",
@@ -29,6 +33,7 @@ export const customChakraTheme = (dir: "ltr" | "rtl" = "ltr") =>
         Input: inputTheme,
         Alert: alertTheme,
         Divider: dividerTheme,
+        Heading: headingTheme
       },
       direction: dir,
       breakpoints: {
@@ -38,6 +43,7 @@ export const customChakraTheme = (dir: "ltr" | "rtl" = "ltr") =>
         xl: "1280px",
         "2xl": "1400px",
       },
+      textStyles: {},
     },
     withDefaultColorScheme({ colorScheme: "pink" })
   );

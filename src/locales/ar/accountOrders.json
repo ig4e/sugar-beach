@@ -1,0 +1,22 @@
+{
+  "my-orders": "طلباتي",
+  "orderStatus": {
+    "ALL": "الكل",
+    "ORDER_PLACED": "تم الطلب",
+    "PROCESSING": "قيد المعالجة",
+    "PREPARING_TO_SHIP": "جارٍ التحضير للشحن",
+    "SHIPPED": "تم الشحن",
+    "DELIVERED": "تم التوصيل",
+    "REFUNDED": "تم رد المبلغ",
+    "CANCELLED": "تم الإلغاء"
+  },
+  "paymentStatus": {
+    "PAID": "تم الدفع",
+    "REFUNDED": "تم رد المبلغ",
+    "CANCELLED": "تم الإلغاء"
+  },
+  "order-id": "رقم الطلب:",
+  "invoice-id": "رقم الفاتورة:",
+  "order-status": "حالة الطلب:",
+  "shipping-to": "الوجهة: "
+}

@@ -1,0 +1,22 @@
+{
+  "my-orders": "My orders",
+  "orderStatus": {
+    "ALL": "All",
+    "ORDER_PLACED": "Order Placed",
+    "PROCESSING": "Processing",
+    "PREPARING_TO_SHIP": "Preparing to ship",
+    "SHIPPED": "Shipped",
+    "DELIVERED": "Delivered",
+    "REFUNDED": "Refunded",
+    "CANCELLED": "Cancelled"
+  },
+  "paymentStatus": {
+    "PAID": "Paid",
+    "REFUNDED": "Refunded",
+    "CANCELLED": "Cancelled"
+  },
+  "order-id": "Order ID:",
+  "invoice-id": "Invoice ID:",
+  "order-status": "Order Status:",
+  "shipping-to": "Shipping to:"
+}

@@ -122,26 +122,27 @@ model Featured {
 model Order {
     id              String              @id @default(uuid()) @map("_id")
     status          OrderStatus         @default(ORDER_PLACED)
-    paymentStatus   PaymentStatus       @default(PENDING)
     user            User                @relation(fields: [userId], references: [id])
     shippingAddress UserShippingAddress @relation(fields: [userShippingAddressId], references: [id])
     products        ProductOnOrder[]
     additionalNotes String?
+    totalPrice      Float
+    invoice         OrderInvoice        @relation(fields: [invoiceId], references: [id])
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     userId                String
     userShippingAddressId String
-    invoice               OrderInvoice @relation(fields: [invoiceId], references: [id])
-    invoiceId             String       @unique
+    invoiceId             String @unique
 }
 
 model OrderInvoice {
-    id        String @id @default(uuid()) @map("_id")
+    id        String        @id @default(uuid()) @map("_id")
     order     Order?
-    invoiceId String @unique
+    invoiceId String        @unique
     url       String
+    status    InvoiceStatus @default(PENDING)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -149,8 +150,8 @@ model OrderInvoice {
 
 model ProductOnOrder {
     id             String  @id @default(uuid()) @map("_id")
-    order          Order   @relation(fields: [orderId], references: [id])
-    product        Product @relation(fields: [productId], references: [id])
+    order          Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+    product        Product @relation(fields: [productId], references: [id], onDelete: Cascade)
     price          Float
     compareAtPrice Float?
     quantity       Int
@@ -264,6 +265,7 @@ enum OrderStatus {
     PREPARING_TO_SHIP
     SHIPPED
     DELIVERED
+    REFUNDED
 }
 
 enum ShippingAddressType {
@@ -298,7 +300,7 @@ enum FeaturedStatus {
     ARCHIVED
 }
 
-enum PaymentStatus {
+enum InvoiceStatus {
     PENDING
     CANCELLED
     PAID

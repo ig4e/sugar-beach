@@ -14,6 +14,7 @@ import { LoadingOverlay } from "@mantine/core";
 import { Product } from "@prisma/client";
 import useTranslation from "next-translate/useTranslation";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useMemo, useState } from "react";
 import AddressCard from "~/components/address/AddressCard";
 import { paymentOptionLogos } from "~/components/base/Footer";
@@ -30,16 +31,22 @@ function Checkout() {
   const userAddresses = api.user.address.findMany.useQuery({});
   const { t, lang } = useTranslation("checkout");
   const locale = lang as Locale;
+  const router = useRouter();
 
   const createOrder = api.order.create.useMutation({
     onSuccess(data, variables, context) {
       //cartStore.clear();
-      toast({
-        title: t("order-placed"),
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+
+      if (data) {
+        toast({
+          title: t("order-placed"),
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+
+        void router.push(data.invoice.url);
+      }
 
       console.log(data);
     },

@@ -37,7 +37,7 @@ function SearchPage() {
   useEffect(() => {
     searchStore.parseUrl(window.location.search);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [window.location.search]);
+  }, [typeof window !== "undefined" && window.location.search]);
 
   useEffect(() => {
     void router.push(searchStore.generateUrl(), undefined, { shallow: true });

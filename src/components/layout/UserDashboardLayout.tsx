@@ -24,7 +24,7 @@ function UserDashboardLayout({ children }: { children: ReactNode }) {
   return (
     <Layout>
       <AuthGaurd>
-        <div className="my-8 grid gap-8 md:[grid-template-columns:_clamp(15rem,20%,25em)_1fr;]">
+        <div className="my-8 md:grid gap-8 md:[grid-template-columns:_clamp(15rem,20%,25em)_1fr;]">
           <div className="hidden h-fit flex-col gap-2 rounded-md bg-white p-4 drop-shadow md:flex">
             {accountOptions.map((option) => {
               return (
@@ -40,7 +40,7 @@ function UserDashboardLayout({ children }: { children: ReactNode }) {
               );
             })}
           </div>
-          <div>{children}</div>
+          <div className="w-full">{children}</div>
         </div>
       </AuthGaurd>
     </Layout>
