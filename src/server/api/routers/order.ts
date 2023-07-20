@@ -1,4 +1,4 @@
-import { InvoiceStatus, Prisma, Product } from "@prisma/client";
+import type { InvoiceStatus, Prisma, Product } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import axios, { AxiosError } from "axios";
 import currency from "currency.js";
@@ -12,6 +12,10 @@ import {
   protectedAdminProcedure,
 } from "~/server/api/trpc";
 import { MAX_PAGE_SIZE, PAGE_SIZE } from "../config";
+
+const baseUrl = env.VERCEL_URL
+  ? `https://${env.VERCEL_URL}`
+  : "http://localhost:3000";
 
 export const orderRouter = createTRPCRouter({
   create: protectedProcedure
@@ -107,8 +111,8 @@ export const orderRouter = createTRPCRouter({
           CustomerMobile: shippingAddress.phoneNumber.number.substring(0, 11),
           CustomerEmail: user.email,
           InvoiceValue: totalPrice.value,
-          CallBackUrl: "http://localhost:3000/@me/process-order/" + orderId,
-          ErrorUrl: "http://localhost:3000/@me/process-order/" + orderId,
+          CallBackUrl: `${baseUrl}/@me/process-order/` + orderId,
+          ErrorUrl: `${baseUrl}/@me/process-order/` + orderId,
           CustomerReference: orderId,
           CustomerAddress: {
             Block: shippingAddress.buildingNumber,
@@ -272,7 +276,7 @@ export const orderRouter = createTRPCRouter({
         },
         orderBy: {
           updatedAt: "desc",
-        }
+        },
       });
 
       return {

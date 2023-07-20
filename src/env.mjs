@@ -30,6 +30,7 @@ export const env = createEnv({
     AUTH0_CLIENT_SECRET: z.string(),
     RESEND_API_KEY: z.string(),
     MYFATOORAH_API_KEY: z.string(),
+    VERCEL_URL: z.string(),
   },
 
   /**
@@ -59,6 +60,7 @@ export const env = createEnv({
     AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     MYFATOORAH_API_KEY: process.env.MYFATOORAH_API_KEY,
+    VERCEL_URL: process.env.VERCEL_URL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
