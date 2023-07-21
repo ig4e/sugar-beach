@@ -59,6 +59,7 @@ function Orders() {
                   key={status}
                   onClick={() => setPageState({ status })}
                   borderRadius={"lg"}
+                  whiteSpace={"nowrap"}
                 >
                   {t(`orderStatus.${status}`)}
                 </Tab>

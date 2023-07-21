@@ -55,5 +55,20 @@
     "search-results": "Search Results",
     "for": "for",
     "to": "To"
+  },
+  "orderStatus": {
+    "ALL": "All",
+    "ORDER_PLACED": "Order Placed",
+    "PROCESSING": "Processing",
+    "PREPARING_TO_SHIP": "Preparing to ship",
+    "SHIPPED": "Shipped",
+    "DELIVERED": "Delivered",
+    "REFUNDED": "Refunded",
+    "CANCELLED": "Cancelled"
+  },
+  "paymentStatus": {
+    "PAID": "Paid",
+    "PENDING": "Pending",
+    "CANCELLED": "Cancelled"
   }
 }

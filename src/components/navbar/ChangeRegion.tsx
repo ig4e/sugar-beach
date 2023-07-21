@@ -60,8 +60,9 @@ function ChangeRegion() {
       void router
         .push(router.pathname, router.asPath, {
           locale: currentLocalisation.language,
+          shallow: true,
         })
-        .then(() => router.reload());
+        .then(() => void router.reload());
     }
   }, [localisation, currentLocalisation, router]);
 

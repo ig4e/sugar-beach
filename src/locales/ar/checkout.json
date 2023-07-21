@@ -1,0 +1,17 @@
+{
+  "items-count": "العناصر",
+  "order-summary": "ملخص الطلب",
+  "your-addresses": "عناوينك",
+  "check-out": "الدفع",
+  "available-payment-methods": "طرق الدفع المتاحة",
+  "cart-empty": {
+    "heading": "هل تبحث عن شيء ما؟",
+    "text": "أضف العناصر المفضلة لديك إلى سلة التسوق الخاصة بك.",
+    "button": "مواصلة التسوق"
+  },
+  "errors": {
+    "quantity": {
+      "not-enough": "الكمية غير كافية في المخزون"
+    }
+  }
+}

@@ -48,8 +48,6 @@ function StaffPage() {
           </VStack>
 
           <StaffTable data={data} refetch={() => void refetch()}></StaffTable>
-
-          <Divider></Divider>
         </div>
       </AdminLayout>
     </AuthGaurd>

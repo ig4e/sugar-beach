@@ -31,9 +31,12 @@ function ProcessOrder() {
 
         if (data.status === "PAID") {
           void router.push(
-            `/@me/orders${data.order ? "$" + data.order?.id : ""}`
+            `/@me/orders${data.order ? "#" + data.order?.id : ""}`
           );
         }
+      },
+      trpc: {
+        ssr: false,
       },
     });
 
@@ -88,7 +91,7 @@ function ProcessOrder() {
                 <AlertDescription>
                   {isSuccess
                     ? "Payment successful you will be redirected to your orders"
-                    : "Payment failed because: "}
+                    : "Your payment has failed. Please try again or contact us if the problem persists."}
                 </AlertDescription>
               </VStack>
             </Alert>

@@ -145,7 +145,7 @@ function EditProfile({
           </ModalBody>
 
           <ModalFooter>
-            <Button mr={3} onClick={onClose} variant={"ghost"}>
+            <Button me={3} onClick={onClose} variant={"ghost"}>
               {t("EditProfile.cancel")}
             </Button>
             <Button form="edit-profile-form" type="submit">

@@ -29,8 +29,8 @@ import { useUploadThing } from "~/utils/uploadthing";
 import { useSession } from "next-auth/react";
 
 export function AvatarUpload(props: { onRefetch: () => void }) {
-  const session = useSession();
   const { t } = useTranslation("account");
+  const session = useSession();
   const updateUserAvatar = api.user.updateUserAvatar.useMutation();
   const toast = useToast();
   const [src, setSrc] = useState<string>();
@@ -113,11 +113,11 @@ export function AvatarUpload(props: { onRefetch: () => void }) {
       <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Edit Avatar</ModalHeader>
+          <ModalHeader>{t("AvatarUpload.edit-avatar")}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl>
-              <FormLabel>Crop Avatar</FormLabel>
+              <FormLabel>{t("AvatarUpload.crop-avatar")}</FormLabel>
               <ReactCrop
                 aspect={1}
                 crop={crop}
@@ -127,7 +127,7 @@ export function AvatarUpload(props: { onRefetch: () => void }) {
                 <img ref={imageRef} src={src} alt="Crop me" />
               </ReactCrop>
               <FormHelperText>
-                Move to select and crop the avatar to your liking
+                {t("AvatarUpload.crop-avatar-helper")}{" "}
               </FormHelperText>
             </FormControl>
           </ModalBody>
@@ -137,7 +137,7 @@ export function AvatarUpload(props: { onRefetch: () => void }) {
               isLoading={isUploading}
               loadingText="Uploading..."
             >
-              Upload
+              {t("AvatarUpload.upload")}
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -155,7 +155,7 @@ export function AvatarUpload(props: { onRefetch: () => void }) {
     >
       {(props) => (
         <Button {...props} borderRadius={"full"} colorScheme="gray">
-          Change Avatar
+          {t("AvatarUpload.change-avatar")}
         </Button>
       )}
     </FileButton>

@@ -126,7 +126,9 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
 
   return (
     <>
-      <Button onClick={onOpen}>{t("EditEmail.edit")}</Button>
+      <Button onClick={onOpen} variant={"outline"}>
+        {t("EditEmail.edit")}
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
         <ModalOverlay />
         <ModalContent>
@@ -261,7 +263,7 @@ function EditEmail({ onRefetch }: { onRefetch: () => void }) {
           </ModalBody>
 
           <ModalFooter>
-            <Button mr={3} onClick={onClose} variant={"ghost"}>
+            <Button me={3} onClick={onClose} variant={"ghost"}>
               {t("EditEmail.cancel")}
             </Button>
 

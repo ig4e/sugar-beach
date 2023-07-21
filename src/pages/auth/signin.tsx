@@ -147,7 +147,7 @@ function SignIn() {
               colorScheme="gray"
             >
               <GoogleIcon className="h-5 w-5"></GoogleIcon>
-              <span>{t("sign-in-with")} With Google</span>
+              <span>{t("sign-in-with")} Google</span>
             </Button>
 
             <Button
@@ -158,7 +158,7 @@ function SignIn() {
               colorScheme="gray"
             >
               <DiscordIcon className="h-5 w-5"></DiscordIcon>
-              <span>{t("sign-in-with")} With Discord</span>
+              <span>{t("sign-in-with")} Discord</span>
             </Button>
 
             <Button
@@ -169,7 +169,7 @@ function SignIn() {
               colorScheme="gray"
             >
               <Auth0Icon className="h-5 w-5"></Auth0Icon>
-              <span>{t("sign-in-with")} With Auth 0</span>
+              <span>{t("sign-in-with")} Auth 0</span>
             </Button>
           </div>
 

@@ -17,7 +17,12 @@
   "AvatarUpload": {
     "user-avatar-updated-success": "Successfully updated your avatar",
     "user-avatar-updated-error": "Failed to update your avatar",
-    "user-avatar-updated-upload-error": "Failed to upload your avatar"
+    "user-avatar-updated-upload-error": "Failed to upload your avatar",
+    "change-avatar": "Change Avatar",
+    "edit-avatar": "Edit Avatar",
+    "crop-avatar": "Crop Avatar",
+    "crop-avatar-helper": " Move to select and crop the avatar to your liking.",
+    "upload": "Upload"
   },
   "EditEmail": {
     "header": "Edit Email",

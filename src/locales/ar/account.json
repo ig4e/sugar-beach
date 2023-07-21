@@ -14,10 +14,16 @@
     "save": "حفظ",
     "cancel": "إلغاء"
   },
+
   "AvatarUpload": {
-    "user-avatar-updated-success": "تم تحديث صورتك الشخصية بنجاح",
-    "user-avatar-updated-error": "فشل في تحديث صورتك الشخصية",
-    "user-avatar-updated-upload-error": "فشل في تحميل صورتك الشخصية"
+    "user-avatar-updated-success": "تم تحديث الصورة الرمزية الخاصة بك بنجاح",
+    "user-avatar-updated-error": "فشل تحديث الصورة الرمزية الخاصة بك",
+    "user-avatar-updated-upload-error": "فشل تحميل الصورة الرمزية الخاصة بك",
+    "change-avatar": "تغيير الصورة الرمزية",
+    "edit-avatar": "تحرير الصورة الرمزية",
+    "crop-avatar": "قص الصورة الرمزية",
+    "crop-avatar-helper": "حرّك لتحديد وقص الصورة الرمزية حسب رغبتك.",
+    "upload": "تحميل"
   },
   "EditEmail": {
     "header": "تعديل البريد الإلكتروني",

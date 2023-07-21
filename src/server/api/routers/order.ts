@@ -104,9 +104,9 @@ export const orderRouter = createTRPCRouter({
           "Content-Type": "application/json",
         },
         data: {
-          NotificationOption: "LNK",
+          NotificationOption: "ALL",
           CustomerName: user.name.substring(0, 10),
-          DisplayCurrencyIso: "KWD",
+          DisplayCurrencyIso: "SAR",
           MobileCountryCode: shippingAddress.phoneNumber.code,
           CustomerMobile: shippingAddress.phoneNumber.number.substring(0, 11),
           CustomerEmail: user.email,
@@ -273,6 +273,62 @@ export const orderRouter = createTRPCRouter({
             },
           },
           shippingAddress: true,
+        },
+        orderBy: {
+          updatedAt: "desc",
+        },
+      });
+
+      return {
+        totalPages,
+        nextCursor: totalPages > input.cursor ? input.cursor + 1 : undefined,
+        prevCursor: input.cursor > 1 ? input.cursor - 1 : undefined,
+        items: userOrders,
+      };
+    }),
+
+  getOrders: protectedAdminProcedure
+    .input(
+      z.object({
+        limit: z.number().positive().max(MAX_PAGE_SIZE).default(PAGE_SIZE),
+        cursor: z.number().positive().default(1),
+        status: z.enum([
+          "ALL",
+          "ORDER_PLACED",
+          "PROCESSING",
+          "CANCELLED",
+          "PREPARING_TO_SHIP",
+          "SHIPPED",
+          "DELIVERED",
+          "REFUNDED",
+        ]),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const userOrdersCount = await ctx.prisma.order.count({
+        where: {
+          status: input.status === "ALL" ? undefined : input.status,
+        },
+      });
+
+      const totalPages = Math.ceil(userOrdersCount / input.limit);
+      const offset = (input.cursor - 1) * input.cursor;
+
+      const userOrders = await ctx.prisma.order.findMany({
+        take: input.limit,
+        skip: offset,
+        where: {
+          status: input.status === "ALL" ? undefined : input.status,
+        },
+        include: {
+          invoice: true,
+          products: {
+            include: {
+              product: true,
+            },
+          },
+          shippingAddress: true,
+          user: true,
         },
         orderBy: {
           updatedAt: "desc",
