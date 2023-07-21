@@ -19,6 +19,7 @@ import { useState } from "react";
 import useDayjs from "~/hooks/useDayjs";
 import {
   Badge,
+  HStack,
   Heading,
   IconButton,
   Menu,
@@ -33,7 +34,7 @@ import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import useCurrency from "~/hooks/useCurrency";
 import { ORDER_STATUS } from "~/config/ordersConfig";
 import useTranslation from "next-translate/useTranslation";
-import { LoadingOverlay } from "@mantine/core";
+import { LoadingOverlay, Pagination } from "@mantine/core";
 
 type OrderType = RouterOutputs["order"]["getOrders"]["items"][0];
 
@@ -217,7 +218,7 @@ function DataTable<TData, TValue>({
 export default function OrdersTable() {
   const [pageState, setPageState] = useState<
     RouterInputs["order"]["getOrders"]
-  >({ cursor: 1, status: "ALL" });
+  >({ cursor: 1, status: "ALL", limit: 5 });
 
   const { t } = useTranslation("common");
   const { data, isLoading } = api.order.getOrders.useQuery(pageState);
@@ -234,6 +235,7 @@ export default function OrdersTable() {
                 key={"ALL"}
                 onClick={() => setPageState({ status: "ALL" })}
                 borderRadius={"md"}
+                fontSize={"sm"}
               >
                 {t("orderStatus.ALL")}
               </Tab>
@@ -243,6 +245,7 @@ export default function OrdersTable() {
                   onClick={() => setPageState({ status })}
                   borderRadius={"md"}
                   whiteSpace={"nowrap"}
+                  fontSize={"sm"}
                 >
                   {t(`orderStatus.${status}`)}
                 </Tab>
@@ -254,6 +257,16 @@ export default function OrdersTable() {
       <div className="relative">
         <LoadingOverlay visible={isLoading}></LoadingOverlay>
         <DataTable columns={columns} data={data?.items ?? []} />
+      </div>
+      <div className="p-2">
+        <HStack justifyContent={"center"}>
+          <Pagination
+            total={data?.totalPages ?? 1}
+            onChange={(page) =>
+              setPageState((state) => ({ ...state, cursor: page }))
+            }
+          />
+        </HStack>
       </div>
     </div>
   );
