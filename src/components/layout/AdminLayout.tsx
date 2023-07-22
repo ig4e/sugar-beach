@@ -1,4 +1,7 @@
-import { HStack, useDisclosure } from "@chakra-ui/react";
+import {
+  HStack,
+  useDisclosure
+} from "@chakra-ui/react";
 import {
   FingerPrintIcon,
   HomeModernIcon,
@@ -7,11 +10,17 @@ import {
   SparklesIcon,
   TagIcon,
 } from "@heroicons/react/24/solid";
-import { AppShell, Burger, Header, MediaQuery, Navbar } from "@mantine/core";
+import {
+  AppShell,
+  Burger,
+  Header,
+  MediaQuery,
+  Navbar
+} from "@mantine/core";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { type ReactNode, useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 import { DiscountIcon } from "../base/Icons";
 import MenuItem from "../base/MenuItem";
 import { LogoSmallTransparent } from "../logos";

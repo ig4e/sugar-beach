@@ -114,6 +114,7 @@ export const orderRouter = createTRPCRouter({
           CallBackUrl: `${baseUrl}/@me/process-order/` + orderId,
           ErrorUrl: `${baseUrl}/@me/process-order/` + orderId,
           CustomerReference: orderId,
+          UserDefinedField: `CK-${user.id}`,
           CustomerAddress: {
             Block: shippingAddress.buildingNumber,
             Street: shippingAddress.streetName,
@@ -137,6 +138,11 @@ export const orderRouter = createTRPCRouter({
       if (!invoiceRequest.data) return;
       const invoiceData = invoiceRequest.data as unknown as InvoiceResponse;
 
+      const lastOrderSequence = await ctx.prisma.order.findFirst({
+        orderBy: { number: "desc" },
+        select: { number: true },
+      });
+
       const order = await ctx.prisma.order.create({
         data: {
           id: orderId,
@@ -159,6 +165,10 @@ export const orderRouter = createTRPCRouter({
           },
           totalPrice: totalPrice.value,
           additionalNotes: input.additionalNotes,
+          number:
+            lastOrderSequence && lastOrderSequence?.number
+              ? lastOrderSequence.number + 1
+              : 1,
         },
         include: {
           invoice: true,
@@ -341,6 +351,24 @@ export const orderRouter = createTRPCRouter({
         prevCursor: input.cursor > 1 ? input.cursor - 1 : undefined,
         items: userOrders,
       };
+    }),
+
+  getOrder: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return ctx.prisma.order.findUnique({
+        where: { id: input.id },
+        include: {
+          products: true,
+          user: true,
+          invoice: true,
+          shippingAddress: true,
+        },
+      });
     }),
 });
 

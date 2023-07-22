@@ -25,6 +25,7 @@ import {
   Menu,
   MenuButton,
   MenuDivider,
+  MenuItem,
   MenuList,
   Tab,
   TabList,
@@ -35,13 +36,18 @@ import useCurrency from "~/hooks/useCurrency";
 import { ORDER_STATUS } from "~/config/ordersConfig";
 import useTranslation from "next-translate/useTranslation";
 import { LoadingOverlay, Pagination } from "@mantine/core";
+import { AdjustmentsHorizontalIcon } from "@heroicons/react/20/solid";
+import Link from "next/link";
 
 type OrderType = RouterOutputs["order"]["getOrders"]["items"][0];
 
 export const columns: ColumnDef<OrderType>[] = [
   {
-    accessorKey: "id",
     header: "ID",
+    accessorKey: "number",
+    cell: ({ renderValue }) => {
+      return <span>#{renderValue<number>()}</span>;
+    },
   },
   {
     header: "Customer",
@@ -54,7 +60,7 @@ export const columns: ColumnDef<OrderType>[] = [
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const dayjs = useDayjs();
 
-      return dayjs(props.getValue() as string).format("MMMM D, YYYY");
+      return dayjs(props.getValue() as string).format("hh:mm:s a MMMM D, YYYY");
     },
   },
   {
@@ -145,6 +151,13 @@ export const columns: ColumnDef<OrderType>[] = [
               Order actions
             </Heading>
             <MenuDivider></MenuDivider>
+            <Link href={`/dashboard/orders/${order.id}`}>
+              <MenuItem
+                icon={<AdjustmentsHorizontalIcon className="h-4 w-4" />}
+              >
+                Manage
+              </MenuItem>
+            </Link>
           </MenuList>
         </Menu>
       );
@@ -218,7 +231,7 @@ function DataTable<TData, TValue>({
 export default function OrdersTable() {
   const [pageState, setPageState] = useState<
     RouterInputs["order"]["getOrders"]
-  >({ cursor: 1, status: "ALL", limit: 5 });
+  >({ cursor: 1, status: "ALL" });
 
   const { t } = useTranslation("common");
   const { data, isLoading } = api.order.getOrders.useQuery(pageState);
@@ -233,16 +246,24 @@ export default function OrdersTable() {
             <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
               <Tab
                 key={"ALL"}
-                onClick={() => setPageState({ status: "ALL" })}
+                onClick={() =>
+                  setPageState((state) => ({
+                    ...state,
+                    cursor: 1,
+                    status: "ALL",
+                  }))
+                }
                 borderRadius={"md"}
                 fontSize={"sm"}
               >
-                {t("orderStatus.ALL")}
+                {t("orderStatus.ALL")}إ
               </Tab>
               {ORDER_STATUS.map((status) => (
                 <Tab
                   key={status}
-                  onClick={() => setPageState({ status })}
+                  onClick={() =>
+                    setPageState((state) => ({ ...state, cursor: 1, status }))
+                  }
                   borderRadius={"md"}
                   whiteSpace={"nowrap"}
                   fontSize={"sm"}
@@ -261,7 +282,8 @@ export default function OrdersTable() {
       <div className="p-2">
         <HStack justifyContent={"center"}>
           <Pagination
-            total={data?.totalPages ?? 1}
+            value={pageState.cursor}
+            total={(data && data?.totalPages > 0 ? data?.totalPages : 1) ?? 1}
             onChange={(page) =>
               setPageState((state) => ({ ...state, cursor: page }))
             }

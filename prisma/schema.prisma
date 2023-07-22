@@ -121,6 +121,7 @@ model Featured {
 
 model Order {
     id              String              @id @default(uuid()) @map("_id")
+    number          Int                 @unique @default(1)
     status          OrderStatus         @default(ORDER_PLACED)
     user            User                @relation(fields: [userId], references: [id])
     shippingAddress UserShippingAddress @relation(fields: [userShippingAddressId], references: [id])

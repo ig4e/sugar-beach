@@ -1,5 +1,6 @@
 import {
   Badge,
+  Button,
   Card,
   CardBody,
   CardFooter,
@@ -105,7 +106,9 @@ function Orders() {
                         <HStack>
                           <VStack alignItems={"start"}>
                             <p className="text-sm">
-                              <span className="font-semibold">{t("invoice-id")}</span>{" "}
+                              <span className="font-semibold">
+                                {t("invoice-id")}
+                              </span>{" "}
                               {order.invoice.invoiceId}
                             </p>
                             <span className="text-sm">
@@ -123,6 +126,11 @@ function Orders() {
                           <Badge colorScheme={invoiceColorScheme}>
                             {order.invoice.status}
                           </Badge>
+                          {order.invoice.status === "PENDING" && (
+                            <Link href={order.invoice.url}>
+                              <Button size="sm">Pay</Button>
+                            </Link>
+                          )}
                         </VStack>
                       </HStack>
                     </CardHeader>
@@ -130,7 +138,9 @@ function Orders() {
                     <CardBody>
                       <VStack alignItems={"start"} spacing={4}>
                         <p className="space-x-2 text-sm">
-                          <span className="font-semibold">{t("order-status")}</span>
+                          <span className="font-semibold">
+                            {t("order-status")}
+                          </span>
                           <Badge colorScheme={orderStatusColorScheme}>
                             {t(`orderStatus.${order.status}`)}
                           </Badge>
@@ -183,11 +193,13 @@ function Orders() {
                       <HStack justifyContent={"space-between"} w={"full"}>
                         <p className="text-xs">
                           <span className="font-semibold">{t("order-id")}</span>{" "}
-                          {order.id}
+                          #{order.number}
                         </p>
 
                         <p className="text-xs">
-                          <span className="font-semibold">{t("shipping-to")}</span>{" "}
+                          <span className="font-semibold">
+                            {t("shipping-to")}
+                          </span>{" "}
                           {order.shippingAddress.fullName}
                         </p>
                       </HStack>

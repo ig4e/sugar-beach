@@ -30,7 +30,10 @@ const MyApp: AppType<{ session: Session }> = ({
   const rtlCache = createEmotionCache({
     key: "mantine-rtl",
     stylisPlugins: [stylisRTLPlugin],
+    prepend: false,
   });
+
+  const ltrCache = createEmotionCache({ key: "mantine-ltr", prepend: false });
 
   const customMantineTheme: MantineThemeOverride = {
     primaryColor: "pink",
@@ -58,24 +61,24 @@ const MyApp: AppType<{ session: Session }> = ({
   const chakraTheme = customChakraTheme(rtl ? "rtl" : "ltr");
 
   return (
-    <div className="!font-sans bg-zinc-100">
+    <MantineProvider
+      withGlobalStyles
+      withNormalizeCSS
+      withCSSVariables
+      theme={customMantineTheme}
+      emotionCache={rtl ? rtlCache : ltrCache}
+    >
       <SessionProvider session={session}>
-        <MantineProvider
-          withGlobalStyles
-          withNormalizeCSS
-          withCSSVariables
-          theme={customMantineTheme}
-          emotionCache={rtl ? rtlCache : undefined}
-        >
+        <div className="bg-zinc-100 !font-sans">
           <ChakraProvider theme={chakraTheme}>
             <CurrencyContext.Provider value={{ currency }}>
               <Component {...pageProps} />
             </CurrencyContext.Provider>
           </ChakraProvider>
-        </MantineProvider>
+          <Analytics />
+        </div>
       </SessionProvider>
-      <Analytics />
-    </div>
+    </MantineProvider>
   );
 };
 

@@ -24,7 +24,7 @@ function ProcessOrder() {
   const { paymentId } = router.query;
   const { t } = useTranslation("processOrder");
 
-  const { mutate, isLoading, error, data } =
+  const { mutate, isLoading, error, data, isIdle } =
     api.order.updateOrderPaymentStatus.useMutation({
       onSuccess(data) {
         if (!data) return;
@@ -34,9 +34,6 @@ function ProcessOrder() {
             `/@me/orders${data.order ? "#" + data.order?.id : ""}`
           );
         }
-      },
-      trpc: {
-        ssr: false,
       },
     });
 
@@ -71,7 +68,7 @@ function ProcessOrder() {
             </p>
           </div>
 
-          {isLoading ? (
+          {isLoading || isIdle ? (
             <Alert status="info">
               <div className="pe-4">
                 <Loader color="blue" size={"sm"}></Loader>
