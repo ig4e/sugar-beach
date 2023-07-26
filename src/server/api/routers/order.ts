@@ -78,10 +78,6 @@ export const orderRouter = createTRPCRouter({
             cause: "Quantity is too high",
           });
 
-        totalPrice = totalPrice
-          .add(orderProduct.price)
-          .multiply(product.quantity);
-
         orderProducts.push({
           data: orderProduct,
           compareAtPrice: orderProduct.compareAtPrice,
@@ -89,9 +85,15 @@ export const orderRouter = createTRPCRouter({
           productId: product.id,
           quantity: product.quantity,
         });
+
+        totalPrice = totalPrice.add(
+          currency(orderProduct.price).multiply(product.quantity)
+        );
       }
 
       const orderId = v4();
+
+      console.log(totalPrice.value);
 
       const invoiceRequest = await axios({
         url: "https://apitest.myfatoorah.com/v2/SendPayment",
@@ -133,6 +135,10 @@ export const orderRouter = createTRPCRouter({
             UnitPrice: product.price,
           })),
         },
+      }).catch((err) => {
+        const response = (err as AxiosError).response ?? { data: null };
+        console.log(response.data);
+        return response;
       });
 
       if (!invoiceRequest.data) return;

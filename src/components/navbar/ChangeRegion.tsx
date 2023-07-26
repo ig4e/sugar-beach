@@ -55,14 +55,17 @@ function ChangeRegion() {
   }, [!!localisation]);
 
   const onConfirm = useCallback(() => {
+    onClose();
     if (localisation) {
       localisation.setCountry(currentLocalisation.country);
-      void router
-        .push(router.pathname, router.asPath, {
-          locale: currentLocalisation.language,
-          shallow: true,
-        })
-        .then(() => void router.reload());
+
+      if (router.locale !== currentLocalisation.language)
+        void router
+          .push(router.pathname, router.asPath, {
+            locale: currentLocalisation.language,
+            shallow: true,
+          })
+          .then(() => void router.reload());
     }
   }, [localisation, currentLocalisation, router]);
 

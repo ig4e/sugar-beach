@@ -27,6 +27,7 @@ import { api } from "~/utils/api";
 function Checkout() {
   const cartStore = useCartStore();
   const toast = useToast();
+  const currencyIgnore = useCurrency(true);
   const currency = useCurrency();
   const userAddresses = api.user.address.findMany.useQuery({});
   const { t, lang } = useTranslation("checkout");
@@ -92,13 +93,21 @@ function Checkout() {
   }, [data, cartStore.items]);
 
   const totalPrice = useMemo(() => {
-    const total = dataWithCartQuantity
-      ?.map(({ product, quantity }) => {
-        return currency(product.price).multiply(quantity).value;
-      })
-      .reduce((total, current) => currency(total).add(current).value, 0);
-    return currency(total ?? 0);
-  }, [dataWithCartQuantity, currency]);
+    if (!dataWithCartQuantity) return currency(0);
+
+    const totalProductsPrice = dataWithCartQuantity.map(
+      ({ product, quantity }) => {
+        return currencyIgnore(product.price).multiply(quantity);
+      }
+    );
+
+    const totalPrice = totalProductsPrice.reduce(
+      (total, current) => currencyIgnore(total).add(current),
+      currencyIgnore(0)
+    );
+
+    return currency(totalPrice ?? 0);
+  }, [dataWithCartQuantity, currency, currencyIgnore]);
 
   return (
     <Layout>

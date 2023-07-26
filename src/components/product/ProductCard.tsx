@@ -18,6 +18,7 @@ import type { Locale } from "~/types/locale";
 import { LogoSmallTransparent } from "../logos";
 
 import useTranslation from "next-translate/useTranslation";
+import useCurrency from "~/hooks/useCurrency";
 
 function ProductCard({
   product,
@@ -31,6 +32,7 @@ function ProductCard({
   const productImage = product.media[0]?.url || LogoSmallTransparent;
   const router = useRouter();
   const locale = lang as Locale;
+  const currency = useCurrency();
 
   return (
     <Card height={"full"} maxW={maxWidth ? maxWidth : undefined}>
@@ -73,13 +75,13 @@ function ProductCard({
           <Text className="line-clamp-2">{product.description[locale]}</Text>
           <VStack alignItems={"start"} spacing={0}>
             {product.compareAtPrice && (
-              <span className="text-xs text-red-500 line-through">
-                {product.compareAtPrice} <span className="text-sm">SAR</span>
+              <span className="text-sm text-red-500 line-through">
+                {currency(product.compareAtPrice).format()}
               </span>
             )}
 
             <Text color="pink.600" fontSize="xl" fontWeight={"semibold"}>
-              {product.price} <span className="text-sm">SAR</span>
+              {currency(product.price).format()}
             </Text>
           </VStack>
         </Link>

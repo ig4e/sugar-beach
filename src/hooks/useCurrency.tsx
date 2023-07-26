@@ -1,8 +1,10 @@
 import { Countries } from "@prisma/client";
 import currencyJs from "currency.js";
+import { BooleanArraySupportOption } from "prettier";
 import { createContext, useContext } from "react";
+import { api } from "~/utils/api";
 
-const currencyToCurrency = {
+export const currencyToCurrency = {
   BH: "BHD",
   KW: "KWD",
   IQ: "IQD",
@@ -22,11 +24,26 @@ export const CurrencyContext = createContext<currencyState>({
   currency: "SAR",
 });
 
-function useCurrency() {
+const defaultCurrency = {
+  currency: "SAR",
+  rate: 1,
+};
+
+function useCurrency(ignoreCurrency = false) {
+  const { data: rates } = api.currency.get.useQuery();
   const currencyState = useContext(CurrencyContext);
 
-  const currency = (value: number) =>
-    currencyJs(value, { symbol: currencyState.currency });
+  if (ignoreCurrency) return currencyJs;
+
+  const currency = (value: currencyJs.Any) =>
+    currencyJs(
+      currencyJs(value).multiply(
+        rates ? rates[currencyState.currency] : defaultCurrency.rate
+      ),
+      {
+        symbol: rates ? currencyState.currency : defaultCurrency.currency,
+      }
+    );
 
   return currency;
 }

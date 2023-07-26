@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/currency?key=2550af54-960a-4101-83a4-3e866da2eb87",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}

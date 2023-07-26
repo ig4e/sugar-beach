@@ -231,6 +231,20 @@ model VerificationCode {
     updatedAt DateTime @updatedAt
 }
 
+model CurrencyRates {
+    id  String @id @default(uuid()) @map("_id")
+    BHD Float
+    KWD Float
+    IQD Float
+    OMR Float
+    QAR Float
+    SAR Float
+    AED Float
+
+    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+}
+
 enum DiscountType {
     AMOUNT_OFF_ORDER
 }

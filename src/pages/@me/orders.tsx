@@ -19,7 +19,6 @@ import UserDashboardLayout from "~/components/layout/UserDashboardLayout";
 import { type RouterInputs, api } from "~/utils/api";
 import { LoadingOverlay, Pagination } from "@mantine/core";
 import useCurrency from "~/hooks/useCurrency";
-import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
@@ -27,6 +26,7 @@ import { Locale } from "~/types/locale";
 import { useRouter } from "next/router";
 import { OrderStatus } from "@prisma/client";
 import { ORDER_STATUS } from "~/config/ordersConfig";
+import useDayjs from "~/hooks/useDayjs";
 
 function Orders() {
   const { t, lang } = useTranslation("accountOrders");
@@ -40,6 +40,7 @@ function Orders() {
     api.order.getUserOrders.useQuery(pageState);
 
   const currency = useCurrency();
+  const dayjs = useDayjs();
 
   return (
     <UserDashboardLayout>

@@ -23,12 +23,15 @@ import { api } from "~/utils/api";
 
 import useTranslation from "next-translate/useTranslation";
 import ManageAddress from "~/components/address/ManageAddress";
+import currencyJs from "currency.js";
 
 function Cart() {
   const { t, lang } = useTranslation("cart");
   const cartStore = useCartStore();
   const toast = useToast();
   const currency = useCurrency();
+  const currencyIgnore = useCurrency(true);
+
   const userAddresses = api.user.address.findMany.useQuery({});
   const locale = lang as Locale;
 
@@ -74,13 +77,21 @@ function Cart() {
   }, [dataWithCartQuantity, cartStore, toast]);
 
   const totalPrice = useMemo(() => {
-    const total = dataWithCartQuantity
-      ?.map(({ product, quantity }) => {
-        return currency(product.price).multiply(quantity).value;
-      })
-      .reduce((total, current) => currency(total).add(current).value, 0);
-    return currency(total ?? 0);
-  }, [dataWithCartQuantity, currency]);
+    if (!dataWithCartQuantity) return currency(0);
+
+    const totalProductsPrice = dataWithCartQuantity.map(
+      ({ product, quantity }) => {
+        return currencyIgnore(product.price).multiply(quantity);
+      }
+    );
+
+    const totalPrice = totalProductsPrice.reduce(
+      (total, current) => currencyIgnore(total).add(current),
+      currencyIgnore(0)
+    );
+
+    return currency(totalPrice ?? 0);
+  }, [dataWithCartQuantity, currency, currencyIgnore]);
 
   const isCartEmpty = (dataWithCartQuantity?.length ?? 0) <= 0;
 

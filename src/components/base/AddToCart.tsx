@@ -8,6 +8,7 @@ import { api } from "~/utils/api";
 
 import useTranslation from "next-translate/useTranslation";
 import { useStore } from "~/hooks/useStore";
+import { useEffect } from "react";
 
 function AddToCart({ productId }: { productId: string }) {
   const cartStore = useStore(useCartStore, (state) => state);
@@ -16,6 +17,20 @@ function AddToCart({ productId }: { productId: string }) {
   const { data: product } = api.product.get.useQuery({
     id: productId,
   });
+
+  useEffect(() => {
+    if (cartStore && product) {
+      const cartItem = cartStore.items.find((item) => item.id === productId);
+
+      if (cartItem) {
+        if (cartItem.quantity > product.quantity)
+          cartStore.removeItem(
+            product.id,
+            cartItem.quantity - product.quantity
+          );
+      }
+    }
+  }, [product, cartStore, productId]);
 
   if (!cartStore || !product)
     return (
@@ -61,7 +76,7 @@ function AddToCart({ productId }: { productId: string }) {
             variant={"solid"}
             onClick={() => cartStore.addItem(product.id)}
             isDisabled={
-              product.quantity <= 0 || product.quantity === cartItem.quantity
+              product.quantity === 0 || product.quantity <= cartItem.quantity
             }
           ></IconButton>
         </HStack>
