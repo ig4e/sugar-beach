@@ -42,7 +42,9 @@ function OrderPage() {
                 <SkeletonWrap>
                   <HStack>
                     <Heading size={"md"}>#{data?.number}</Heading>
-                    <Badge>{cT("paymentStatus." + (data?.invoice.status ?? ""))}</Badge>
+                    <Badge>
+                      {cT("paymentStatus." + (data?.invoice.status ?? ""))}
+                    </Badge>
                   </HStack>
 
                   <Text fontSize={"sm"}>

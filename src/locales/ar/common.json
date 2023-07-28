@@ -1,23 +1,22 @@
 {
   "Navbar": {
     "brand-copy": "© 2023 Sugar Beach",
-    "explore": "استكشاف"
+    "explore": "استكشف"
   },
   "Footer": {
     "pay-with-ease": "الدفع بسهولة",
-    "about-us": "معلومات عنا",
-    "contact-us": "اتصل بنا",
+    "about-us": "من نحن",
+    "contact-us": "تواصل معنا",
     "support": "الدعم",
     "legal": "قانوني",
     "terms-of-use": "شروط الاستخدام",
     "terms-of-sale": "شروط البيع",
     "privacy-policy": "سياسة الخصوصية",
-    "stay-updated-with-us": "ابقَ على اطلاع معنا",
-    "brand-copy": "© 2023 Sugar Beach"
+    "stay-updated-with-us": "ابقَ على تواصل معنا"
   },
   "ChangeRegion": {
     "drawer": {
-      "header": "إعدادات التوطين",
+      "header": "إعدادات الترجمة",
       "body": {
         "choose-country": "اختر البلد",
         "choose-language": "اختر اللغة"
@@ -25,6 +24,14 @@
       "footer": {
         "confirm": "تأكيد",
         "cancel": "إلغاء"
+      },
+      "countries": {
+        "SA": "المملكة العربية السعودية",
+        "AE": "الإمارات العربية المتحدة",
+        "QA": "قطر",
+        "KW": "الكويت",
+        "BH": "البحرين",
+        "OM": "عُمان"
       }
     }
   },
@@ -33,27 +40,42 @@
       "my-account": "حسابي",
       "my-orders": "طلباتي",
       "my-addresses": "عناويني",
-      "admin-dashboard": "لوحة التحكم للمشرف"
+      "admin-dashboard": "لوحة التحكم للمسؤول"
     },
     "sign-in": "تسجيل الدخول",
     "sign-out": "تسجيل الخروج"
   },
   "SideNav": {
-    "search": "البحث",
-    "categories": "الفئات",
-    "explore": "استكشاف"
+    "search": "بحث",
+    "categories": "التصنيفات",
+    "explore": "استكشف"
   },
   "ProductCard": {
     "sale": "تخفيض",
     "add-to-cart": "أضف إلى السلة",
-    "buy-now": "شراء الآن"
+    "buy-now": "اشترِ الآن"
   },
   "Search": {
-    "search": "البحث",
-    "category": "الفئة",
-    "shop-by-price": "التسوق حسب السعر",
+    "search": "بحث",
+    "category": "تصنيف",
+    "shop-by-price": "تسوق حسب السعر",
     "search-results": "نتائج البحث",
     "for": "لـ",
     "to": "إلى"
+  },
+  "orderStatus": {
+    "ALL": "الكل",
+    "ORDER_PLACED": "تم الطلب",
+    "PROCESSING": "جاري المعالجة",
+    "PREPARING_TO_SHIP": "جاري التحضير للشحن",
+    "SHIPPED": "تم الشحن",
+    "DELIVERED": "تم التوصيل",
+    "REFUNDED": "تم استرداد المبلغ",
+    "CANCELLED": "تم الإلغاء"
+  },
+  "paymentStatus": {
+    "PAID": "تم الدفع",
+    "PENDING": "قيد الانتظار",
+    "CANCELLED": "تم الإلغاء"
   }
 }

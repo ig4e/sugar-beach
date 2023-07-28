@@ -34,7 +34,7 @@ function Navbar() {
               src={LogoSmallTransparent}
               alt="logo"
               width={64}
-              height={64}
+              height={28}
             ></Image>
           </Link>
           <span className="hidden text-sm text-zinc-950 md:block">
@@ -46,10 +46,14 @@ function Navbar() {
         <div className="border-t-2 border-zinc-200"></div>
       </div>
 
-      <nav className={"sticky top-0 !z-[1000] bg-zinc-50 drop-shadow-lg"}>
+      <nav
+        className={
+          "sticky top-0 !z-[1000] bg-zinc-50 drop-shadow-lg md:max-h-20"
+        }
+      >
         <div
           className={clsx(
-            "container sticky top-4 !z-[1000] mx-auto flex items-center justify-between gap-4 py-4 transition-all duration-500",
+            "container !z-[1000] mx-auto flex items-center justify-between gap-4 py-4 transition-all duration-500",
             {
               "max-w-full px-[1rem]": takeFullWidth,
             }
@@ -61,7 +65,7 @@ function Navbar() {
                 src={LogoSmallTransparent}
                 alt="logo"
                 width={100}
-                height={100}
+                height={44}
               ></Image>
             </Link>
 

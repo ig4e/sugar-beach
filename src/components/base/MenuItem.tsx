@@ -41,11 +41,14 @@ function MenuItem({
         })}
       />
       <span
-        className={clsx("font-medium transition whitespace-nowrap overflow-hidden text-ellipsis", {
-          "text-sm": size === "sm",
-          "text-base": size === "md",
-          "text-lg": size === "lg",
-        })}
+        className={clsx(
+          "overflow-hidden text-ellipsis whitespace-nowrap font-medium transition",
+          {
+            "text-sm": size === "sm",
+            "text-base": size === "md",
+            "text-lg": size === "lg",
+          }
+        )}
       >
         {name}
       </span>

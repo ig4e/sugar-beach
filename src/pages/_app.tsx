@@ -1,15 +1,14 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import {
   MantineProvider,
-  createEmotionCache,
-  type MantineThemeOverride,
+  type MantineThemeOverride
 } from "@mantine/core";
 import "@uploadthing/react/styles.css";
+import { Analytics } from "@vercel/analytics/react";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { useRouter } from "next/router";
-import stylisRTLPlugin from "stylis-plugin-rtl";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -17,8 +16,8 @@ import { CurrencyContext } from "~/hooks/useCurrency";
 import { useLocalisationStore } from "~/store/localisation";
 import "~/styles/globals.css";
 import { customChakraTheme } from "~/theme";
+import { mantineLtrCache, mantineRtlCache } from "~/theme/emotion-cache";
 import { api } from "~/utils/api";
-import { Analytics } from "@vercel/analytics/react";
 
 const MyApp: AppType<{ session: Session }> = ({
   Component,
@@ -26,14 +25,6 @@ const MyApp: AppType<{ session: Session }> = ({
 }) => {
   const { locale } = useRouter();
   const rtl = locale === "ar";
-
-  const rtlCache = createEmotionCache({
-    key: "mantine-rtl",
-    stylisPlugins: [stylisRTLPlugin],
-    prepend: false,
-  });
-
-  const ltrCache = createEmotionCache({ key: "mantine-ltr", prepend: false });
 
   const customMantineTheme: MantineThemeOverride = {
     primaryColor: "pink",
@@ -66,7 +57,7 @@ const MyApp: AppType<{ session: Session }> = ({
       withNormalizeCSS
       withCSSVariables
       theme={customMantineTheme}
-      emotionCache={rtl ? rtlCache : ltrCache}
+      emotionCache={rtl ? mantineRtlCache : mantineLtrCache}
     >
       <SessionProvider session={session}>
         <div className="bg-zinc-100 !font-sans">

@@ -154,7 +154,7 @@ export function AvatarUpload(props: { onRefetch: () => void }) {
       }}
     >
       {(props) => (
-        <Button {...props} borderRadius={"full"} colorScheme="gray">
+        <Button {...props} colorScheme="gray">
           {t("AvatarUpload.change-avatar")}
         </Button>
       )}

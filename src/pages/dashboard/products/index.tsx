@@ -42,7 +42,7 @@ function Index() {
           <div className="flex items-center justify-between">
             <Heading size={"md"}>Products</Heading>
             <Link href={"/dashboard/products/create"}>
-              <Button colorScheme="pink">Add product</Button>
+              <Button colorScheme="pink" size="sm">Add product</Button>
             </Link>
           </div>
 

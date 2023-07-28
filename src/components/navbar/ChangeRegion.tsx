@@ -76,13 +76,15 @@ function ChangeRegion() {
         className="flex items-center gap-2"
         size={"sm"}
       >
-        <Image
-          src={`https://flagcdn.com/w40/sa.webp`}
-          alt={"sa"}
-          width={44}
-          height={44}
-          className="h-5 w-8 rounded object-cover"
-        />
+        <div className="rounded border">
+          <Image
+            src={`https://flagcdn.com/w40/sa.webp`}
+            alt={"sa"}
+            width={32}
+            height={20}
+            className="h-5 w-8 rounded bg-gray-500 object-cover"
+          />
+        </div>
         <div className="flex items-center gap-1 text-sm">
           <span className="font-semibold">{locale.toLocaleUpperCase()}</span>
           <span>/</span>
@@ -96,23 +98,27 @@ function ChangeRegion() {
     <>
       <Button
         colorScheme="gray"
-        className="flex items-center gap-2"
+        className="flex items-center gap-1 md:gap-2"
         size={"sm"}
         onClick={onOpen}
+        p={1}
+        px={1.5}
       >
-        <Image
-          src={`https://flagcdn.com/w40/${localisation.country.toLocaleLowerCase()}.webp`}
-          alt={localisation.country.toLocaleLowerCase()}
-          width={44}
-          height={44}
-          className="h-5 w-8 rounded object-cover"
-        />
-        <div className="flex items-center gap-1 text-sm">
-          <span className="font-semibold">{locale.toLocaleUpperCase()}</span>
-          <span>/</span>
-          <span className="font-semibold">{localisation.currency}</span>
+        <div className="rounded border">
+          <Image
+            src={`https://flagcdn.com/w40/${localisation.country.toLocaleLowerCase()}.webp`}
+            alt={localisation.country.toLocaleLowerCase()}
+            width={32}
+            height={20}
+            className="h-5 w-8 rounded bg-gray-500 object-cover"
+          />
         </div>
-        <ChevronDownIcon className="h-5 w-5 text-zinc-900" />
+        <div className="hidden items-center gap-1 text-sm md:flex">
+          <span className="font-medium">{locale.toLocaleUpperCase()}</span>
+          <span className="font-semibold">/</span>
+          <span className="font-medium">{localisation.currency}</span>
+        </div>
+        <ChevronDownIcon className="h-4 w-4 text-zinc-900" />
       </Button>
 
       <Drawer
@@ -155,12 +161,12 @@ function ChangeRegion() {
                               <Image
                                 src={country.flag}
                                 alt=""
-                                width={44}
-                                height={44}
-                                className="h-6 w-10 rounded object-cover"
+                                width={64}
+                                height={64}
+                                className="h-6 w-10 rounded object-cover bg-gray-500"
                               ></Image>
                             </div>
-                            <Text>{country.name}</Text>
+                            <Text>{t("ChangeRegion.drawer.countries."+country.code)}</Text>
                           </HStack>
                         </Radio>
                       ))}

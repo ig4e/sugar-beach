@@ -1,4 +1,4 @@
-import type { OrderStatus } from "@prisma/client";
+import type { InvoiceStatus, OrderStatus } from "@prisma/client";
 
 export const ORDER_STATUS: OrderStatus[] = [
   "ORDER_PLACED",
@@ -9,3 +9,5 @@ export const ORDER_STATUS: OrderStatus[] = [
   "REFUNDED",
   "CANCELLED",
 ];
+
+export const INVOICE_STATUS: InvoiceStatus[] = ["PAID", "PENDING", "CANCELLED"];

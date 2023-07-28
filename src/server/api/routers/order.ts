@@ -1,4 +1,4 @@
-import type { InvoiceStatus, Prisma, Product } from "@prisma/client";
+import { InvoiceStatus, Prisma, Product } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import axios, { AxiosError } from "axios";
 import currency from "currency.js";
@@ -12,10 +12,9 @@ import {
   protectedAdminProcedure,
 } from "~/server/api/trpc";
 import { MAX_PAGE_SIZE, PAGE_SIZE } from "../config";
+import { baseUrl } from "../root";
 
-const baseUrl = env.VERCEL_URL
-  ? `https://${env.VERCEL_URL}`
-  : "http://localhost:3000";
+
 
 export const orderRouter = createTRPCRouter({
   create: protectedProcedure
@@ -318,6 +317,7 @@ export const orderRouter = createTRPCRouter({
           "DELIVERED",
           "REFUNDED",
         ]),
+        invoiceStatus: z.enum(["ALL", "PENDING", "CANCELLED", "PAID"]),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -335,6 +335,10 @@ export const orderRouter = createTRPCRouter({
         skip: offset,
         where: {
           status: input.status === "ALL" ? undefined : input.status,
+          invoice: {
+            status:
+              input.invoiceStatus === "ALL" ? undefined : input.invoiceStatus,
+          },
         },
         include: {
           invoice: true,

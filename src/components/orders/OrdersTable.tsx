@@ -33,7 +33,7 @@ import {
 } from "@chakra-ui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import useCurrency from "~/hooks/useCurrency";
-import { ORDER_STATUS } from "~/config/ordersConfig";
+import { INVOICE_STATUS, ORDER_STATUS } from "~/config/ordersConfig";
 import useTranslation from "next-translate/useTranslation";
 import { LoadingOverlay, Pagination } from "@mantine/core";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/20/solid";
@@ -231,7 +231,7 @@ function DataTable<TData, TValue>({
 export default function OrdersTable() {
   const [pageState, setPageState] = useState<
     RouterInputs["order"]["getOrders"]
-  >({ cursor: 1, status: "ALL" });
+  >({ cursor: 1, status: "ALL", invoiceStatus: "ALL" });
 
   const { t } = useTranslation("common");
   const { data, isLoading } = api.order.getOrders.useQuery(pageState);
@@ -240,7 +240,7 @@ export default function OrdersTable() {
 
   return (
     <div className="rounded-md border bg-zinc-50">
-      <div className="border-b px-2 py-2">
+      <div className="overflow-x-auto border-b px-2 py-2">
         <Tabs variant={"soft-rounded"}>
           <TabList>
             <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
@@ -253,8 +253,8 @@ export default function OrdersTable() {
                     status: "ALL",
                   }))
                 }
-                borderRadius={"md"}
                 fontSize={"sm"}
+                borderRadius={"lg"}
               >
                 {t("orderStatus.ALL")}إ
               </Tab>
@@ -264,9 +264,9 @@ export default function OrdersTable() {
                   onClick={() =>
                     setPageState((state) => ({ ...state, cursor: 1, status }))
                   }
-                  borderRadius={"md"}
                   whiteSpace={"nowrap"}
                   fontSize={"sm"}
+                  borderRadius={"lg"}
                 >
                   {t(`orderStatus.${status}`)}
                 </Tab>
@@ -275,8 +275,50 @@ export default function OrdersTable() {
           </TabList>
         </Tabs>
       </div>
+
+      <div className="overflow-x-auto border-b px-2 py-2">
+        <Tabs variant={"soft-rounded"}>
+          <TabList>
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
+              <Tab
+                key={"ALL"}
+                onClick={() =>
+                  setPageState((state) => ({
+                    ...state,
+                    cursor: 1,
+                    status: "ALL",
+                  }))
+                }
+                fontSize={"sm"}
+                borderRadius={"lg"}
+              >
+                {t("orderStatus.ALL")}إ
+              </Tab>
+
+              {INVOICE_STATUS.map((status) => (
+                <Tab
+                  key={status}
+                  onClick={() =>
+                    setPageState((state) => ({
+                      ...state,
+                      cursor: 1,
+                      invoiceStatus: status,
+                    }))
+                  }
+                  whiteSpace={"nowrap"}
+                  fontSize={"sm"}
+                  borderRadius={"lg"}
+                >
+                  {t(`paymentStatus.${status}`)}
+                </Tab>
+              ))}
+            </div>
+          </TabList>
+        </Tabs>
+      </div>
+
       <div className="relative">
-        <LoadingOverlay visible={isLoading}></LoadingOverlay>
+        <LoadingOverlay visible={isLoading} overlayBlur={2}></LoadingOverlay>
         <DataTable columns={columns} data={data?.items ?? []} />
       </div>
       <div className="p-2">

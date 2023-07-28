@@ -25,6 +25,14 @@
       "footer": {
         "confirm": "Confirm",
         "cancel": "Cancel"
+      },
+      "countries": {
+        "SA": "Saudi Arabia",
+        "AE": "United Arab Emirates",
+        "QA": "Qatar",
+        "KW": "Kuwait",
+        "BH": "Bahrain",
+        "OM": "Oman"
       }
     }
   },
