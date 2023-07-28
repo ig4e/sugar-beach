@@ -4,6 +4,10 @@
   "your-addresses": "Your addresses",
   "check-out": "Check Out",
   "available-payment-methods": "Available Payment Methods",
+  "order-notes": "Order notes",
+  "order-notes-label": "Order notes",
+  "order-notes-helper": "Any questions about the order.",
+
   "cart-empty": {
     "heading": "Looking for something?",
     "text": "Add your favorite items to your cart.",
