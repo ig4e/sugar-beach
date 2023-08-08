@@ -100,7 +100,7 @@ const columns: ColumnDef<OrderType>[] = [
 
       return (
         <Badge colorScheme={invoiceColorScheme}>
-          {t(`paymentStatus.${status}`)}
+          {t(`paymentStatus.${status ?? ""}`)}
         </Badge>
       );
     },
