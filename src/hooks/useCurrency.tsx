@@ -1,5 +1,5 @@
 import currencyJs from "currency.js";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { api } from "~/utils/api";
 
 export const currencyToCurrency = {
@@ -28,20 +28,30 @@ const defaultCurrency = {
 };
 
 function useCurrency(ignoreCurrency = false) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const { data: rates } = api.currency.get.useQuery();
   const currencyState = useContext(CurrencyContext);
 
   if (ignoreCurrency) return currencyJs;
 
-  const currency = (value: currencyJs.Any) =>
-    currencyJs(
-      currencyJs(value).multiply(
-        rates ? rates[currencyState.currency] : defaultCurrency.rate
-      ),
-      {
-        symbol: rates ? currencyState.currency : defaultCurrency.currency,
-      }
-    );
+  const currentRate = isClient
+    ? rates
+      ? {
+          currency: currencyState.currency,
+          rate: rates[currencyState.currency],
+        }
+      : defaultCurrency
+    : defaultCurrency;
+
+  const currency = (value: currencyJs.Any | undefined = 0) =>
+    currencyJs(currencyJs(value).multiply(currentRate.rate), {
+      symbol: currentRate.currency,
+    });
 
   return currency;
 }

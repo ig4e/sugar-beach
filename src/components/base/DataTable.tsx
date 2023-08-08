@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/table";
 import {
   Button,
-  HStack,
   Heading,
   Menu,
   MenuButton,
@@ -23,13 +22,11 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   useReactTable,
   type ColumnFiltersState,
   type VisibilityState,
 } from "@tanstack/react-table";
 import React from "react";
-import Input from "../base/Input";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -50,7 +47,6 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
@@ -62,72 +58,14 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center justify-between gap-4 py-4">
-        <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-          bg={"white"}
-        />
-
-        <Menu isLazy placement="bottom-end">
-          <MenuButton
-            as={Button}
-            colorScheme="gray"
-            rightIcon={<ChevronDownIcon className="h-5 w-5" />}
-          >
-            Columns
-          </MenuButton>
-          <MenuList>
-            <Heading
-              size="xs"
-              px={3}
-              py={1}
-              display={"flex"}
-              alignItems={"center"}
-            >
-              Columns
-            </Heading>
-            <MenuDivider></MenuDivider>
-
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <MenuItem
-                    key={column.id}
-                    className="capitalize"
-                    value={column.id}
-                    icon={
-                      column.getIsVisible() ? (
-                        <CheckIcon className="h-4 w-4" />
-                      ) : (
-                        <EyeSlashIcon className="h-4 w-4" />
-                      )
-                    }
-                    onClick={() =>
-                      column.toggleVisibility(!column.getIsVisible())
-                    }
-                  >
-                    {column.id}
-                  </MenuItem>
-                );
-              })}
-          </MenuList>
-        </Menu>
-      </div>
-      <div className="overflow-auto rounded-xl border bg-zinc-50">
-        <Table className="">
+      <div className="overflow-x-auto rounded-xl">
+        <Table className="!relative">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="text-left">
+                    <TableHead key={header.id} className="text-start">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -170,24 +108,55 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+      <div className="mx-2 flex justify-end border-b py-2">
+        <Menu isLazy placement="bottom-end">
+          <MenuButton
+            as={Button}
+            colorScheme="gray"
+            rightIcon={<ChevronDownIcon className="h-4 w-4" />}
+            size={"sm"}
+          >
+            Columns
+          </MenuButton>
+          <MenuList>
+            <Heading
+              size="xs"
+              px={3}
+              py={1}
+              display={"flex"}
+              alignItems={"center"}
+            >
+              Columns
+            </Heading>
+            <MenuDivider></MenuDivider>
 
-      <HStack py={4} justifyContent={"end"}>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          isDisabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          size="sm"
-          onClick={() => table.nextPage()}
-          isDisabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
-      </HStack>
+            {table
+              .getAllColumns()
+              .filter((column) => column.getCanHide())
+              .map((column) => {
+                return (
+                  <MenuItem
+                    key={column.id}
+                    className="capitalize"
+                    value={column.id}
+                    icon={
+                      column.getIsVisible() ? (
+                        <CheckIcon className="h-4 w-4" />
+                      ) : (
+                        <EyeSlashIcon className="h-4 w-4" />
+                      )
+                    }
+                    onClick={() =>
+                      column.toggleVisibility(!column.getIsVisible())
+                    }
+                  >
+                    {column.columnDef.header?.toString() || column.id}
+                  </MenuItem>
+                );
+              })}
+          </MenuList>
+        </Menu>
+      </div>
     </div>
   );
 }

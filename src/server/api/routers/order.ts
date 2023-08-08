@@ -1,6 +1,6 @@
-import { InvoiceStatus, Prisma, Product } from "@prisma/client";
+import type { InvoiceStatus, Prisma, Product } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
-import axios, { AxiosError } from "axios";
+import axios, { type AxiosError } from "axios";
 import currency from "currency.js";
 import { v4 } from "uuid";
 import { z } from "zod";
@@ -14,7 +14,30 @@ import {
 import { MAX_PAGE_SIZE, PAGE_SIZE } from "../config";
 import { baseUrl } from "../root";
 
+const ordersFindManyInput = z.object({
+  limit: z.number().positive().max(MAX_PAGE_SIZE).default(PAGE_SIZE),
+  cursor: z.number().positive().default(1),
+  status: z.enum([
+    "ALL",
+    "ORDER_PLACED",
+    "PROCESSING",
+    "CANCELLED",
+    "PREPARING_TO_SHIP",
+    "SHIPPED",
+    "DELIVERED",
+  ]),
+  invoiceStatus: z.enum([
+    "ALL",
+    "PENDING",
+    "CANCELLED",
+    "PAID",
+    "REFUND_PENDING",
+    "REFUNDED",
+  ]),
+});
 
+const myFatoorahToken =
+  "rLtt6JWvbUHDDhsZnfpAhpYk4dxYDQkbcPTyGaKp2TYqQgG7FGZ5Th_WD53Oq8Ebz6A53njUoo1w3pjU1D4vs_ZMqFiz_j0urb_BH9Oq9VZoKFoJEDAbRZepGcQanImyYrry7Kt6MnMdgfG5jn4HngWoRdKduNNyP4kzcp3mRv7x00ahkm9LAK7ZRieg7k1PDAnBIOG3EyVSJ5kK4WLMvYr7sCwHbHcu4A5WwelxYK0GMJy37bNAarSJDFQsJ2ZvJjvMDmfWwDVFEVe_5tOomfVNt6bOg9mexbGjMrnHBnKnZR1vQbBtQieDlQepzTZMuQrSuKn-t5XZM7V6fCW7oP-uXGX-sMOajeX65JOf6XVpk29DP6ro8WTAflCDANC193yof8-f5_EYY-3hXhJj7RBXmizDpneEQDSaSz5sFk0sV5qPcARJ9zGG73vuGFyenjPPmtDtXtpx35A-BVcOSBYVIWe9kndG3nclfefjKEuZ3m4jL9Gg1h2JBvmXSMYiZtp9MR5I6pvbvylU_PP5xJFSjVTIz7IQSjcVGO41npnwIxRXNRxFOdIUHn0tjQ-7LwvEcTXyPsHXcMD8WtgBh-wxR8aKX7WPSsT1O8d8reb2aR7K3rkV3K82K_0OgawImEpwSvp9MNKynEAJQS6ZHe_J_l77652xwPNxMRTMASk1ZsJL";
 
 export const orderRouter = createTRPCRouter({
   create: protectedProcedure
@@ -45,8 +68,6 @@ export const orderRouter = createTRPCRouter({
           code: "NOT_FOUND",
           message: "Shipping address not found",
         });
-
-      //const errors = [];
 
       const products = await ctx.prisma.product.findMany({
         where: {
@@ -92,16 +113,12 @@ export const orderRouter = createTRPCRouter({
 
       const orderId = v4();
 
-      console.log(totalPrice.value);
-
       const invoiceRequest = await axios({
-        url: "https://apitest.myfatoorah.com/v2/SendPayment",
+        url: "https://api.myfatoorah.com/v2/SendPayment",
         method: "POST",
         headers: {
           Accept: "application/json",
-          Authorization:
-            "Bearer " +
-            "rLtt6JWvbUHDDhsZnfpAhpYk4dxYDQkbcPTyGaKp2TYqQgG7FGZ5Th_WD53Oq8Ebz6A53njUoo1w3pjU1D4vs_ZMqFiz_j0urb_BH9Oq9VZoKFoJEDAbRZepGcQanImyYrry7Kt6MnMdgfG5jn4HngWoRdKduNNyP4kzcp3mRv7x00ahkm9LAK7ZRieg7k1PDAnBIOG3EyVSJ5kK4WLMvYr7sCwHbHcu4A5WwelxYK0GMJy37bNAarSJDFQsJ2ZvJjvMDmfWwDVFEVe_5tOomfVNt6bOg9mexbGjMrnHBnKnZR1vQbBtQieDlQepzTZMuQrSuKn-t5XZM7V6fCW7oP-uXGX-sMOajeX65JOf6XVpk29DP6ro8WTAflCDANC193yof8-f5_EYY-3hXhJj7RBXmizDpneEQDSaSz5sFk0sV5qPcARJ9zGG73vuGFyenjPPmtDtXtpx35A-BVcOSBYVIWe9kndG3nclfefjKEuZ3m4jL9Gg1h2JBvmXSMYiZtp9MR5I6pvbvylU_PP5xJFSjVTIz7IQSjcVGO41npnwIxRXNRxFOdIUHn0tjQ-7LwvEcTXyPsHXcMD8WtgBh-wxR8aKX7WPSsT1O8d8reb2aR7K3rkV3K82K_0OgawImEpwSvp9MNKynEAJQS6ZHe_J_l77652xwPNxMRTMASk1ZsJL", //env.MYFATOORAH_API_KEY,
+          Authorization: "Bearer " + myFatoorahToken,
           "Content-Type": "application/json",
         },
         data: {
@@ -134,11 +151,9 @@ export const orderRouter = createTRPCRouter({
             UnitPrice: product.price,
           })),
         },
-      }).catch((err) => {
-        const response = (err as AxiosError).response ?? { data: null };
-        console.log(response.data);
-        return response;
       });
+
+      console.log(invoiceRequest);
 
       if (!invoiceRequest.data) return;
       const invoiceData = invoiceRequest.data as unknown as InvoiceResponse;
@@ -186,24 +201,12 @@ export const orderRouter = createTRPCRouter({
   updateOrderPaymentStatus: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      // const order = await ctx.prisma.order.findUnique({
-      //   where: { id: input.id },
-      //   include: {
-      //     invoice: true,
-      //   },
-      // });
-
-      // if (!order)
-      //   throw new TRPCError({ code: "NOT_FOUND", message: "Order not found" });
-
       const invoiceRequest = await axios({
-        url: "https://apitest.myfatoorah.com/v2/GetPaymentStatus",
+        url: "https://api.myfatoorah.com/v2/SendPayment/GetPaymentStatus",
         method: "POST",
         headers: {
           Accept: "application/json",
-          Authorization:
-            "Bearer " +
-            "rLtt6JWvbUHDDhsZnfpAhpYk4dxYDQkbcPTyGaKp2TYqQgG7FGZ5Th_WD53Oq8Ebz6A53njUoo1w3pjU1D4vs_ZMqFiz_j0urb_BH9Oq9VZoKFoJEDAbRZepGcQanImyYrry7Kt6MnMdgfG5jn4HngWoRdKduNNyP4kzcp3mRv7x00ahkm9LAK7ZRieg7k1PDAnBIOG3EyVSJ5kK4WLMvYr7sCwHbHcu4A5WwelxYK0GMJy37bNAarSJDFQsJ2ZvJjvMDmfWwDVFEVe_5tOomfVNt6bOg9mexbGjMrnHBnKnZR1vQbBtQieDlQepzTZMuQrSuKn-t5XZM7V6fCW7oP-uXGX-sMOajeX65JOf6XVpk29DP6ro8WTAflCDANC193yof8-f5_EYY-3hXhJj7RBXmizDpneEQDSaSz5sFk0sV5qPcARJ9zGG73vuGFyenjPPmtDtXtpx35A-BVcOSBYVIWe9kndG3nclfefjKEuZ3m4jL9Gg1h2JBvmXSMYiZtp9MR5I6pvbvylU_PP5xJFSjVTIz7IQSjcVGO41npnwIxRXNRxFOdIUHn0tjQ-7LwvEcTXyPsHXcMD8WtgBh-wxR8aKX7WPSsT1O8d8reb2aR7K3rkV3K82K_0OgawImEpwSvp9MNKynEAJQS6ZHe_J_l77652xwPNxMRTMASk1ZsJL", //env.MYFATOORAH_API_KEY,
+          Authorization: "Bearer " + myFatoorahToken,
           "Content-Type": "application/json",
         },
         data: {
@@ -236,28 +239,14 @@ export const orderRouter = createTRPCRouter({
         },
       });
 
-      console.log(invoiceData);
+      if (!orderInvoice)
+        throw new TRPCError({ code: "NOT_FOUND", message: "Order not found" });
 
       return orderInvoice;
     }),
 
   getUserOrders: protectedProcedure
-    .input(
-      z.object({
-        limit: z.number().positive().max(MAX_PAGE_SIZE).default(PAGE_SIZE),
-        cursor: z.number().positive().default(1),
-        status: z.enum([
-          "ALL",
-          "ORDER_PLACED",
-          "PROCESSING",
-          "CANCELLED",
-          "PREPARING_TO_SHIP",
-          "SHIPPED",
-          "DELIVERED",
-          "REFUNDED",
-        ]),
-      })
-    )
+    .input(ordersFindManyInput)
     .query(async ({ ctx, input }) => {
       const userOrdersCount = await ctx.prisma.order.count({
         where: {
@@ -303,23 +292,7 @@ export const orderRouter = createTRPCRouter({
     }),
 
   getOrders: protectedAdminProcedure
-    .input(
-      z.object({
-        limit: z.number().positive().max(MAX_PAGE_SIZE).default(PAGE_SIZE),
-        cursor: z.number().positive().default(1),
-        status: z.enum([
-          "ALL",
-          "ORDER_PLACED",
-          "PROCESSING",
-          "CANCELLED",
-          "PREPARING_TO_SHIP",
-          "SHIPPED",
-          "DELIVERED",
-          "REFUNDED",
-        ]),
-        invoiceStatus: z.enum(["ALL", "PENDING", "CANCELLED", "PAID"]),
-      })
-    )
+    .input(ordersFindManyInput)
     .query(async ({ ctx, input }) => {
       const userOrdersCount = await ctx.prisma.order.count({
         where: {
@@ -373,7 +346,9 @@ export const orderRouter = createTRPCRouter({
       return ctx.prisma.order.findUnique({
         where: { id: input.id },
         include: {
-          products: true,
+          products: {
+            include: { product: true },
+          },
           user: true,
           invoice: true,
           shippingAddress: true,

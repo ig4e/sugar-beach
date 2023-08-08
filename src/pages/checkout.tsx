@@ -327,9 +327,7 @@ function Checkout() {
                 ))}
               </div>
             </div>
-            <div className="sticky bottom-2 md:hidden">
-              <PayCard></PayCard>
-            </div>
+          
             <div className=" space-y-4">
               <div className="hidden space-y-4 md:block">
                 <PayCard></PayCard>
@@ -352,6 +350,10 @@ function Checkout() {
                   </FormControl>
                 </CardBody>
               </Card>
+            </div>
+
+            <div className="sticky bottom-2 md:hidden z-50">
+              <PayCard></PayCard>
             </div>
           </div>
         </>

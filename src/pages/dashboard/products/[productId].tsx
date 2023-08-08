@@ -103,6 +103,9 @@ function AdminPageProduct() {
         type: productData.type,
       };
     },
+    resetOptions: {
+      keepDirtyValues: true,
+    },
   });
 
   const mediaValue = useWatch({ control, name: "media" });

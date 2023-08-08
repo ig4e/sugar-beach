@@ -77,6 +77,12 @@
   "paymentStatus": {
     "PAID": "Paid",
     "PENDING": "Pending",
-    "CANCELLED": "Cancelled"
+    "CANCELLED": "Cancelled",
+    "REFUNDED": "Refunded",
+    "REFUND_PENDING": "Refund Pending"
+  },
+  "productOnOrderStatus": {
+    "FULFILLED": "fulfilled",
+    "UN_FULFILLED": "Un fulfilled"
   }
 }

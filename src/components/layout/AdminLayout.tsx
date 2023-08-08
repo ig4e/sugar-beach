@@ -1,7 +1,4 @@
-import {
-  HStack,
-  useDisclosure
-} from "@chakra-ui/react";
+import { HStack, useDisclosure } from "@chakra-ui/react";
 import {
   FingerPrintIcon,
   HomeModernIcon,
@@ -10,13 +7,7 @@ import {
   SparklesIcon,
   TagIcon,
 } from "@heroicons/react/24/solid";
-import {
-  AppShell,
-  Burger,
-  Header,
-  MediaQuery,
-  Navbar
-} from "@mantine/core";
+import { AppShell, Burger, Header, MediaQuery, Navbar } from "@mantine/core";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -92,7 +83,6 @@ function AdminLayout({ children }: { children: ReactNode }) {
                 </h1>
                 <Link href={"/dashboard"}>
                   <MenuItem
-                    size="sm"
                     name={t("AdminLayout.routes.home")}
                     Icon={HomeModernIcon}
                   ></MenuItem>
@@ -158,7 +148,7 @@ function AdminLayout({ children }: { children: ReactNode }) {
       }
       bg={"#f4f4f5"}
     >
-      {children}
+      <div className="overflow-x-hidden">{children}</div>
     </AppShell>
   );
 }

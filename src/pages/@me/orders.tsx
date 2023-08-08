@@ -11,22 +11,26 @@ import {
   Tab,
   TabList,
   Tabs,
-  Text,
   VStack,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import UserDashboardLayout from "~/components/layout/UserDashboardLayout";
-import { type RouterInputs, api } from "~/utils/api";
+import { ArchiveBoxXMarkIcon } from "@heroicons/react/20/solid";
 import { LoadingOverlay, Pagination } from "@mantine/core";
-import useCurrency from "~/hooks/useCurrency";
+import { OrderStatus } from "@prisma/client";
+import useTranslation from "next-translate/useTranslation";
 import Image from "next/image";
 import Link from "next/link";
-import useTranslation from "next-translate/useTranslation";
-import { Locale } from "~/types/locale";
 import { useRouter } from "next/router";
-import { OrderStatus } from "@prisma/client";
-import { ORDER_STATUS } from "~/config/ordersConfig";
+import { useState } from "react";
+import UserDashboardLayout from "~/components/layout/UserDashboardLayout";
+import {
+  INVOICE_STATUS_COLOR,
+  ORDER_STATUS,
+  ORDER_STATUS_COLOR,
+} from "~/config/ordersConfig";
+import useCurrency from "~/hooks/useCurrency";
 import useDayjs from "~/hooks/useDayjs";
+import { Locale } from "~/types/locale";
+import { api, type RouterInputs } from "~/utils/api";
 
 function Orders() {
   const { t, lang } = useTranslation("accountOrders");
@@ -34,7 +38,7 @@ function Orders() {
   const locale = lang as Locale;
   const [pageState, setPageState] = useState<
     RouterInputs["order"]["getUserOrders"]
-  >({ cursor: 1, status: "ALL" });
+  >({ cursor: 1, status: "ALL", invoiceStatus: "ALL" });
 
   const { data: ordersPage, isLoading } =
     api.order.getUserOrders.useQuery(pageState);
@@ -51,7 +55,13 @@ function Orders() {
             <div className="flex  items-center gap-2 overflow-x-scroll pb-2 md:pb-0">
               <Tab
                 key={"ALL"}
-                onClick={() => setPageState({ status: "ALL" })}
+                onClick={() =>
+                  setPageState((state) => ({
+                    ...state,
+                    status: "ALL",
+                    cursor: 1,
+                  }))
+                }
                 borderRadius={"lg"}
               >
                 {t("orderStatus.ALL")}
@@ -59,7 +69,13 @@ function Orders() {
               {ORDER_STATUS.map((status) => (
                 <Tab
                   key={status}
-                  onClick={() => setPageState({ status })}
+                  onClick={() =>
+                    setPageState((state) => ({
+                      ...state,
+                      cursor: 1,
+                      status: status,
+                    }))
+                  }
                   borderRadius={"lg"}
                   whiteSpace={"nowrap"}
                 >
@@ -75,26 +91,9 @@ function Orders() {
           {ordersPage &&
             ordersPage.items.map((order) => {
               const invoiceColorScheme =
-                order.invoice.status === "PAID"
-                  ? "green"
-                  : order.invoice.status === "CANCELLED"
-                  ? "red"
-                  : "gray";
+                INVOICE_STATUS_COLOR[order.invoice.status];
 
-              const processing: OrderStatus[] = ["ORDER_PLACED", "PROCESSING"];
-              const cancelled: OrderStatus[] = ["CANCELLED", "REFUNDED"];
-              const shipping: OrderStatus[] = ["PREPARING_TO_SHIP", "SHIPPED"];
-              const delivered: OrderStatus[] = ["DELIVERED"];
-
-              const orderStatusColorScheme = processing.includes(order.status)
-                ? "gray"
-                : cancelled.includes(order.status)
-                ? "red"
-                : shipping.includes(order.status)
-                ? "yellow"
-                : delivered.includes(order.status)
-                ? "green"
-                : "gray";
+              const orderStatusColorScheme = ORDER_STATUS_COLOR[order.status];
 
               return (
                 <div key={order.id} id={order.id}>
@@ -120,19 +119,21 @@ function Orders() {
                           </VStack>
                         </HStack>
 
-                        <VStack>
-                          <span className="text-sm font-bold">
-                            {currency(order.totalPrice).format()}
-                          </span>
-                          <Badge colorScheme={invoiceColorScheme}>
-                            {order.invoice.status}
-                          </Badge>
+                        <HStack spacing={4}>
+                          <VStack>
+                            <span className="text-sm font-bold">
+                              {currency(order.totalPrice).format()}
+                            </span>
+                            <Badge colorScheme={invoiceColorScheme}>
+                              {order.invoice.status}
+                            </Badge>
+                          </VStack>
                           {order.invoice.status === "PENDING" && (
                             <Link href={order.invoice.url}>
                               <Button size="sm">Pay</Button>
                             </Link>
                           )}
-                        </VStack>
+                        </HStack>
                       </HStack>
                     </CardHeader>
                     <Divider></Divider>
@@ -192,17 +193,31 @@ function Orders() {
                     <Divider></Divider>
                     <CardFooter>
                       <HStack justifyContent={"space-between"} w={"full"}>
-                        <p className="text-xs">
-                          <span className="font-semibold">{t("order-id")}</span>{" "}
-                          #{order.number}
-                        </p>
+                        <VStack alignItems={"start"}>
+                          <p className="text-xs">
+                            <span className="font-semibold">
+                              {t("order-id")}
+                            </span>{" "}
+                            #{order.number}
+                          </p>
 
-                        <p className="text-xs">
-                          <span className="font-semibold">
-                            {t("shipping-to")}
-                          </span>{" "}
-                          {order.shippingAddress.fullName}
-                        </p>
+                          <p className="text-xs">
+                            <span className="font-semibold">
+                              {t("shipping-to")}
+                            </span>{" "}
+                            {order.shippingAddress.fullName}
+                          </p>
+                        </VStack>
+
+                        <Button
+                          leftIcon={
+                            <ArchiveBoxXMarkIcon className="h-4 w-4"></ArchiveBoxXMarkIcon>
+                          }
+                          size={"sm"}
+                          colorScheme="red"
+                        >
+                          Cancel order
+                        </Button>
                       </HStack>
                     </CardFooter>
                   </Card>

@@ -1,22 +1,6 @@
-import type { Order, OrderInvoice, OrderStatus } from "@prisma/client";
-import {
-  type ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import type { OrderStatus } from "@prisma/client";
+import { type ColumnDef } from "@tanstack/react-table";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { RouterInputs, RouterOutputs, api } from "~/utils/api";
-import { useState } from "react";
-import useDayjs from "~/hooks/useDayjs";
 import {
   Badge,
   HStack,
@@ -31,17 +15,26 @@ import {
   TabList,
   Tabs,
 } from "@chakra-ui/react";
-import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
-import useCurrency from "~/hooks/useCurrency";
-import { INVOICE_STATUS, ORDER_STATUS } from "~/config/ordersConfig";
-import useTranslation from "next-translate/useTranslation";
-import { LoadingOverlay, Pagination } from "@mantine/core";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/20/solid";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
+import { LoadingOverlay, Pagination } from "@mantine/core";
+import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
+import { useState } from "react";
+import {
+  INVOICE_STATUS,
+  INVOICE_STATUS_COLOR,
+  ORDER_STATUS,
+  ORDER_STATUS_COLOR,
+} from "~/config/ordersConfig";
+import useCurrency from "~/hooks/useCurrency";
+import useDayjs from "~/hooks/useDayjs";
+import { type RouterInputs, type RouterOutputs, api } from "~/utils/api";
+import DataTable from "../base/DataTable";
 
 type OrderType = RouterOutputs["order"]["getOrders"]["items"][0];
 
-export const columns: ColumnDef<OrderType>[] = [
+const columns: ColumnDef<OrderType>[] = [
   {
     header: "ID",
     accessorKey: "number",
@@ -60,7 +53,11 @@ export const columns: ColumnDef<OrderType>[] = [
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const dayjs = useDayjs();
 
-      return dayjs(props.getValue() as string).format("hh:mm:s a MMMM D, YYYY");
+      return (
+        <span suppressHydrationWarning>
+          {dayjs(props.getValue() as string).format("hh:mm:s a MMMM D, YYYY")}
+        </span>
+      );
     },
   },
   {
@@ -72,20 +69,7 @@ export const columns: ColumnDef<OrderType>[] = [
 
       const status = row.original.status;
 
-      const processing: OrderStatus[] = ["ORDER_PLACED", "PROCESSING"];
-      const cancelled: OrderStatus[] = ["CANCELLED", "REFUNDED"];
-      const shipping: OrderStatus[] = ["PREPARING_TO_SHIP", "SHIPPED"];
-      const delivered: OrderStatus[] = ["DELIVERED"];
-
-      const orderStatusColorScheme = processing.includes(status)
-        ? "gray"
-        : cancelled.includes(status)
-        ? "red"
-        : shipping.includes(status)
-        ? "yellow"
-        : delivered.includes(status)
-        ? "green"
-        : "gray";
+      const orderStatusColorScheme = ORDER_STATUS_COLOR[status];
 
       return (
         <Badge colorScheme={orderStatusColorScheme}>
@@ -111,9 +95,9 @@ export const columns: ColumnDef<OrderType>[] = [
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const { t } = useTranslation("common");
 
-      const status = row.original.invoice.status;
-      const invoiceColorScheme =
-        status === "PAID" ? "green" : status === "CANCELLED" ? "red" : "gray";
+      const status = row.original?.invoice?.status;
+      const invoiceColorScheme = status && INVOICE_STATUS_COLOR[status];
+
       return (
         <Badge colorScheme={invoiceColorScheme}>
           {t(`paymentStatus.${status}`)}
@@ -165,69 +149,6 @@ export const columns: ColumnDef<OrderType>[] = [
   },
 ];
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-}
-
-function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
-  return (
-    <div className="rounded-md">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
-  );
-}
-
 export default function OrdersTable() {
   const [pageState, setPageState] = useState<
     RouterInputs["order"]["getOrders"]
@@ -239,88 +160,91 @@ export default function OrdersTable() {
   console.log(data);
 
   return (
-    <div className="rounded-md border bg-zinc-50">
-      <div className="overflow-x-auto border-b px-2 py-2">
-        <Tabs variant={"soft-rounded"}>
-          <TabList>
-            <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
-              <Tab
-                key={"ALL"}
-                onClick={() =>
-                  setPageState((state) => ({
-                    ...state,
-                    cursor: 1,
-                    status: "ALL",
-                  }))
-                }
-                fontSize={"sm"}
-                borderRadius={"lg"}
-              >
-                {t("orderStatus.ALL")}إ
-              </Tab>
-              {ORDER_STATUS.map((status) => (
+    <div className="relative rounded-md border bg-zinc-50">
+      <div className="z-10 bg-zinc-50">
+        <div className="overflow-x-auto border-b px-2 py-2">
+          <Tabs variant={"soft-rounded"}>
+            <TabList>
+              <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
                 <Tab
-                  key={status}
-                  onClick={() =>
-                    setPageState((state) => ({ ...state, cursor: 1, status }))
-                  }
-                  whiteSpace={"nowrap"}
-                  fontSize={"sm"}
-                  borderRadius={"lg"}
-                >
-                  {t(`orderStatus.${status}`)}
-                </Tab>
-              ))}
-            </div>
-          </TabList>
-        </Tabs>
-      </div>
-
-      <div className="overflow-x-auto border-b px-2 py-2">
-        <Tabs variant={"soft-rounded"}>
-          <TabList>
-            <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
-              <Tab
-                key={"ALL"}
-                onClick={() =>
-                  setPageState((state) => ({
-                    ...state,
-                    cursor: 1,
-                    status: "ALL",
-                  }))
-                }
-                fontSize={"sm"}
-                borderRadius={"lg"}
-              >
-                {t("orderStatus.ALL")}إ
-              </Tab>
-
-              {INVOICE_STATUS.map((status) => (
-                <Tab
-                  key={status}
+                  key={"ALL"}
                   onClick={() =>
                     setPageState((state) => ({
                       ...state,
                       cursor: 1,
-                      invoiceStatus: status,
+                      status: "ALL",
                     }))
                   }
-                  whiteSpace={"nowrap"}
                   fontSize={"sm"}
                   borderRadius={"lg"}
                 >
-                  {t(`paymentStatus.${status}`)}
+                  {t("common:orderStatus.ALL")}إ
                 </Tab>
-              ))}
-            </div>
-          </TabList>
-        </Tabs>
+                {ORDER_STATUS.map((status) => (
+                  <Tab
+                    key={status}
+                    onClick={() =>
+                      setPageState((state) => ({ ...state, cursor: 1, status }))
+                    }
+                    whiteSpace={"nowrap"}
+                    fontSize={"sm"}
+                    borderRadius={"lg"}
+                  >
+                    {t(`common:orderStatus.${status}`)}
+                  </Tab>
+                ))}
+              </div>
+            </TabList>
+          </Tabs>
+        </div>
+
+        <div className="overflow-x-auto border-b px-2 py-2">
+          <Tabs variant={"soft-rounded"}>
+            <TabList>
+              <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
+                <Tab
+                  key={"ALL"}
+                  onClick={() =>
+                    setPageState((state) => ({
+                      ...state,
+                      cursor: 1,
+                      invoiceStatus: "ALL",
+                    }))
+                  }
+                  fontSize={"sm"}
+                  borderRadius={"lg"}
+                >
+                  {t("orderStatus.ALL")}إ
+                </Tab>
+
+                {INVOICE_STATUS.map((status) => (
+                  <Tab
+                    key={status}
+                    onClick={() =>
+                      setPageState((state) => ({
+                        ...state,
+                        cursor: 1,
+                        invoiceStatus: status,
+                      }))
+                    }
+                    whiteSpace={"nowrap"}
+                    fontSize={"sm"}
+                    borderRadius={"lg"}
+                  >
+                    {t(`paymentStatus.${status}`)}
+                  </Tab>
+                ))}
+              </div>
+            </TabList>
+          </Tabs>
+        </div>
       </div>
 
       <div className="relative">
         <LoadingOverlay visible={isLoading} overlayBlur={2}></LoadingOverlay>
         <DataTable columns={columns} data={data?.items ?? []} />
       </div>
+
       <div className="p-2">
         <HStack justifyContent={"center"}>
           <Pagination

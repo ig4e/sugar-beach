@@ -42,6 +42,7 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  session: { strategy: "database", maxAge: 60 * 60 * 24 * 30 },
   callbacks: {
     session: async ({ session, user }) => {
       const fullUser = await prisma.user.findUnique({ where: { id: user.id } });

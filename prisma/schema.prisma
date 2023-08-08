@@ -128,34 +128,44 @@ model Order {
     products        ProductOnOrder[]
     additionalNotes String?
     totalPrice      Float
-    invoice         OrderInvoice        @relation(fields: [invoiceId], references: [id])
+    invoice         OrderInvoice?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     userId                String
     userShippingAddressId String
-    invoiceId             String @unique
 }
 
 model OrderInvoice {
-    id        String        @id @default(uuid()) @map("_id")
-    order     Order?
-    invoiceId String        @unique
-    url       String
-    status    InvoiceStatus @default(PENDING)
+    id              String               @id @default(uuid()) @map("_id")
+    provider        OrderInvoiceProvider
+    invoiceId       String               @unique
+    url             String
+    status          InvoiceStatus        @default(PENDING)
+    totalGrossPrice Float
+    totalNetPrice   Float?
 
+    order     Order    @relation(fields: [orderId], references: [id])
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    orderId   String   @unique
+}
+
+enum OrderInvoiceProvider {
+    MYFATOORAH
+    TABBY
+    TAMARA
 }
 
 model ProductOnOrder {
-    id             String  @id @default(uuid()) @map("_id")
-    order          Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-    product        Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+    id             String               @id @default(uuid()) @map("_id")
+    order          Order                @relation(fields: [orderId], references: [id], onDelete: Cascade)
+    product        Product              @relation(fields: [productId], references: [id], onDelete: Cascade)
     price          Float
     compareAtPrice Float?
     quantity       Int
+    status         ProductOnOrderStatus @default(UN_FULFILLED)
 
     productId String
     orderId   String
@@ -280,6 +290,13 @@ enum OrderStatus {
     PREPARING_TO_SHIP
     SHIPPED
     DELIVERED
+}
+
+enum InvoiceStatus {
+    PENDING
+    CANCELLED
+    PAID
+    REFUND_PENDING
     REFUNDED
 }
 
@@ -315,8 +332,7 @@ enum FeaturedStatus {
     ARCHIVED
 }
 
-enum InvoiceStatus {
-    PENDING
-    CANCELLED
-    PAID
+enum ProductOnOrderStatus {
+    FULFILLED
+    UN_FULFILLED
 }
