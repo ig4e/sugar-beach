@@ -43,24 +43,38 @@ function Cart() {
   });
 
   const dataWithCartQuantity = useMemo(() => {
-    return data
-      ?.map((product) => {
-        const cartItem = cartStore.items.find((item) => item.id === product.id);
+    return data?.map((product) => {
+      const cartItem = cartStore.items.find((item) => item.id === product.id);
 
-        if (!cartItem) return undefined;
+      if (!cartItem) return undefined;
 
-        return {
-          product,
-          quantity: cartItem.quantity,
-        };
-      })
-      .filter((product) => product !== undefined) as
+      return {
+        itemId: cartItem.id,
+        product,
+        quantity: cartItem.quantity,
+      };
+    }) as
       | {
+          itemId: string;
           product: Product;
           quantity: number;
         }[]
       | undefined;
   }, [data, cartStore.items]);
+
+  useEffect(() => {
+    if (dataWithCartQuantity) {
+      for (const cartItem of cartStore.items) {
+        const isItemAvalible = dataWithCartQuantity?.find(({ product }) => {
+          return product.id === cartItem.id;
+        });
+
+        if (!isItemAvalible) {
+          cartStore.removeItem(cartItem.id, cartItem.quantity);
+        }
+      }
+    }
+  }, [dataWithCartQuantity, cartStore]);
 
   useEffect(() => {
     if (dataWithCartQuantity) {

@@ -3,6 +3,7 @@ import { ShoppingCartIcon } from "@heroicons/react/24/solid";
 import { Indicator } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useEffect } from "react";
 import { useStore } from "~/hooks/useStore";
 import { useCartStore } from "~/store/cart";
 

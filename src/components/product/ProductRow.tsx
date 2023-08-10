@@ -42,7 +42,7 @@ function ProductRow({
             768: { slidesPerView: 3 },
             1024: { slidesPerView: 5 },
           }}
-          autoplay={true}
+          autoplay={{ pauseOnMouseEnter: true, disableOnInteraction: true }}
           speed={500}
           keyboard={true}
           a11y={{ enabled: true }}

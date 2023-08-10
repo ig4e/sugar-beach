@@ -88,7 +88,7 @@ const columns: ColumnDef<OrderProductsType>[] = [
     header: "Actions",
 
     cell: ({ row }) => {
-      const order = row.original;
+      const productOnOrder = row.original;
 
       return (
         <Menu placement="bottom-end">
@@ -113,7 +113,7 @@ const columns: ColumnDef<OrderProductsType>[] = [
               Product actions
             </Heading>
             <MenuDivider></MenuDivider>
-            <Link href={`/dashboard/orders/${order.id}`}>
+            <Link href={`/dashboard/products/${productOnOrder.product.id}`}>
               <MenuItem
                 icon={<AdjustmentsHorizontalIcon className="h-4 w-4" />}
               >
@@ -133,7 +133,7 @@ function OrderProductsTable({ orderId }: { orderId: string }) {
   const products = data?.products;
 
   return (
-    <div className="relative rounded-md border bg-zinc-50">
+    <div className="relative rounded-xl border bg-zinc-50">
       <div className="relative">
         <LoadingOverlay visible={isLoading} overlayBlur={2}></LoadingOverlay>
         <DataTable columns={columns} data={products ?? []} />

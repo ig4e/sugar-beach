@@ -23,13 +23,18 @@ import {
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoadingOverlay, MultiSelect, NumberInput, Select } from "@mantine/core";
+import {
+  LoadingOverlay,
+  MultiSelect,
+  NumberInput,
+  Select,
+} from "@mantine/core";
 import { Description, Media, Name, ProductStatus } from "@prisma/client";
 import * as _ from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import ManageMedia from "~/components/ManageMedia";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import Input from "~/components/base/Input";
@@ -56,16 +61,10 @@ function AdminPageProduct() {
   const toast = useToast();
   const productId = router.query.productId as string;
 
-  const productQuery = api.product.get.useQuery(
-    { id: productId },
-    { trpc: { ssr: false } }
-  );
+  const productQuery = api.product.get.useQuery({ id: productId });
 
   const editProductHook = api.product.edit.useMutation();
-  const allCategoriesQuery = api.category.getAll.useQuery(
-    {},
-    { trpc: { ssr: false } }
-  );
+  const allCategoriesQuery = api.category.getAll.useQuery({});
   const deleteProduct = api.product.delete.useMutation();
 
   const [isChanged, setIsChanged] = useState(false);
@@ -81,15 +80,14 @@ function AdminPageProduct() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
     getValues,
     control,
-    setValue,
   } = useForm<ProductFormValues>({
     mode: "onChange",
     resolver: zodResolver(productSchema),
-    async defaultValues(payload) {
+    async defaultValues() {
       const productData = (await productQuery.refetch()).data!;
       return {
         name: productData.name,
@@ -108,11 +106,9 @@ function AdminPageProduct() {
     },
   });
 
-  const mediaValue = useWatch({ control, name: "media" });
-
   useEffect(() => {
     if (!productQuery.isFetched) reset();
-  }, [productQuery.isFetched]);
+  }, [productQuery.isFetched, reset]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -132,7 +128,7 @@ function AdminPageProduct() {
         type: data.type,
       });
 
-      void productQuery.refetch();
+      void await productQuery.refetch();
 
       toast({
         title: "Product edited successfully",
@@ -145,9 +141,9 @@ function AdminPageProduct() {
   });
 
   useEffect(() => {
-    if (productQuery.data) {
-      const formData = getValues();
-      const productData = {
+    const formData = getValues();
+    if (productQuery.data && formData) {
+      const productData: typeof formData = {
         name: { ...productQuery.data.name },
         description: { ...productQuery.data.description },
         categories: productQuery.data.categoryIDs,
@@ -159,13 +155,12 @@ function AdminPageProduct() {
         type: productQuery.data.type,
       };
 
-      if (_.isEqual(productData, formData)) {
-        setIsChanged(false);
-      } else {
-        setIsChanged(true);
-      }
+      const isEqual = _.isEqual(productData, formData);
+      console.log("isEqual", isEqual, productData, formData);
+
+      setIsChanged(!isEqual);
     }
-  }, [productQuery.data, getValues()]);
+  }, [productQuery, getValues]);
 
   function onDelete() {
     deleteProduct.mutate(
@@ -195,7 +190,7 @@ function AdminPageProduct() {
     return (
       <AuthGaurd allowedLevel="STAFF">
         <AdminLayout>
-          <LoadingOverlay visible ></LoadingOverlay>
+          <LoadingOverlay visible></LoadingOverlay>
         </AdminLayout>
       </AuthGaurd>
     );
@@ -230,7 +225,10 @@ function AdminPageProduct() {
               className="flex grid-cols-6 flex-col gap-x-6 gap-y-4 pb-16 md:grid"
               onSubmit={(...args) => void onSubmit(...args)}
             >
-              <div className="fixed inset-x-0 bottom-4 z-50 flex items-center justify-center">
+              <div
+                className="fixed inset-x-0 bottom-4 z-50 flex items-center justify-center"
+                hidden={!isChanged}
+              >
                 <div className="mx-auto w-full max-w-2xl">
                   <Alert
                     status="warning"

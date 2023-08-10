@@ -17,7 +17,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, type ReactElement } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import "dayjs/locale/ar-sa";
 import Input from "./base/Input";
@@ -41,10 +41,12 @@ function ManageFeatured({
   onRefetch,
   action,
   featured,
+  trigger,
 }: {
   onRefetch: () => void;
   action: "create" | "edit";
   featured?: Featured;
+  trigger?: ReactElement;
 }) {
   const toast = useToast({});
   const createFeaturedHook = api.featured.create.useMutation();
@@ -126,15 +128,22 @@ function ManageFeatured({
 
   return (
     <div>
-      {action === "create" ? (
-        <Button onClick={onOpen}>Add featured</Button>
-      ) : (
-        <IconButton
-          onClick={onOpen}
-          icon={<PencilIcon className="h-5 w-5"></PencilIcon>}
-          aria-label="edit featured"
-        ></IconButton>
-      )}
+      <div onClick={onOpen}>
+        {trigger ? (
+          trigger
+        ) : action === "create" ? (
+          <Button onClick={onOpen} size={"sm"}>
+            Add featured
+          </Button>
+        ) : (
+          <IconButton
+            onClick={onOpen}
+            icon={<PencilIcon className="h-5 w-5"></PencilIcon>}
+            aria-label="edit featured"
+            size={"sm"}
+          ></IconButton>
+        )}
+      </div>
 
       <Modal isCentered isOpen={isOpen} onClose={onClose}>
         <DevTool control={control} />

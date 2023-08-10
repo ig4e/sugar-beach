@@ -92,6 +92,7 @@ function ProductCard({
           <Button
             variant="solid"
             w={"full"}
+            size="sm"
             onClick={() => {
               cartStore.addItem(product.id);
               void router.push("/cart");

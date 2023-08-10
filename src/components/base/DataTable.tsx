@@ -57,9 +57,9 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div>
-      <div className="overflow-x-auto rounded-xl">
-        <Table className="!relative">
+    <div className="rounded-xl bg-gray-50">
+      <div className="overflow-auto rounded-xl">
+        <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

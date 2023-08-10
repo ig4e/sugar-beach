@@ -1,14 +1,14 @@
-import { MinusIcon } from "@chakra-ui/icons";
-import { Button, HStack, Heading, IconButton } from "@chakra-ui/react";
-import { TrashIcon } from "@heroicons/react/24/outline";
-import { PlusIcon } from "@heroicons/react/24/solid";
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import { Button, HStack } from "@chakra-ui/react";
+import { TrashIcon } from "@heroicons/react/24/solid";
 import { LoadingOverlay } from "@mantine/core";
 import { useCartStore } from "~/store/cart";
 import { api } from "~/utils/api";
 
 import useTranslation from "next-translate/useTranslation";
-import { useStore } from "~/hooks/useStore";
 import { useEffect } from "react";
+import { useStore } from "~/hooks/useStore";
+import Input from "./Input";
 
 function AddToCart({ productId }: { productId: string }) {
   const cartStore = useStore(useCartStore, (state) => state);
@@ -18,10 +18,10 @@ function AddToCart({ productId }: { productId: string }) {
     id: productId,
   });
 
+  const cartItem = cartStore?.items.find((item) => item.id === productId);
+
   useEffect(() => {
     if (cartStore && product) {
-      const cartItem = cartStore.items.find((item) => item.id === productId);
-
       if (cartItem) {
         if (cartItem.quantity > product.quantity)
           cartStore.removeItem(
@@ -30,61 +30,88 @@ function AddToCart({ productId }: { productId: string }) {
           );
       }
     }
-  }, [product, cartStore, productId]);
+  }, [product, cartStore, cartItem]);
 
   if (!cartStore || !product)
     return (
-      <div className="relative min-h-[2.5rem] min-w-[8rem]">
-        <LoadingOverlay visible overlayBlur={2} />
+      <div className="relative max-h-6 min-h-[2rem] w-full min-w-[8rem] overflow-hidden rounded-lg border border-pink-500 bg-pink-200">
+        <div className="flex w-full items-center overflow-hidden">
+          <p className="h-10 w-5 bg-red-600"></p>
+          <p className="h-10 w-5 bg-orange-600"></p>
+          <p className="h-10 w-5 bg-amber-600"></p>
+          <p className="h-10 w-5 bg-yellow-600"></p>
+          <p className="h-10 w-5 bg-lime-600"></p>
+          <p className="h-10 w-5 bg-green-600"></p>
+          <p className="h-10 w-5 bg-emerald-600"></p>
+          <p className="h-10 w-5 bg-teal-600"></p>
+          <p className="h-10 w-5 bg-cyan-600"></p>
+          <p className="h-10 w-5 bg-sky-600"></p>
+          <p className="h-10 w-5 bg-blue-600"></p>
+          <p className="h-10 w-5 bg-indigo-600"></p>
+          <p className="h-10 w-5 bg-violet-600"></p>
+          <p className="h-10 w-5 bg-fuchsia-600"></p>
+          <p className="h-10 w-5 bg-pink-600"></p>
+          <p className="h-10 w-5 bg-rose-600"></p>
+        </div>
+        <LoadingOverlay
+          visible
+          overlayBlur={5}
+          loaderProps={{ size: "xs" }}
+          sx={{ borderRadius: "7px" }}
+        />
       </div>
     );
-
-  const cartItem = cartStore.items.find((item) => item.id === productId);
 
   return (
     <div className="w-full">
       {cartItem ? (
         <HStack justifyContent={"space-between"}>
-          <IconButton
-            icon={
-              cartItem.quantity === 1 ? (
-                <TrashIcon className="h-5 w-5" />
-              ) : (
-                <MinusIcon className="h-5 w-5" />
-              )
-            }
-            aria-label="subtract quantity"
-            size="md"
+          <Button
+            aria-label="decrement quantity"
+            size="sm"
             variant={"outline"}
-            onClick={() => cartStore.removeItem(product.id)}
-            disabled={product.quantity <= 0}
-          ></IconButton>
+            onClick={() => cartStore.removeItem(productId, 1)}
+          >
+            {cartItem.quantity === 1 ? (
+              <TrashIcon className="h-5 min-h-max w-5 min-w-max" />
+            ) : (
+              <MinusIcon />
+            )}
+          </Button>
 
-          <Heading
-            size="md"
+          <Input
+            size="sm"
             minW={"12"}
             textAlign={"center"}
             color={product.quantity <= 0 ? "gray" : undefined}
-          >
-            {cartItem.quantity}
-          </Heading>
+            value={cartItem.quantity}
+            w={"full"}
+            max={product.quantity}
+            min={0}
+            onChange={(e) => {
+              const value = Number(e.currentTarget.value);
 
-          <IconButton
-            icon={<PlusIcon className="h-5 w-5" />}
+              if (value >= 0 && value <= product.quantity)
+                cartStore.setItemQuantity(productId, value);
+            }}
+          ></Input>
+
+          <Button
             aria-label="add quantity"
-            size="md"
+            size="sm"
             variant={"solid"}
-            onClick={() => cartStore.addItem(product.id)}
-            isDisabled={
-              product.quantity === 0 || product.quantity <= cartItem.quantity
-            }
-          ></IconButton>
+            onClick={() => cartStore.addItem(productId, 1)}
+            isDisabled={cartItem.quantity >= product.quantity}
+          >
+            <AddIcon />
+          </Button>
         </HStack>
       ) : (
         <Button
           variant="outline"
           w={"full"}
-          onClick={() => cartStore.addItem(productId)}
+          onClick={() => cartStore.addItem(productId, 1)}
+          size={"sm"}
         >
           {t("ProductCard.add-to-cart")}
         </Button>

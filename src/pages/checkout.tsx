@@ -50,8 +50,6 @@ function Checkout() {
           duration: 3000,
           isClosable: true,
         });
-
-        void router.push(data.invoice.url);
       }
 
       console.log(data);
@@ -141,7 +139,7 @@ function Checkout() {
             direction={["column", "row"]}
             spacing={4}
           >
-            <Heading size="lg" color="pink.500" fontWeight={"semibold"}>
+            <Heading size={"lg"} color="pink.500" fontWeight={"semibold"}>
               {totalPrice.format()}
             </Heading>
 
@@ -327,7 +325,7 @@ function Checkout() {
                 ))}
               </div>
             </div>
-          
+
             <div className=" space-y-4">
               <div className="hidden space-y-4 md:block">
                 <PayCard></PayCard>
@@ -352,7 +350,7 @@ function Checkout() {
               </Card>
             </div>
 
-            <div className="sticky bottom-2 md:hidden z-50">
+            <div className="sticky bottom-2 z-50 md:hidden">
               <PayCard></PayCard>
             </div>
           </div>

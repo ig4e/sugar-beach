@@ -29,7 +29,7 @@ import {
 } from "~/config/ordersConfig";
 import useCurrency from "~/hooks/useCurrency";
 import useDayjs from "~/hooks/useDayjs";
-import { Locale } from "~/types/locale";
+import type { Locale } from "~/types/locale";
 import { api, type RouterInputs } from "~/utils/api";
 
 function Orders() {
@@ -90,8 +90,9 @@ function Orders() {
           <LoadingOverlay visible={isLoading}></LoadingOverlay>
           {ordersPage &&
             ordersPage.items.map((order) => {
-              const invoiceColorScheme =
-                INVOICE_STATUS_COLOR[order.invoice.status];
+              const invoiceColorScheme = order.invoice
+                ? INVOICE_STATUS_COLOR[order.invoice.status]
+                : "gray";
 
               const orderStatusColorScheme = ORDER_STATUS_COLOR[order.status];
 
@@ -105,31 +106,34 @@ function Orders() {
                       >
                         <HStack>
                           <VStack alignItems={"start"}>
-                            <p className="text-sm">
-                              <span className="font-semibold">
-                                {t("invoice-id")}
-                              </span>{" "}
-                              {order.invoice.invoiceId}
+                            <p className="text-sm font-bold text-pink-500">
+                              {currency(order.totalPrice).format()}
                             </p>
-                            <span className="text-sm">
+                            <p className="text-sm" suppressHydrationWarning>
                               {dayjs(order.createdAt).format(
                                 "D MMM YYYY HH:MM:ss"
                               )}
-                            </span>
+                            </p>
                           </VStack>
                         </HStack>
 
                         <HStack spacing={4}>
-                          <VStack>
-                            <span className="text-sm font-bold">
-                              {currency(order.totalPrice).format()}
-                            </span>
+                          <VStack alignItems={"start"}>
+                            <p className="text-sm">
+                              <span className="font-semibold">
+                                {t("invoice-id")}
+                              </span>{" "}
+                              {order.invoice?.invoiceId}
+                            </p>
+
                             <Badge colorScheme={invoiceColorScheme}>
-                              {order.invoice.status}
+                              {t(
+                                `paymentStatus.${order.invoice?.status ?? ""}`
+                              )}
                             </Badge>
                           </VStack>
-                          {order.invoice.status === "PENDING" && (
-                            <Link href={order.invoice.url}>
+                          {order.invoice?.status === "PENDING" && (
+                            <Link href={order.invoice?.url}>
                               <Button size="sm">Pay</Button>
                             </Link>
                           )}
@@ -148,7 +152,7 @@ function Orders() {
                           </Badge>
                         </p>
 
-                        <VStack alignItems={"start"}>
+                        <VStack alignItems={"start"} spacing={4}>
                           {order.products.map(
                             ({ product, quantity, price }) => {
                               const productImage = product.media[0];
@@ -228,7 +232,11 @@ function Orders() {
 
         <HStack justifyContent={"center"}>
           <Pagination
-            total={ordersPage?.totalPages ?? 1}
+            total={
+              (ordersPage && ordersPage.totalPages) ?? 0 > 0
+                ? ordersPage?.totalPages ?? 1
+                : 1
+            }
             onChange={(page) =>
               setPageState((state) => ({ ...state, cursor: page }))
             }

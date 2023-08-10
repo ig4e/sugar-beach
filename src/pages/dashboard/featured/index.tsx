@@ -1,40 +1,137 @@
 import {
+  Avatar,
   Badge,
   Button,
   HStack,
   Heading,
   IconButton,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
   Progress,
   Table,
   TableContainer,
   Tbody,
   Td,
+  Text,
   Tfoot,
   Th,
   Thead,
   Tr,
   useToast,
 } from "@chakra-ui/react";
-import { TrashIcon } from "@heroicons/react/24/solid";
+import { AdjustmentsHorizontalIcon } from "@heroicons/react/20/solid";
+import { EllipsisHorizontalIcon, TrashIcon } from "@heroicons/react/24/solid";
+import type { Featured, Product } from "@prisma/client";
+import { type ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import { Fragment } from "react";
 import ManageFeatured from "~/components/ManageFeatured";
 import AuthGaurd from "~/components/base/AuthGaurd";
+import DataTable from "~/components/base/DataTable";
 import AdminLayout from "~/components/layout/AdminLayout";
-import { LogoSmallTransparent } from "~/components/logos";
+import { LogoLargeDynamicPath, LogoSmallTransparent } from "~/components/logos";
 import { api } from "~/utils/api";
 
 function Index() {
   const toast = useToast();
 
-  const getAllFeaturedQuery = api.featured.getAll.useInfiniteQuery(
-    { limit: 50 },
-    {
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-    }
-  );
+  const getAllFeaturedQuery = api.featured.getAll.useQuery({ limit: 50 });
 
   const deleteFeaturedHook = api.featured.delete.useMutation();
+
+  const columns: ColumnDef<Featured & { product: Product }>[] = [
+    {
+      accessorKey: "product",
+      header: "Product",
+      cell: ({ row }) => {
+        const product = row.original.product;
+        const featuredImage =
+          row.original.media[0]?.url ?? LogoLargeDynamicPath;
+
+        return (
+          <HStack>
+            <Avatar
+              src={featuredImage}
+              name={product.name.en}
+              size="sm"
+              borderRadius={"md"}
+              objectFit={"contain"}
+            ></Avatar>
+            <Text>
+              {product.name.en}
+              <br />
+              {product.name.ar}
+            </Text>
+          </HStack>
+        );
+      },
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) => {
+        const status = row.original.status;
+        return <Badge colorScheme={"green"}>{status}</Badge>;
+      },
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        const featured = row.original;
+
+        return (
+          <Menu placement="bottom-end">
+            <MenuButton
+              w={"fit-content"}
+              as={IconButton}
+              size="sm"
+              aria-label="actions"
+              colorScheme="gray"
+              icon={
+                <EllipsisHorizontalIcon className="h-5 w-5"></EllipsisHorizontalIcon>
+              }
+            ></MenuButton>
+            <MenuList>
+              <Heading
+                size="xs"
+                px={3}
+                py={1}
+                display={"flex"}
+                alignItems={"center"}
+              >
+                Featured actions
+              </Heading>
+              <MenuDivider></MenuDivider>
+
+              <ManageFeatured
+                onRefetch={() => void getAllFeaturedQuery.refetch()}
+                action="edit"
+                featured={featured}
+                trigger={
+                  <MenuItem
+                    icon={<AdjustmentsHorizontalIcon className="h-4 w-4" />}
+                  >
+                    Manage
+                  </MenuItem>
+                }
+              ></ManageFeatured>
+
+              <MenuItem
+                onClick={() => deleteFeatured(featured.id)}
+                aria-label="Delete category"
+                icon={<TrashIcon className="h-5 w-5"></TrashIcon>}
+              >
+                Delete
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        );
+      },
+    },
+  ];
 
   function deleteFeatured(id: string) {
     deleteFeaturedHook.mutate(
@@ -66,7 +163,14 @@ function Index() {
           <div>
             {getAllFeaturedQuery.isLoading && <Progress isIndeterminate />}
 
-            <TableContainer>
+            <div className="border rounded-xl overflow-hidden">
+              <DataTable
+                columns={columns}
+                data={getAllFeaturedQuery.data?.items ?? []}
+              ></DataTable>
+            </div>
+
+            {/* <TableContainer>
               <Table
                 className="drop-shadow-lg"
                 size="sm"
@@ -185,7 +289,7 @@ function Index() {
                   </Tr>
                 </Tfoot>
               </Table>
-            </TableContainer>
+            </TableContainer> */}
           </div>
         </div>
       </AdminLayout>

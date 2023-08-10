@@ -111,53 +111,6 @@ export const orderRouter = createTRPCRouter({
         );
       }
 
-      const orderId = v4();
-
-      const invoiceRequest = await axios({
-        url: "https://api.myfatoorah.com/v2/SendPayment",
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          Authorization: "Bearer " + myFatoorahToken,
-          "Content-Type": "application/json",
-        },
-        data: {
-          NotificationOption: "ALL",
-          CustomerName: user.name.substring(0, 10),
-          DisplayCurrencyIso: "SAR",
-          MobileCountryCode: shippingAddress.phoneNumber.code,
-          CustomerMobile: shippingAddress.phoneNumber.number.substring(0, 11),
-          CustomerEmail: user.email,
-          InvoiceValue: totalPrice.value,
-          CallBackUrl: `${baseUrl}/@me/process-order/` + orderId,
-          ErrorUrl: `${baseUrl}/@me/process-order/` + orderId,
-          CustomerReference: orderId,
-          UserDefinedField: `CK-${user.id}`,
-          CustomerAddress: {
-            Block: shippingAddress.buildingNumber,
-            Street: shippingAddress.streetName,
-            HouseBuildingNo: shippingAddress.buildingNumber,
-            Address: `${shippingAddress.buildingNumber} ${
-              shippingAddress.streetName
-            } ${shippingAddress.nearestLandmark || ""} ${
-              shippingAddress.city
-            }  ${shippingAddress.country}`,
-            AddressInstructions: input.additionalNotes,
-          },
-
-          InvoiceItems: orderProducts.map((product) => ({
-            ItemName: product.data.name.en,
-            Quantity: product.quantity,
-            UnitPrice: product.price,
-          })),
-        },
-      });
-
-      console.log(invoiceRequest);
-
-      if (!invoiceRequest.data) return;
-      const invoiceData = invoiceRequest.data as unknown as InvoiceResponse;
-
       const lastOrderSequence = await ctx.prisma.order.findFirst({
         orderBy: { number: "desc" },
         select: { number: true },
@@ -165,7 +118,6 @@ export const orderRouter = createTRPCRouter({
 
       const order = await ctx.prisma.order.create({
         data: {
-          id: orderId,
           status: "ORDER_PLACED",
           products: {
             createMany: {
@@ -177,21 +129,13 @@ export const orderRouter = createTRPCRouter({
           },
           user: { connect: { id: user.id } },
           shippingAddress: { connect: { id: input.shippingAddressId } },
-          invoice: {
-            create: {
-              invoiceId: String(invoiceData.Data.InvoiceId),
-              url: invoiceData.Data.InvoiceURL,
-            },
-          },
+
           totalPrice: totalPrice.value,
           additionalNotes: input.additionalNotes,
           number:
             lastOrderSequence && lastOrderSequence?.number
               ? lastOrderSequence.number + 1
               : 1,
-        },
-        include: {
-          invoice: true,
         },
       });
 

@@ -14,20 +14,19 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Stack,
   Text,
   VStack,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { LoadingOverlay, Select } from "@mantine/core";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoadingOverlay } from "@mantine/core";
 import { useEffect, type ReactElement } from "react";
-import { type RouterInputs, api } from "~/utils/api";
-import { LogoLargeDynamicPath } from "../logos";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { api } from "~/utils/api";
 import Input from "../base/Input";
+import { LogoLargeDynamicPath } from "../logos";
 import ManageStaff from "./ManageStaff";
 
 const FormSchema = z.object({
@@ -53,19 +52,18 @@ function AddStaff(props: { trigger: ReactElement; onRefetch: () => void }) {
     mode: "onChange",
   });
 
-  const email = getValues().email;
-
   const {
     data: user,
     isLoading,
     isError,
+    isPaused,
     error,
     refetch,
   } = api.user.get.useQuery(
     {
       email: getValues().email,
     },
-    { enabled: !!email, retry: false }
+    { enabled: false, retry: false }
   );
 
   useEffect(() => {
@@ -79,8 +77,8 @@ function AddStaff(props: { trigger: ReactElement; onRefetch: () => void }) {
 
   const userImage = user?.media?.url ?? user?.image ?? LogoLargeDynamicPath;
 
-  const onSubmit = handleSubmit((data) => {
-    return data;
+  const onSubmit = handleSubmit(async () => {
+    return void (await refetch());
   });
 
   return (
@@ -118,6 +116,9 @@ function AddStaff(props: { trigger: ReactElement; onRefetch: () => void }) {
               <Divider />
 
               <div className="relative min-h-[5rem] w-full">
+                {isLoading && !isPaused && (
+                  <LoadingOverlay visible></LoadingOverlay>
+                )}
                 {user ? (
                   <HStack justifyContent={"space-between"}>
                     <HStack>
@@ -144,8 +145,6 @@ function AddStaff(props: { trigger: ReactElement; onRefetch: () => void }) {
                       <Button isDisabled={true}>Add</Button>
                     )}
                   </HStack>
-                ) : isLoading ? (
-                  <LoadingOverlay visible></LoadingOverlay>
                 ) : (
                   <div>
                     <Text>No user found</Text>

@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { Badge, IconButton, Skeleton, useToast } from "@chakra-ui/react";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import type { Media } from "@prisma/client";
@@ -215,7 +216,13 @@ const ManageMedia = forwardRef(
                 key={`placeholder-${index}`}
                 className="relative col-span-2 row-span-2 flex aspect-square flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed p-2 text-center md:col-span-1 md:row-span-1"
               >
-                <Badge position={"absolute"} top={4} left={4} zIndex={30}>
+                <Badge
+                  position={"absolute"}
+                  top={4}
+                  left={4}
+                  zIndex={30}
+                  size={"xs"}
+                >
                   Uploading
                 </Badge>
                 <Skeleton className="h-full w-full"></Skeleton>
@@ -277,17 +284,22 @@ function MediaItem({
 }) {
   return (
     <div
-      className={clsx("group relative aspect-square rounded-md border p-0.5", {
-        "col-span-2 row-span-2": big,
+      className={cn("group relative aspect-square rounded-md border p-0.5", {
+        "col-span-2 row-span-2 p-1": big,
       })}
     >
       <IconButton
         onClick={onDelete}
         className="pointer-events-none right-2 top-2 z-50 opacity-0 group-hover:pointer-events-auto group-hover:opacity-100"
         position={"absolute"}
-        icon={<TrashIcon className="h-5 w-5"></TrashIcon>}
+        icon={
+          <TrashIcon
+            className={clsx({ "h-5 w-5": big, "h-4 w-4": !big })}
+          ></TrashIcon>
+        }
         aria-label="delete image"
         colorScheme="red"
+        size={big ? "sm" : "xs"}
       ></IconButton>
 
       <div className="duration-400 pointer-events-none absolute inset-0 z-40 h-full w-full rounded-md bg-black opacity-0 group-hover:pointer-events-auto group-hover:opacity-30"></div>
@@ -295,17 +307,18 @@ function MediaItem({
       {media.isVideo && (
         <video
           controls
-          className="h-full w-full rounded-md object-cover"
+          className="h-full w-full rounded-md object-contain"
           src={media.url}
         ></video>
       )}
+
       {!media.isVideo && (
         <Image
           src={media.url}
           width={256}
           height={256}
           alt={media.key}
-          className="h-full w-full rounded-md object-cover"
+          className="h-full w-full rounded-md object-contain"
         />
       )}
     </div>

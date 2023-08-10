@@ -1,14 +1,15 @@
 import { createTRPCRouter } from "~/server/api/trpc";
-import { categoryRouter } from "./routers/category";
-import { productRouter } from "./routers/product";
-import { mediaRouter } from "./routers/media";
-import { discountRouter } from "./routers/discount";
-import { featuredRouter } from "./routers/featured";
-import { feedbackRouter } from "./routers/feedback";
-import { userRouter } from "./routers/user/user";
-import { orderRouter } from "./routers/order";
-import { currencyRouter } from "./routers/currency";
+import { categoryRouter } from "~/server/api/routers/category";
+import { productRouter } from "~/server/api/routers/product";
+import { mediaRouter } from "~/server/api/routers/media";
+import { discountRouter } from "~/server/api/routers/discount";
+import { featuredRouter } from "~/server/api/routers/featured";
+import { feedbackRouter } from "~/server/api/routers/feedback";
+import { userRouter } from "~/server/api/routers/user/user";
+import { orderRouter } from "~/server/api/routers/order";
+import { currencyRouter } from "~/server/api/routers/currency";
 import { env } from "~/env.mjs";
+import { invoiceRouter } from "~/server/api/routers/invoice";
 
 /**
  * This is the primary router for your server.
@@ -25,6 +26,7 @@ export const appRouter = createTRPCRouter({
   user: userRouter,
   order: orderRouter,
   currency: currencyRouter,
+  invoice: invoiceRouter,
 });
 
 // export type definition of API
