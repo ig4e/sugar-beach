@@ -31,7 +31,9 @@ const HomePage: NextPage = () => {
       <SEO
         title={"Sugar Beach | Best sweets"}
         openGraphType="website"
+        url="https://sugar-beach.vercel.app/"
         image={LogoLargeDynamicPath}
+        description="متجر متخصص في بيع المنتجات المستورده. متجر شوجر بيتش تضمن لكم منتجات أصليه بأفضل الأسعار , ونوفر لكم كل جديد في عالم المنتجات المستورده."
       ></SEO>
       <div className="relative my-8 space-y-8">
         <div>
