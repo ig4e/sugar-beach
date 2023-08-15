@@ -22,12 +22,11 @@ function Navbar() {
   const { t, lang } = useTranslation("common");
   const locale = lang as Locale;
   const scroll = useScroll();
-
   const takeFullWidth = useMemo(() => scroll > 50, [scroll > 50]);
 
   return (
     <>
-      <div className=" bg-zinc-50 ">
+      <div className="bg-zinc-50">
         <div className="container mx-auto flex w-full items-center justify-between py-2">
           <Link href={"/"} className="md:hidden">
             <Image

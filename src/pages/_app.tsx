@@ -1,8 +1,5 @@
 import { ChakraProvider } from "@chakra-ui/react";
-import {
-  MantineProvider,
-  type MantineThemeOverride
-} from "@mantine/core";
+import { MantineProvider, type MantineThemeOverride } from "@mantine/core";
 import "@uploadthing/react/styles.css";
 import { Analytics } from "@vercel/analytics/react";
 import { type Session } from "next-auth";
@@ -29,6 +26,7 @@ const MyApp: AppType<{ session: Session }> = ({
   const customMantineTheme: MantineThemeOverride = {
     primaryColor: "pink",
     defaultRadius: "md",
+    primaryShade: 5,
     components: {},
     colors: {
       pink: [

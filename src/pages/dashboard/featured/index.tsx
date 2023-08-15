@@ -1,7 +1,6 @@
 import {
   Avatar,
   Badge,
-  Button,
   HStack,
   Heading,
   IconButton,
@@ -11,28 +10,18 @@ import {
   MenuItem,
   MenuList,
   Progress,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
   Text,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
-  useToast,
+  useToast
 } from "@chakra-ui/react";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/20/solid";
 import { EllipsisHorizontalIcon, TrashIcon } from "@heroicons/react/24/solid";
 import type { Featured, Product } from "@prisma/client";
 import { type ColumnDef } from "@tanstack/react-table";
-import Image from "next/image";
-import { Fragment } from "react";
 import ManageFeatured from "~/components/ManageFeatured";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import DataTable from "~/components/base/DataTable";
 import AdminLayout from "~/components/layout/AdminLayout";
-import { LogoLargeDynamicPath, LogoSmallTransparent } from "~/components/logos";
+import { LogoLargeDynamicPath } from "~/components/logos";
 import { api } from "~/utils/api";
 
 function Index() {
@@ -79,6 +68,8 @@ function Index() {
     },
     {
       id: "actions",
+      header: "Actions",
+
       cell: ({ row }) => {
         const featured = row.original;
 
@@ -163,7 +154,7 @@ function Index() {
           <div>
             {getAllFeaturedQuery.isLoading && <Progress isIndeterminate />}
 
-            <div className="border rounded-xl overflow-hidden">
+            <div className="overflow-hidden rounded-xl border">
               <DataTable
                 columns={columns}
                 data={getAllFeaturedQuery.data?.items ?? []}

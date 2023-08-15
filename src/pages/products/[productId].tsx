@@ -27,11 +27,15 @@ import type { Locale } from "~/types/locale";
 import { api } from "~/utils/api";
 
 import useTranslation from "next-translate/useTranslation";
+import ProductRow from "~/components/product/ProductRow";
 
 function ProductPage() {
   const router = useRouter();
   const productId = router.query.productId as string;
   const productQuery = api.product.get.useQuery({ id: productId });
+  const relatedProductsQuery = api.product.similarProducts.useQuery({
+    id: productId,
+  });
 
   const productVisit = api.product.visit.useMutation();
   const { data, isLoading } = productQuery;
@@ -87,7 +91,7 @@ function ProductPage() {
         openGraphType="website"
         settings={{ meta: { title: data.name[locale] } }}
       ></SEO>
-      <div className="relative my-8 space-y-8">
+      <div className="relative my-8 space-y-16">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
           <div className="flex h-fit flex-col-reverse gap-4 md:flex-row">
             <div className="flex min-w-fit items-center gap-2 md:flex-col">
@@ -179,9 +183,9 @@ function ProductPage() {
             </HStack>
 
             <VStack alignItems={"start"}>
-              <Heading size={"sm"}>{"description"}</Heading>
+              <Heading size={"sm"}>{t("description")}</Heading>
               <Spoiler maxHeight={104} showLabel="Show more" hideLabel="Hide">
-                <Text>{data.description[locale] || t("no-description")}</Text>
+                <Text>{data.description[locale] ?? t("no-description")}</Text>
               </Spoiler>
             </VStack>
           </div>
@@ -254,22 +258,14 @@ function ProductPage() {
             </Card>
           </div>
         </div>
-        {/* <div className="flex flex-col gap-4">
-          <Card>
-            <CardBody
-              display={"flex"}
-              flexDirection={"column"}
-              justifyContent={"space-between"}
-              gap={4}
-            >
-              {relatedProductsQuery.data
-                ? relatedProductsQuery.data.map((product) => {
-                    return <div key={product.id}>{product.name[locale]}</div>;
-                  })
-                : null}
-            </CardBody>
-          </Card>
-        </div> */}
+        <div className="flex flex-col gap-4">
+          <ProductRow
+            products={relatedProductsQuery?.data ?? []}
+            title={t("related-products")}
+            description={t("related-products-description")}
+            
+          ></ProductRow>
+        </div>
         <div>
           <ProductFeedback productId={productId}></ProductFeedback>
         </div>

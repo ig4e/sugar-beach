@@ -48,12 +48,13 @@ export const productRouter = createTRPCRouter({
 
       const similarProducts = await ctx.prisma.product.findMany({
         where: {
-          categories: { some: { id: { in: product.categoryIDs } } },
+          categoryIDs: { hasSome: product.categoryIDs },
         },
         take: 8,
+        include: {
+          categories: true,
+        },
       });
-
-      console.log(product.categoryIDs, similarProducts);
 
       return similarProducts;
     }),

@@ -16,6 +16,8 @@ module.exports = {
     "/dashboard/discounts": ["adminDashboard", "adminDiscounts"],
     "/auth/signin": ["signIn"],
     "/auth/verify-request": ["verifyRequest"],
+    "rgx:^/help": ["help", "helpCommon"],
+    "/help/about-us": ["aboutUs"],
     "/404": ["404"],
   },
 

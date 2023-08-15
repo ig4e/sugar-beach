@@ -1,5 +1,5 @@
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
-import { Button, HStack } from "@chakra-ui/react";
+import { Button, HStack, IconButton } from "@chakra-ui/react";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { LoadingOverlay } from "@mantine/core";
 import { useCartStore } from "~/store/cart";
@@ -63,9 +63,17 @@ function AddToCart({ productId }: { productId: string }) {
     );
 
   return (
-    <div className="w-full">
+    <div className="w-full" suppressHydrationWarning>
       {cartItem ? (
         <HStack justifyContent={"space-between"}>
+          <IconButton
+            hidden={cartItem.quantity === 1}
+            colorScheme="red"
+            size={"sm"}
+            icon={<TrashIcon className="h-4 min-h-max w-4 min-w-max" />}
+            aria-label="Remove product from cart"
+            onClick={() => cartStore.removeItem(productId, cartItem.quantity)}
+          ></IconButton>
           <Button
             aria-label="decrement quantity"
             size="sm"
@@ -73,7 +81,7 @@ function AddToCart({ productId }: { productId: string }) {
             onClick={() => cartStore.removeItem(productId, 1)}
           >
             {cartItem.quantity === 1 ? (
-              <TrashIcon className="h-5 min-h-max w-5 min-w-max" />
+              <TrashIcon className="h-4 min-h-max w-4 min-w-max" />
             ) : (
               <MinusIcon />
             )}

@@ -54,7 +54,7 @@ const columns: ColumnDef<OrderType>[] = [
       const dayjs = useDayjs();
 
       return (
-        <span suppressHydrationWarning>
+        <span suppressHydrationWarning className="whitespace-nowrap">
           {dayjs(props.getValue() as string).format("hh:mm:s a MMMM D, YYYY")}
         </span>
       );
@@ -160,8 +160,8 @@ export default function OrdersTable() {
   console.log(data);
 
   return (
-    <div className="relative rounded-xl overflow-hidden border bg-zinc-50">
-      <div className="z-10 bg-zinc-50">
+    <div className="border rounded-xl bg-zinc-50">
+      <div className="z-10 rounded-xl bg-zinc-50">
         <div className="overflow-x-auto border-b px-2 py-2">
           <Tabs variant={"soft-rounded"}>
             <TabList>

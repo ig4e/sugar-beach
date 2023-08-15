@@ -16,7 +16,7 @@ function ProductRow({
   products: (Product & { categories: Category[] })[];
   title: string;
   description: string;
-  href: string;
+  href?: string;
 }) {
   return (
     <section className="space-y-4">
@@ -28,11 +28,13 @@ function ProductRow({
           </p>
         </VStack>
 
-        <Link href={href}>
-          <Button borderRadius={"full"} size={{ base: "xs", md: "sm" }}>
-            View more
-          </Button>
-        </Link>
+        {href && (
+          <Link href={href}>
+            <Button borderRadius={"full"} size={{ base: "xs", md: "sm" }}>
+              View more
+            </Button>
+          </Link>
+        )}
       </div>
       <div className="relative">
         <Swiper

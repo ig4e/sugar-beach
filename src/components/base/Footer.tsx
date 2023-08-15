@@ -11,6 +11,7 @@ import Image from "next/image";
 import { LogoSmallTransparent } from "../logos";
 
 import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
 
 export const paymentOptionLogos = [
   VisaLogo,
@@ -59,16 +60,28 @@ function Footer() {
 
         <div className="flex items-start gap-x-8 gap-y-2 md:gap-x-16 lg:gap-x-24">
           <div className="flex flex-col gap-2">
-            <span className="font-semibold">{t("Footer.about-us")}</span>
-            <span className="text-sm">{t("Footer.about-us")}</span>
-            <span className="text-sm">{t("Footer.contact-us")}</span>
-            <span className="text-sm">{t("Footer.support")}</span>
+            <p className="font-semibold">{t("Footer.about-us")}</p>
+            <Link href={"/help/about-us"}>
+              <p className="text-sm">{t("Footer.about-us")}</p>
+            </Link>
+            <Link href={"/help/contact-us"}>
+              <p className="text-sm">{t("Footer.contact-us")}</p>
+            </Link>
+            <Link href={"/help/support"}>
+              <p className="text-sm">{t("Footer.support")}</p>
+            </Link>
           </div>
           <div className="flex flex-col gap-2">
-            <span className=" font-semibold">{t("Footer.legal")}</span>
-            <span className="text-sm">{t("Footer.terms-of-use")}</span>
-            <span className="text-sm">{t("Footer.terms-of-sale")}</span>
-            <span className="text-sm">{t("Footer.privacy-policy")}</span>
+            <p className=" font-semibold">{t("Footer.legal")}</p>
+            <Link href={"/help/terms-of-use"}>
+              <p className="text-sm">{t("Footer.terms-of-use")}</p>
+            </Link>
+            <Link href={"/help/terms-of-sale"}>
+              <p className="text-sm">{t("Footer.terms-of-sale")}</p>
+            </Link>
+            <Link href={"/help/privacy-policy"}>
+              <p className="text-sm">{t("Footer.privacy-policy")}</p>
+            </Link>
           </div>
         </div>
 
@@ -176,9 +189,9 @@ function Footer() {
               alt="Logo"
               className="hidden md:block"
             ></Image>
-            <span>© 2023 Sugar Beach</span>
+            <p>© 2023 Sugar Beach</p>
           </div>
-          <span>By Ahmed Mohamed</span>
+          <p>By Ahmed Mohamed</p>
         </div>
       </div>
     </div>

@@ -52,14 +52,15 @@ export const useCartStore = create<CartState>()(
           });
         },
         clearCart() {
-          set({ items: [] });
+          set((state) => ({ ...state, items: [] }));
         },
         removeItem(id, quantity = 1) {
           set((state) => {
             const item = state.items.find((item) => item.id === id);
             if (!item) return state;
+            const itemQuantity = item.quantity;
 
-            if (item?.quantity > 1) {
+            if (itemQuantity - quantity > 1) {
               return {
                 items: state.items.map((item) =>
                   item.id === id
