@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { ChakraProvider } from "@chakra-ui/react";
 import { MantineProvider, type MantineThemeOverride } from "@mantine/core";
 import "@uploadthing/react/styles.css";
@@ -50,24 +51,24 @@ const MyApp: AppType<{ session: Session }> = ({
   const chakraTheme = customChakraTheme(rtl ? "rtl" : "ltr");
 
   return (
-    <MantineProvider
-      withGlobalStyles
-      withNormalizeCSS
-      withCSSVariables
-      theme={customMantineTheme}
-      emotionCache={rtl ? mantineRtlCache : mantineLtrCache}
-    >
-      <SessionProvider session={session}>
-        <div className="bg-zinc-100 !font-sans">
+    <div className={cn("bg-zinc-100 !font-sans")}>
+      <MantineProvider
+        withGlobalStyles
+        withNormalizeCSS
+        withCSSVariables
+        theme={customMantineTheme}
+        emotionCache={rtl ? mantineRtlCache : mantineLtrCache}
+      >
+        <SessionProvider session={session}>
           <ChakraProvider theme={chakraTheme}>
             <CurrencyContext.Provider value={{ currency }}>
               <Component {...pageProps} />
             </CurrencyContext.Provider>
           </ChakraProvider>
           <Analytics />
-        </div>
-      </SessionProvider>
-    </MantineProvider>
+        </SessionProvider>
+      </MantineProvider>
+    </div>
   );
 };
 

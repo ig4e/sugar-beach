@@ -1,11 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@100;200;300;400;500;600;700;800;900&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
+@layer utilities {
   .bullet-active-swiper {
     @apply !w-10 !rounded-md !bg-pink-500 !opacity-100 !transition-all;
   }
@@ -35,9 +32,5 @@
     --swiper-pagination-bullet-inactive-opacity: 0.8 !important;
     --swiper-pagination-bullet-size: 6px;
     --swiper-pagination-bullet-width: 1.25rem;
-  }
-
-  * {
-    @apply border-gray-900
   }
 }

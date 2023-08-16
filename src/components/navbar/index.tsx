@@ -47,12 +47,12 @@ function Navbar() {
 
       <nav
         className={
-          "sticky top-0 !z-[1000] bg-zinc-50 drop-shadow-lg md:max-h-20"
+          "sticky top-0 !z-[50] bg-zinc-50 drop-shadow-lg md:max-h-20"
         }
       >
         <div
           className={clsx(
-            "container !z-[1000] mx-auto flex items-center justify-between gap-4 py-4 transition-all duration-500",
+            "container !z-[50] mx-auto flex items-center justify-between gap-4 py-4 transition-all duration-500",
             {
               "max-w-full px-[1rem]": takeFullWidth,
             }
