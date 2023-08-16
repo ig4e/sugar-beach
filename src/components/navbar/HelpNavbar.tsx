@@ -55,7 +55,7 @@ function HelpNavbar() {
 
               <Divider orientation={"vertical"} h={8}></Divider>
 
-              <Heading size="sm">Help Center</Heading>
+              <Heading size="sm">{t("help:help-center")}</Heading>
             </HStack>
           </Link>
           <span className="hidden text-sm text-zinc-950 md:block">
@@ -94,13 +94,13 @@ function HelpNavbar() {
                 <Divider orientation={"vertical"} h={8}></Divider>
 
                 <Heading size="sm" whiteSpace={"nowrap"}>
-                  Help Center
+                  {t("help:help-center")}{" "}
                 </Heading>
               </HStack>
             </Link>
           </div>
 
-          <div className="flex items-center justify-between gap-4 w-full md:w-max">
+          <div className="flex w-full items-center justify-between gap-4 md:w-max">
             <div className="w-full">
               <HelpSearch></HelpSearch>
             </div>
@@ -158,7 +158,7 @@ export function HelpSearch() {
             </div>
             <Command.List
               className={cn(
-                "max-h-[300px] overflow-y-auto overflow-x-hidden p-3"
+                "md:max-h-[300px] overflow-y-auto overflow-x-hidden p-3"
               )}
             >
               <Command.Empty className="py-6 text-center text-sm">

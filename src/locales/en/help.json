@@ -1,4 +1,13 @@
 {
+  "help-center": "Help Center",
   "pages": "Pages",
-  "join-us": "Join the Sugar Beach family and indulge in an exceptional and distinctive shopping experience!"
+  "join-us-section": {
+    "text": "Join the Sugar Beach family and indulge in an exceptional and distinctive shopping experience!",
+    "button": "Start shopping"
+  },
+  "welcome": "Welcome to the help center.",
+  "need-help-section": {
+    "header": "Need help? We've got your back.",
+    "text": "Welcome to our Help Center. We're dedicated to assisting you on your journey. Explore, shop, and thrive with us."
+  }
 }

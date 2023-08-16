@@ -65,8 +65,8 @@ function Footer() {
             <Link href={"/help/contact-us"}>
               <p className="text-sm">{t("Footer.contact-us")}</p>
             </Link>
-            <Link href={"/help/support"}>
-              <p className="text-sm">{t("Footer.support")}</p>
+            <Link href={"/help"}>
+              <p className="text-sm">{t("Footer.help-center")}</p>
             </Link>
           </div>
           <div className="flex flex-col gap-2">

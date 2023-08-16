@@ -16,6 +16,19 @@ import "~/styles/globals.css";
 import { customChakraTheme } from "~/theme";
 import { mantineLtrCache, mantineRtlCache } from "~/theme/emotion-cache";
 import { api } from "~/utils/api";
+import NextNProgress from "nextjs-progressbar";
+
+import { Inter, Cairo } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const cairo = Cairo({
+  subsets: ["arabic"],
+  display: "auto",
+});
 
 const MyApp: AppType<{ session: Session }> = ({
   Component,
@@ -51,7 +64,11 @@ const MyApp: AppType<{ session: Session }> = ({
   const chakraTheme = customChakraTheme(rtl ? "rtl" : "ltr");
 
   return (
-    <div className={cn("bg-zinc-100 !font-sans")}>
+    <div
+      className={cn("bg-zinc-100 !font-sans", inter.className, cairo.className)}
+    >
+      <NextNProgress options={{ showSpinner: true }} color="#f472b6" />
+
       <MantineProvider
         withGlobalStyles
         withNormalizeCSS

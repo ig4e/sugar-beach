@@ -1,0 +1,15 @@
+{
+  "header": "Return and Exchange Policy",
+  "text": "Thank you for choosing Shugar Beach Store. We want to ensure your shopping experience is as seamless as possible, including the process of returning or exchanging items. Please take a moment to familiarize yourself with our return and exchange policy:",
+  "policies-list": {
+    "eligibility": "<0>Eligibility and Timeframe:</0> Most products sold on our website can be returned within 24 hours of delivery, subject to certain conditions. Please note that food items are exempt from our return policy, except in cases where they have expired upon delivery.",
+    "product-validity": "<0>Product Validity:</0> Items eligible for return or exchange include counterfeit, imitation, defective, or non-compliant products that do not match the specifications listed on our website.",
+    "condition-of-return": "<0>Condition of Return:</0> Returned products must be in their original condition, as received.",
+    "refund-process": "<0>Refund Process:</0> Upon receiving and inspecting the returned product, we will initiate the refund process. Your refunded amount will be credited to the original payment method used for the purchase.",
+    "order-cancellation": "<0>Order Cancellation:</0> Customers have the right to cancel an order before a shipping label is issued. In the event of cancellation after a shipping label has been issued, the customer will bear the cost of the label.",
+    "return-shipping-fees": "<0>Return Shipping Fees:</0> Customers are responsible for return shipping fees to our store.",
+    "refund-processing-time": "<0>Refund Processing Time:</0> Refund processing typically takes up to ten days from the date of accepting the return. You will receive a notification once your refund is processed.",
+    "unreceived-shipments": "<0>Unreceived Shipments:</0> For undelivered shipments due to reasons beyond your control, a deduction of 11 SAR will apply for each returned order, in addition to the deduction of shipping fees."
+  },
+  "ending-text": "We appreciate your understanding of these guidelines, which help us maintain the quality and integrity of our offerings. If you have any questions or need further assistance, please don't hesitate to reach out to our customer support team. Your satisfaction remains our top priority."
+}

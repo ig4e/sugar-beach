@@ -18,6 +18,8 @@ module.exports = {
     "/auth/verify-request": ["verifyRequest"],
     "rgx:^/help": ["help", "helpCommon"],
     "/help/about-us": ["aboutUs"],
+    "/help/refund-policy": ["refundPolicy"],
+
     "/404": ["404"],
   },
 

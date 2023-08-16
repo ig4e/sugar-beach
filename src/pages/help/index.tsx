@@ -17,7 +17,7 @@ function HelpPage() {
       <div className="mb-16 space-y-16">
         <section className="flex h-80 min-h-fit flex-col items-center justify-center bg-gradient-to-tr  from-pink-500 via-orange-500 to-sky-500 text-center text-white">
           <div className="container mx-auto flex flex-col items-center justify-center gap-8">
-            <Heading size={"2xl"}>Welcome to the help center.</Heading>
+            <Heading size={"2xl"}>{t("welcome")}</Heading>
 
             <div className="w-full max-w-sm">
               <HelpSearch></HelpSearch>
@@ -28,11 +28,10 @@ function HelpPage() {
         <section className="container mx-auto">
           <div className="space-y-4 text-center">
             <Heading size={"xl"} className="[text-wrap:balance]">
-              Need help? We&apos;ve got your back.
+              {t("need-help-section.header")}
             </Heading>
             <p className="text-lg font-medium [text-wrap:balance]">
-              Welcome to our Help Center. We&apos;re dedicated to assisting you
-              on your journey. Explore, shop, and thrive with us.
+              {t("need-help-section.text")}
             </p>
           </div>
         </section>

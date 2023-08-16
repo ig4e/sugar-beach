@@ -34,10 +34,10 @@ function HelpLayout({
       <section className="container mx-auto my-4">
         <div className="border-1 relative flex overflow-hidden rounded-lg bg-gradient-to-l from-pink-500 via-orange-500 to-sky-500 p-4 md:bg-gradient-to-r md:p-2">
           <div className="z-50 flex w-full flex-wrap items-center justify-between gap-2">
-            <p className="font-semibold text-white">{t("join-us")}</p>
+            <p className="font-semibold text-white">{t("join-us-section.text")}</p>
 
             <Button size="sm" minW={"fit-content"} as={Link} href={"/"}>
-              Start Shopping
+              {t("join-us-section.button")}
             </Button>
           </div>
         </div>

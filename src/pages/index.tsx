@@ -11,10 +11,12 @@ import { SEO } from "~/components/SEO";
 import Layout from "~/components/layout/Layout";
 import { LogoLarge, LogoLargeDynamicPath } from "~/components/logos";
 import ProductRow from "~/components/product/ProductRow";
+import { type Locale } from "~/types/locale";
 import { api } from "~/utils/api";
 
 const HomePage: NextPage = () => {
-  const { t } = useTranslation("home");
+  const { t, lang } = useTranslation("home");
+  const locale = lang as Locale;
   const featuredProducts = api.featured.getAll.useQuery({});
   const newProducts = api.product.getAll.useQuery({
     orderBy: { key: "createdAt", type: "desc" },
@@ -38,6 +40,7 @@ const HomePage: NextPage = () => {
       <div className="relative my-8 space-y-8">
         <div>
           <Swiper
+            dir={locale === "ar" ? "rtl" : "ltr"}
             spaceBetween={26}
             slidesPerView={1.4}
             breakpoints={{
