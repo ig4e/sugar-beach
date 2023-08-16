@@ -74,7 +74,7 @@ function HelpNavbar() {
       >
         <div
           className={cn(
-            "container !z-[1000] mx-auto flex items-center justify-between gap-4 py-3 transition-all duration-500",
+            "container !z-[1000] mx-auto flex items-center justify-between gap-4 py-2 md:py-3 transition-all duration-500",
             {
               "max-w-full px-[1rem]": takeFullWidth,
             }

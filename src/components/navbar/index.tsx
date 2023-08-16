@@ -52,7 +52,7 @@ function Navbar() {
       >
         <div
           className={clsx(
-            "container !z-[50] mx-auto flex items-center justify-between gap-4 py-4 transition-all duration-500",
+            "container !z-[50] mx-auto flex items-center justify-between gap-4 py-3 md:py-4 transition-all duration-500",
             {
               "max-w-full px-[1rem]": takeFullWidth,
             }
