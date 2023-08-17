@@ -8,37 +8,39 @@ import {
 } from "~/server/api/trpc";
 import { mediaSchema } from "~/server/commonZod";
 import { zodName } from "~/server/types/name";
+import { MAX_PAGE_SIZE, PAGE_SIZE } from "../config";
 
 export const featuredRouter = createTRPCRouter({
   getAll: publicProcedure
     .input(
       z.object({
-        cursor: z.string().uuid().optional(),
-        limit: z.number().min(1).max(100).nullish(),
+        limit: z.number().positive().max(MAX_PAGE_SIZE).default(PAGE_SIZE),
+        cursor: z.number().positive().default(1),
       })
     )
     .query(async ({ ctx, input }) => {
       const limit = input.limit ?? 50;
       const { cursor } = input;
 
+      const itemsCount = await ctx.prisma.featured.count({});
+
+      const totalPages = Math.ceil(itemsCount / input.limit);
+      const offset = (input.cursor - 1) * input.cursor;
+
       const items = await ctx.prisma.featured.findMany({
-        take: limit + 1, // get an extra item at the end which we'll use as next cursor
-        cursor: cursor ? { id: cursor } : undefined,
+        take: limit, // get an extra item at the end which we'll use as next cursor
         orderBy: {
           id: "asc",
         },
         include: { product: true },
+        skip: offset,
       });
 
-      let nextCursor: typeof cursor | undefined = undefined;
-      if (items.length > limit) {
-        const nextItem = items.pop();
-        nextCursor = nextItem!.id;
-      }
-
       return {
+        totalPages,
+        nextCursor: totalPages > input.cursor ? input.cursor + 1 : undefined,
+        prevCursor: input.cursor > 1 ? input.cursor - 1 : undefined,
         items,
-        nextCursor,
       };
     }),
 
@@ -90,12 +92,16 @@ export const featuredRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const deletedFeatured = await ctx.prisma.featured.delete({ where: { id: input.id } });
+      const deletedFeatured = await ctx.prisma.featured.delete({
+        where: { id: input.id },
+      });
 
       try {
-        await utapi.deleteFiles(deletedFeatured.media.map((media) => media.key));
+        await utapi.deleteFiles(
+          deletedFeatured.media.map((media) => media.key)
+        );
       } catch {}
 
-      return deletedFeatured
+      return deletedFeatured;
     }),
 });

@@ -179,16 +179,19 @@ function Footer() {
         <Divider></Divider>
 
         <div className="flex items-center justify-between gap-4 text-xs font-semibold">
-          <div className="flex items-center gap-4">
-            <Image
-              src={LogoSmallTransparent}
-              width={62}
-              height={62}
-              alt="Logo"
-              className="hidden md:block"
-            ></Image>
-            <p>© 2023 Sugar Beach</p>
-          </div>
+          <Link href={"/"}>
+            <div className="flex items-center gap-4">
+              <Image
+                src={LogoSmallTransparent}
+                width={62}
+                height={62}
+                alt="Logo"
+                className="hidden md:block"
+              ></Image>
+              <p>© 2023 Sugar Beach</p>
+            </div>
+          </Link>
+
           <p>By Ahmed Mohamed</p>
         </div>
       </div>

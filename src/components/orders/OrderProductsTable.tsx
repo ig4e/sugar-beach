@@ -20,9 +20,7 @@ import { Product, ProductOnOrder } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
-import {
-  PRODUCT_ON_ORDER_STATUS_COLOR
-} from "~/config/ordersConfig";
+import { PRODUCT_ON_ORDER_STATUS_COLOR } from "~/config/ordersConfig";
 import useCurrency from "~/hooks/useCurrency";
 import { api } from "~/utils/api";
 import DataTable from "../base/DataTable";
@@ -135,8 +133,12 @@ function OrderProductsTable({ orderId }: { orderId: string }) {
   return (
     <div className="relative rounded-xl border bg-zinc-50">
       <div className="relative">
-        <LoadingOverlay visible={isLoading} overlayBlur={2}></LoadingOverlay>
-        <DataTable columns={columns} data={products ?? []} />
+        <DataTable
+          columns={columns}
+          data={products ?? []}
+          pageInfo={{ totalPages: 1 }}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );

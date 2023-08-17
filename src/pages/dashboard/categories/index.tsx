@@ -1,31 +1,40 @@
 import {
-  Button,
   HStack,
   Heading,
   IconButton,
-  Progress,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  Text,
   useToast,
 } from "@chakra-ui/react";
+import {
+  AdjustmentsHorizontalIcon,
+  EllipsisHorizontalIcon,
+} from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/solid";
-import { Fragment } from "react";
+import { type Category } from "@prisma/client";
+import { type ColumnDef } from "@tanstack/react-table";
+import { useState } from "react";
 import ManageCategory from "~/components/ManageCategory";
 import AuthGaurd from "~/components/base/AuthGaurd";
+import DataTable from "~/components/base/DataTable";
 import AdminLayout from "~/components/layout/AdminLayout";
-import { api } from "~/utils/api";
+import { type RouterInputs, api } from "~/utils/api";
 
 function Index() {
   const toast = useToast();
-  const allCategoriesQuery = api.category.getAll.useInfiniteQuery({
-    limit: 100,
+
+  const [paginationState, setPaginationState] = useState<
+    RouterInputs["category"]["getAll"]
+  >({ cursor: 1, limit: 2 });
+
+  const { data, refetch, isLoading } = api.category.getAll.useQuery({
+    ...paginationState,
   });
+
   const deleteCategoryHook = api.category.delete.useMutation();
 
   function deleteCategory(id: string) {
@@ -37,11 +46,88 @@ function Index() {
             status: "success",
             title: `Deleted ${name.en} successfully`,
           });
-          void allCategoriesQuery.refetch();
+          void refetch();
         },
       }
     );
   }
+
+  const columns: ColumnDef<Category>[] = [
+    {
+      accessorKey: "name",
+      header: "Name",
+      cell: ({ row }) => {
+        const category = row.original;
+
+        return (
+          <HStack>
+            <Text>
+              {category.name.en}
+              <br />
+              {category.name.ar}
+            </Text>
+          </HStack>
+        );
+      },
+    },
+
+    {
+      id: "actions",
+      header: "Actions",
+
+      cell: ({ row }) => {
+        const category = row.original;
+
+        return (
+          <Menu placement="bottom-end">
+            <MenuButton
+              w={"fit-content"}
+              as={IconButton}
+              size="sm"
+              aria-label="actions"
+              colorScheme="gray"
+              icon={
+                <EllipsisHorizontalIcon className="h-5 w-5"></EllipsisHorizontalIcon>
+              }
+            ></MenuButton>
+            <MenuList>
+              <Heading
+                size="xs"
+                px={3}
+                py={1}
+                display={"flex"}
+                alignItems={"center"}
+              >
+                Featured actions
+              </Heading>
+              <MenuDivider></MenuDivider>
+
+              <ManageCategory
+                action="edit"
+                category={category}
+                onRefetch={() => void refetch()}
+                trigger={
+                  <MenuItem
+                    icon={<AdjustmentsHorizontalIcon className="h-4 w-4" />}
+                  >
+                    Manage
+                  </MenuItem>
+                }
+              ></ManageCategory>
+
+              <MenuItem
+                onClick={() => deleteCategory(category.id)}
+                aria-label="Delete category"
+                icon={<TrashIcon className="h-5 w-5"></TrashIcon>}
+              >
+                Delete
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        );
+      },
+    },
+  ];
 
   return (
     <AuthGaurd allowedLevel="STAFF">
@@ -51,13 +137,29 @@ function Index() {
             <Heading size={"md"}>Categories</Heading>
 
             <ManageCategory
-              onRefetch={() => void allCategoriesQuery.refetch()}
+              onRefetch={() => void refetch()}
               action="create"
             ></ManageCategory>
           </div>
 
-          <div className="relative">
-            {allCategoriesQuery.isLoading && <Progress isIndeterminate />}
+          <div className="overflow-hidden rounded-xl border">
+            <DataTable
+              columns={columns}
+              data={data?.items ?? []}
+              isLoading={isLoading}
+              pageInfo={{
+                totalPages: data?.totalPages ?? 1,
+                nextCursor: data?.nextCursor,
+                prevCursor: data?.prevCursor,
+              }}
+              onPaginationChange={(page) =>
+                setPaginationState((state) => ({ ...state, cursor: page }))
+              }
+            ></DataTable>
+          </div>
+
+          {/* <div className="relative">
+            {isLoading && <Progress isIndeterminate />}
             <TableContainer>
               <Table
                 size="md"
@@ -72,8 +174,8 @@ function Index() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {allCategoriesQuery.data &&
-                    allCategoriesQuery.data.pages.map((categoryPage) => {
+                  {data &&
+                    data.pages.map((categoryPage) => {
                       return (
                         <Fragment key={categoryPage.nextCursor}>
                           {categoryPage.items.map((category) => (
@@ -89,7 +191,7 @@ function Index() {
                                     action="edit"
                                     category={category}
                                     onRefetch={() =>
-                                      void allCategoriesQuery.refetch()
+                                      void refetch()
                                     }
                                   ></ManageCategory>
                                   <IconButton
@@ -108,13 +210,13 @@ function Index() {
                       );
                     })}
 
-                  {allCategoriesQuery.hasNextPage && (
+                  {hasNextPage && (
                     <Tr>
                       <Td colSpan={4}>
                         <div className="flex items-center justify-center">
                           <Button
                             onClick={() =>
-                              void allCategoriesQuery.fetchNextPage()
+                              void fetchNextPage()
                             }
                             size="sm"
                           >
@@ -128,8 +230,8 @@ function Index() {
                 <Tfoot>
                   <Tr>
                     <Th>
-                      {allCategoriesQuery.data
-                        ? allCategoriesQuery.data.pages.reduce(
+                      {data
+                        ? data.pages.reduce(
                             (total, current) => (total += current.items.length),
                             0
                           )
@@ -140,7 +242,7 @@ function Index() {
                 </Tfoot>
               </Table>
             </TableContainer>
-          </div>
+          </div> */}
         </div>
       </AdminLayout>
     </AuthGaurd>

@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/table";
 import {
   Button,
+  HStack,
   Heading,
   Menu,
   MenuButton,
@@ -17,6 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { CheckIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { LoadingOverlay, Pagination } from "@mantine/core";
 import type { ColumnDef } from "@tanstack/react-table";
 import {
   flexRender,
@@ -26,22 +28,29 @@ import {
   type ColumnFiltersState,
   type VisibilityState,
 } from "@tanstack/react-table";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  pageInfo: { totalPages: number; nextCursor?: number; prevCursor?: number };
+  onPaginationChange?: (cursor: number) => void;
+  isLoading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  pageInfo,
+  onPaginationChange,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+  const [paginationState, setPaginationState] = useState<{ cursor: number }>({
+    cursor: 1,
+  });
+
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
   const table = useReactTable({
     data,
@@ -56,58 +65,69 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  useEffect(() => {
+    onPaginationChange && onPaginationChange(paginationState.cursor);
+  }, [paginationState.cursor]);
+
   return (
     <div className="rounded-xl bg-gray-50">
-      <div className="overflow-auto rounded-xl">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} className="text-start">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+      <div className="relative">
+        <LoadingOverlay
+          visible={isLoading ?? false}
+          overlayBlur={2}
+        ></LoadingOverlay>
+        <div className="overflow-auto rounded-xl">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id} className="text-start">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </div>
+
       <div className="mx-2 flex justify-end border-b py-2">
         <Menu isLazy placement="bottom-end">
           <MenuButton
@@ -156,6 +176,21 @@ export function DataTable<TData, TValue>({
               })}
           </MenuList>
         </Menu>
+      </div>
+      <div className="p-2">
+        <HStack justifyContent={"center"}>
+          <Pagination
+            value={paginationState.cursor}
+            total={
+              (pageInfo && pageInfo?.totalPages > 0
+                ? pageInfo?.totalPages
+                : 1) ?? 1
+            }
+            onChange={(page) =>
+              setPaginationState((state) => ({ ...state, cursor: page }))
+            }
+          />
+        </HStack>
       </div>
     </div>
   );

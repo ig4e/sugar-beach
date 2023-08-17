@@ -6,37 +6,38 @@ import {
   protectedAdminProcedure,
 } from "~/server/api/trpc";
 import { zodName } from "~/server/types/name";
+import { MAX_PAGE_SIZE, PAGE_SIZE } from "../config";
 
 export const categoryRouter = createTRPCRouter({
   getAll: publicProcedure
     .input(
       z.object({
-        cursor: z.string().uuid().optional(),
-        limit: z.number().min(1).max(100).nullish(),
+        cursor: z.number().positive().default(1),
+        limit: z.number().min(1).max(MAX_PAGE_SIZE).default(PAGE_SIZE),
       })
     )
     .query(async ({ ctx, input }) => {
       const limit = input.limit ?? 50;
-      const { cursor } = input;
+
+      const itemsCount = await ctx.prisma.category.count({});
+
+      const totalPages = Math.ceil(itemsCount / input.limit);
+      const offset = (input.cursor - 1) * input.cursor;
 
       const items = await ctx.prisma.category.findMany({
-        take: limit + 1, // get an extra item at the end which we'll use as next cursor
-        cursor: cursor ? { id: cursor } : undefined,
+        take: limit,
         orderBy: {
           id: "asc",
         },
         include: { _count: { select: { products: true } } },
+        skip: offset,
       });
 
-      let nextCursor: typeof cursor | undefined = undefined;
-      if (items.length > limit) {
-        const nextItem = items.pop();
-        nextCursor = nextItem!.id;
-      }
-
       return {
+        totalPages,
+        nextCursor: totalPages > input.cursor ? input.cursor + 1 : undefined,
+        prevCursor: input.cursor > 1 ? input.cursor - 1 : undefined,
         items,
-        nextCursor,
       };
     }),
 

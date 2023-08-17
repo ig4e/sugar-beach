@@ -9,7 +9,6 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
-  Progress,
   Text,
   useToast
 } from "@chakra-ui/react";
@@ -17,17 +16,23 @@ import { AdjustmentsHorizontalIcon } from "@heroicons/react/20/solid";
 import { EllipsisHorizontalIcon, TrashIcon } from "@heroicons/react/24/solid";
 import type { Featured, Product } from "@prisma/client";
 import { type ColumnDef } from "@tanstack/react-table";
+import { useState } from "react";
 import ManageFeatured from "~/components/ManageFeatured";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import DataTable from "~/components/base/DataTable";
 import AdminLayout from "~/components/layout/AdminLayout";
 import { LogoLargeDynamicPath } from "~/components/logos";
-import { api } from "~/utils/api";
+import { api, type RouterInputs } from "~/utils/api";
 
 function Index() {
   const toast = useToast();
+  const [paginationState, setPaginationState] = useState<
+    RouterInputs["featured"]["getAll"]
+  >({ cursor: 1, limit: 25 });
 
-  const getAllFeaturedQuery = api.featured.getAll.useQuery({ limit: 50 });
+  const { data, isLoading, refetch } = api.featured.getAll.useQuery({
+    ...paginationState,
+  });
 
   const deleteFeaturedHook = api.featured.delete.useMutation();
 
@@ -98,7 +103,7 @@ function Index() {
               <MenuDivider></MenuDivider>
 
               <ManageFeatured
-                onRefetch={() => void getAllFeaturedQuery.refetch()}
+                onRefetch={() => void refetch()}
                 action="edit"
                 featured={featured}
                 trigger={
@@ -129,7 +134,7 @@ function Index() {
       { id },
       {
         onSuccess: ({}) => {
-          void getAllFeaturedQuery.refetch();
+          void refetch();
           toast({
             status: "success",
             title: `Deleted featured successfully`,
@@ -146,18 +151,25 @@ function Index() {
           <div className="flex items-center justify-between">
             <Heading size={"md"}>Featured</Heading>
             <ManageFeatured
-              onRefetch={() => void getAllFeaturedQuery.refetch()}
+              onRefetch={() => void refetch()}
               action="create"
             ></ManageFeatured>
           </div>
 
           <div>
-            {getAllFeaturedQuery.isLoading && <Progress isIndeterminate />}
-
             <div className="overflow-hidden rounded-xl border">
               <DataTable
                 columns={columns}
-                data={getAllFeaturedQuery.data?.items ?? []}
+                data={data?.items ?? []}
+                isLoading={isLoading}
+                pageInfo={{
+                  totalPages: data?.totalPages ?? 1,
+                  nextCursor: data?.nextCursor,
+                  prevCursor: data?.prevCursor,
+                }}
+                onPaginationChange={(page) =>
+                  setPaginationState((state) => ({ ...state, cursor: page }))
+                }
               ></DataTable>
             </div>
 
@@ -177,8 +189,8 @@ function Index() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {getAllFeaturedQuery.data
-                    ? getAllFeaturedQuery.data.pages.map((featuredPage) => {
+                  {data
+                    ? data.pages.map((featuredPage) => {
                         return (
                           <Fragment key={featuredPage.nextCursor}>
                             {featuredPage.items.map((featured) => {
@@ -224,7 +236,7 @@ function Index() {
                                     <HStack className="justify-end">
                                       <ManageFeatured
                                         onRefetch={() =>
-                                          void getAllFeaturedQuery.refetch()
+                                          void refetch()
                                         }
                                         action="edit"
                                         featured={featured}
@@ -249,13 +261,13 @@ function Index() {
                       })
                     : null}
 
-                  {getAllFeaturedQuery.hasNextPage && (
+                  {hasNextPage && (
                     <Tr>
                       <Td colSpan={4}>
                         <div className="flex items-center justify-center">
                           <Button
                             onClick={() =>
-                              void getAllFeaturedQuery.fetchNextPage()
+                              void fetchNextPage()
                             }
                             size="sm"
                           >
@@ -269,8 +281,8 @@ function Index() {
                 <Tfoot>
                   <Tr>
                     <Th>
-                      {getAllFeaturedQuery.data
-                        ? getAllFeaturedQuery.data.pages.reduce(
+                      {data
+                        ? data.pages.reduce(
                             (total, current) => (total += current.items.length),
                             0
                           )

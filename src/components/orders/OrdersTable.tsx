@@ -160,7 +160,7 @@ export default function OrdersTable() {
   console.log(data);
 
   return (
-    <div className="border rounded-xl bg-zinc-50">
+    <div className="rounded-xl border bg-zinc-50">
       <div className="z-10 rounded-xl bg-zinc-50">
         <div className="overflow-x-auto border-b px-2 py-2">
           <Tabs variant={"soft-rounded"}>
@@ -241,20 +241,19 @@ export default function OrdersTable() {
       </div>
 
       <div className="relative">
-        <LoadingOverlay visible={isLoading} overlayBlur={2}></LoadingOverlay>
-        <DataTable columns={columns} data={data?.items ?? []} />
-      </div>
-
-      <div className="p-2">
-        <HStack justifyContent={"center"}>
-          <Pagination
-            value={pageState.cursor}
-            total={(data && data?.totalPages > 0 ? data?.totalPages : 1) ?? 1}
-            onChange={(page) =>
-              setPageState((state) => ({ ...state, cursor: page }))
-            }
-          />
-        </HStack>
+        <DataTable
+          columns={columns}
+          data={data?.items ?? []}
+          pageInfo={{
+            totalPages: data?.totalPages ?? 1,
+            nextCursor: data?.nextCursor,
+            prevCursor: data?.nextCursor,
+          }}
+          onPaginationChange={(page) =>
+            setPageState((state) => ({ ...state, cursor: page }))
+          }
+          isLoading={isLoading}
+        ></DataTable>
       </div>
     </div>
   );

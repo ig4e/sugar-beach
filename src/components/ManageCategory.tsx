@@ -24,6 +24,7 @@ import type { Category } from "@prisma/client";
 import { api } from "~/utils/api";
 import { categorySchema } from "~/validations/categorySchema";
 import Input from "./base/Input";
+import { ReactElement } from "react";
 
 type CategoryFormValues = {
   ar: string;
@@ -34,10 +35,12 @@ function ManageCategory({
   onRefetch,
   action,
   category,
+  trigger
 }: {
   onRefetch: () => void;
   action: "create" | "edit";
   category?: Category;
+  trigger?: ReactElement;
 }) {
   const toast = useToast({});
   const createCategoryHook = api.category.create.useMutation();
@@ -96,15 +99,22 @@ function ManageCategory({
 
   return (
     <div>
-      {action === "create" ? (
-        <Button onClick={onOpen}>Add category</Button>
-      ) : (
-        <IconButton
-          onClick={onOpen}
-          icon={<PencilIcon className="h-5 w-5"></PencilIcon>}
-          aria-label="edit category"
-        ></IconButton>
-      )}
+    <div onClick={onOpen}>
+        {trigger ? (
+          trigger
+        ) : action === "create" ? (
+          <Button onClick={onOpen} size={"sm"}>
+            Add category
+          </Button>
+        ) : (
+          <IconButton
+            onClick={onOpen}
+            icon={<PencilIcon className="h-5 w-5"></PencilIcon>}
+            aria-label="edit category"
+            size={"sm"}
+          ></IconButton>
+        )}
+      </div>
 
       <Modal isCentered isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
