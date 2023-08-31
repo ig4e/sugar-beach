@@ -54,16 +54,25 @@ TableFooter.displayName = "TableFooter";
 const TableRow = React.forwardRef<
   HTMLTableRowElement,
   React.HTMLAttributes<HTMLTableRowElement>
->(({ className, ...props }, ref) => (
-  <tr
-    ref={ref}
-    className={cn(
-      "border-b transition-colors hover:bg-gray-100/50 data-[state=selected]:bg-gray-100 dark:hover:bg-gray-800/50 dark:data-[state=selected]:bg-gray-800",
-      className
-    )}
-    {...props}
-  />
-));
+>(({ className, ...props }, ref) => {
+  const hasTableHeader = React.Children.toArray(props.children).some(
+    (child) =>
+      (child as unknown as { type: { displayName: string } }).type.displayName ===
+      "TableHead"
+  );
+
+  return (
+    <tr
+      ref={ref}
+      className={cn("border-b transition-colors  ", className, {
+        "hover:bg-gray-100 data-[state=selected]:bg-gray-100 dark:hover:bg-gray-800  dark:data-[state=selected]:bg-gray-800":
+          !hasTableHeader,
+      })}
+      {...props}
+    />
+  );
+});
+
 TableRow.displayName = "TableRow";
 
 const TableHead = React.forwardRef<
