@@ -1,3 +1,4 @@
+import { Button, VStack } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import type { NextPage } from "next";
@@ -26,6 +27,9 @@ const HomePage: NextPage = () => {
   });
   const onSaleProducts = api.product.getAll.useQuery({
     onSale: true,
+  });
+  const categories = api.category.getAll.useQuery({
+    limit: 8,
   });
 
   return (
@@ -122,6 +126,40 @@ const HomePage: NextPage = () => {
             <div id="swiper-pages"></div>
           </Swiper>
         </div>
+
+        {categories.data && (
+          <section>
+            <div className="flex flex-col gap-4">
+              <div className="flex w-full items-start justify-between gap-4">
+                <VStack alignItems={"start"} spacing={0}>
+                  <h3 className="font-bold md:text-2xl">
+                    {t("sections.categories.title")}
+                  </h3>
+                  <p className="text-muted-foreground text-xs font-medium md:text-base">
+                    {t("sections.categories.description")}
+                  </p>
+                </VStack>
+                <Link
+                  href={
+                    "/search?query=&categories=&min=0&max=0&orderBy=visits&orderType=desc"
+                  }
+                >
+                  <Button borderRadius={"full"} size={{ base: "xs", md: "sm" }}>
+                    {t("common:view-more")}
+                  </Button>
+                </Link>
+              </div>
+
+              <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-5">
+                {categories.data.items.map((category) => (
+                  <Button key={category.id} variant={"outline"}>
+                    {category.name[locale]}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {onSaleProducts.data && (
           <ProductRow

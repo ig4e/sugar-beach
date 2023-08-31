@@ -1,5 +1,9 @@
 {
   "sections": {
+    "categories": {
+      "title": "EXPLORE OUR DELICIOUS SELECTION",
+      "description": "Browse through a wide range of delectable treats, each falling into its own unique category."
+    },
     "on-sale": {
       "title": "SWEET DEALS BONANZA",
       "description": "Score big savings on our on-sale delights!"

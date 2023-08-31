@@ -24,7 +24,7 @@ const adminManagmentRoutesDefault = [
   { name: "products", href: "/dashboard/products", Icon: TagIcon },
   { name: "orders", href: "/dashboard/orders", Icon: InboxStackIcon },
   { name: "featured", href: "/dashboard/featured", Icon: SparklesIcon },
-  { name: "discounts", href: "/dashboard/discounts", Icon: DiscountIcon },
+  // { name: "discounts", href: "/dashboard/discounts", Icon: DiscountIcon },
   {
     name: "categories",
     href: "/dashboard/categories",

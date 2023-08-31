@@ -29,7 +29,7 @@ import {
   NumberInput,
   Select,
 } from "@mantine/core";
-import { Description, Media, Name, ProductStatus } from "@prisma/client";
+import type { Description, Media, Name, ProductStatus } from "@prisma/client";
 import * as _ from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";

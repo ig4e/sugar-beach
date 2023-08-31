@@ -138,12 +138,15 @@ function ManageDiscount({
     <div>
       <DevTool control={control} />
       {action === "create" ? (
-        <Button onClick={onOpen}>{t("ManageDiscount.add-discount")}</Button>
+        <Button onClick={onOpen} size="sm">
+          {t("ManageDiscount.add-discount")}
+        </Button>
       ) : (
         <IconButton
           onClick={onOpen}
           icon={<PencilIcon className="h-5 w-5"></PencilIcon>}
           aria-label="edit discount"
+          size="sm"
         ></IconButton>
       )}
 

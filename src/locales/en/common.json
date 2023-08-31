@@ -84,5 +84,6 @@
   "productOnOrderStatus": {
     "FULFILLED": "fulfilled",
     "UN_FULFILLED": "Un fulfilled"
-  }
+  },
+  "view-more": "View more"
 }

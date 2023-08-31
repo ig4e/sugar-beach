@@ -37,7 +37,7 @@ function StaffPage() {
             <HStack justifyContent={"space-between"} w="full">
               <Heading size={"md"}>Staff</Heading>
               <AddStaff
-                trigger={<Button>Add staff</Button>}
+                trigger={<Button  size="sm">Add staff</Button>}
                 onRefetch={() => void refetch()}
               ></AddStaff>
             </HStack>

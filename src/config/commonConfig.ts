@@ -35,7 +35,6 @@ export const COUNTRIES = [
     mobileCode: "+968",
     flag: "https://flagcdn.com/h240/om.webp",
   },
-  
 ] as const;
 
 export const COUNTRIES_NAME = {
@@ -46,3 +45,5 @@ export const COUNTRIES_NAME = {
   SA: "Saudi Arabia",
   AE: "United Arab Emirates",
 } as const;
+
+export const DEFAULT_PAGE_SIZE = 25;

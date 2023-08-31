@@ -11,6 +11,7 @@ import { mediaSchema } from "~/server/commonZod";
 import { TRPCError } from "@trpc/server";
 
 import type { Prisma } from "@prisma/client";
+import { MAX_PAGE_SIZE, PAGE_SIZE } from "../config";
 
 const productInput = z.object({
   media: mediaSchema.array().min(1),
@@ -62,17 +63,17 @@ export const productRouter = createTRPCRouter({
   getAll: publicProcedure
     .input(
       z.object({
-        cursor: z.string().uuid().optional(),
-        limit: z.number().min(1).max(100).nullish(),
+        limit: z.number().positive().max(MAX_PAGE_SIZE).default(PAGE_SIZE),
+        cursor: z.number().positive().default(1),
         searchQuery: z.string().nullish(),
         categoryIDs: z.string().uuid().array().nullish(),
-        status: z.enum(["ACTIVE", "DRAFT", "ARCHIVED"]).nullish(),
+        status: z.enum(["ACTIVE", "DRAFT", "ARCHIVED"]).default("ACTIVE"),
         orderBy: z
           .object({
             key: z.enum(["id", "price", "createdAt", "updatedAt", "visits"]),
             type: z.enum(["asc", "desc"]),
           })
-          .nullish(),
+          .default({ key: "id", type: "asc" }),
         productIDs: z.string().uuid().array().nullish(),
         minPrice: z.number().nullish(),
         maxPrice: z.number().nullish(),
@@ -80,8 +81,7 @@ export const productRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      const limit = input.limit ?? 25;
-      const { cursor } = input;
+      const limit = input.limit ?? PAGE_SIZE;
 
       const query = input.searchQuery
         ? ((await ctx.prisma.product.aggregateRaw({
@@ -117,9 +117,15 @@ export const productRouter = createTRPCRouter({
         compareAtPrice: input.onSale ? { gt: 0 } : undefined,
       };
 
+      const itemsCount = await ctx.prisma.product.count({
+        where: filter,
+      });
+
+      const totalPages = Math.ceil(itemsCount / input.limit);
+      const offset = (input.cursor - 1) * input.cursor;
+
       let items = await ctx.prisma.product.findMany({
-        take: limit + 1, // get an extra item at the end which we'll use as next cursor
-        cursor: cursor ? { id: cursor } : undefined,
+        where: filter,
         orderBy: input.orderBy
           ? {
               [input.orderBy.key]: input.orderBy.type,
@@ -127,7 +133,8 @@ export const productRouter = createTRPCRouter({
           : {
               id: "asc",
             },
-        where: filter,
+        skip: offset,
+        take: limit,
         include: {
           categories: true,
         },
@@ -140,7 +147,7 @@ export const productRouter = createTRPCRouter({
       });
 
       const meta = {
-        totalCount: await ctx.prisma.product.count({ where: filter }),
+        totalCount: itemsCount,
         priceRange: {
           max: productPriceAggregate._max.price,
           min: productPriceAggregate._min.price,
@@ -154,16 +161,12 @@ export const productRouter = createTRPCRouter({
         items = sortedItems;
       }
 
-      let nextCursor: typeof cursor | undefined = undefined;
-      if (items.length > limit) {
-        const nextItem = items.pop();
-        nextCursor = nextItem?.id;
-      }
-
       return {
         meta,
+        nextCursor: totalPages > input.cursor ? input.cursor + 1 : undefined,
+        prevCursor: input.cursor > 1 ? input.cursor - 1 : undefined,
+        totalPages,
         items,
-        nextCursor,
       };
     }),
 

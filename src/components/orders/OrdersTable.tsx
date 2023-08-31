@@ -31,6 +31,7 @@ import useCurrency from "~/hooks/useCurrency";
 import useDayjs from "~/hooks/useDayjs";
 import { type RouterInputs, type RouterOutputs, api } from "~/utils/api";
 import DataTable from "../base/DataTable";
+import { DEFAULT_PAGE_SIZE } from "~/config/commonConfig";
 
 type OrderType = RouterOutputs["order"]["getOrders"]["items"][0];
 
@@ -152,12 +153,10 @@ const columns: ColumnDef<OrderType>[] = [
 export default function OrdersTable() {
   const [pageState, setPageState] = useState<
     RouterInputs["order"]["getOrders"]
-  >({ cursor: 1, status: "ALL", invoiceStatus: "ALL" });
+  >({ cursor: 1, status: "ALL", invoiceStatus: "ALL", limit: DEFAULT_PAGE_SIZE });
 
   const { t } = useTranslation("common");
   const { data, isLoading } = api.order.getOrders.useQuery(pageState);
-
-  console.log(data);
 
   return (
     <div className="rounded-xl border bg-zinc-50">

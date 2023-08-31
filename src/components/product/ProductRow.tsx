@@ -6,6 +6,7 @@ import ProductCard from "./ProductCard";
 import { A11y, Autoplay, Keyboard, Navigation, Pagination } from "swiper";
 import type { Category, Product } from "@prisma/client";
 import Link from "next/link";
+import useTranslation from "next-translate/useTranslation";
 
 function ProductRow({
   products,
@@ -18,12 +19,14 @@ function ProductRow({
   description: string;
   href?: string;
 }) {
+  const { t } = useTranslation("common");
+
   return (
     <section className="space-y-4">
       <div className="flex items-start justify-between">
         <VStack alignItems={"start"} spacing={0}>
           <h3 className="font-bold md:text-2xl">{title}</h3>
-          <p className="text-xs font-medium text-muted-foreground md:text-base">
+          <p className="text-muted-foreground text-xs font-medium md:text-base">
             {description}
           </p>
         </VStack>
@@ -31,7 +34,7 @@ function ProductRow({
         {href && (
           <Link href={href}>
             <Button borderRadius={"full"} size={{ base: "xs", md: "sm" }}>
-              View more
+              {t("view-more")}
             </Button>
           </Link>
         )}

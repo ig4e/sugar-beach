@@ -22,13 +22,14 @@ import AuthGaurd from "~/components/base/AuthGaurd";
 import DataTable from "~/components/base/DataTable";
 import AdminLayout from "~/components/layout/AdminLayout";
 import { LogoLargeDynamicPath } from "~/components/logos";
+import { DEFAULT_PAGE_SIZE } from "~/config/commonConfig";
 import { api, type RouterInputs } from "~/utils/api";
 
 function Index() {
   const toast = useToast();
   const [paginationState, setPaginationState] = useState<
     RouterInputs["featured"]["getAll"]
-  >({ cursor: 1, limit: 25 });
+  >({ cursor: 1, limit: DEFAULT_PAGE_SIZE });
 
   const { data, isLoading, refetch } = api.featured.getAll.useQuery({
     ...paginationState,

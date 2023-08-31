@@ -1,18 +1,14 @@
 import type { InvoiceStatus, Prisma, Product } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
-import axios, { type AxiosError } from "axios";
+import axios from "axios";
 import currency from "currency.js";
-import { v4 } from "uuid";
 import { z } from "zod";
-import { env } from "~/env.mjs";
 import {
   createTRPCRouter,
-  publicProcedure,
-  protectedProcedure,
   protectedAdminProcedure,
+  protectedProcedure
 } from "~/server/api/trpc";
 import { MAX_PAGE_SIZE, PAGE_SIZE } from "../config";
-import { baseUrl } from "../root";
 
 const ordersFindManyInput = z.object({
   limit: z.number().positive().max(MAX_PAGE_SIZE).default(PAGE_SIZE),
@@ -301,17 +297,17 @@ export const orderRouter = createTRPCRouter({
     }),
 });
 
-type InvoiceResponse = {
-  IsSuccess: boolean;
-  Message: string;
-  ValidationErrors: any;
-  Data: {
-    InvoiceId: string;
-    InvoiceURL: string;
-    CustomerReference: string;
-    UserDefinedField: string;
-  };
-};
+// type InvoiceResponse = {
+//   IsSuccess: boolean;
+//   Message: string;
+//   ValidationErrors: unknown;
+//   Data: {
+//     InvoiceId: string;
+//     InvoiceURL: string;
+//     CustomerReference: string;
+//     UserDefinedField: string;
+//   };
+// };
 
 type PaymentEnquiryResponse = {
   IsSuccess: true;
@@ -334,7 +330,7 @@ type PaymentEnquiryResponse = {
     InvoiceDisplayValue: string;
     DueDeposit: number;
     DepositStatus: string;
-    InvoiceItems: any[];
+    InvoiceItems: unknown[];
     InvoiceTransactions: {
       TransactionDate: string;
       PaymentGateway: string;
@@ -356,6 +352,6 @@ type PaymentEnquiryResponse = {
       CardNumber: string;
       ErrorCode: string;
     }[];
-    Suppliers: any[];
+    Suppliers: unknown[];
   };
 };

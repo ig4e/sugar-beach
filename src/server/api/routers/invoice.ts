@@ -34,9 +34,5 @@ export const invoiceRouter = createTRPCRouter({
           code: "CONFLICT",
           message: "Invoice already created",
         });
-
-        
-
     }),
 });
-

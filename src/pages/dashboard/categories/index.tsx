@@ -22,6 +22,7 @@ import ManageCategory from "~/components/ManageCategory";
 import AuthGaurd from "~/components/base/AuthGaurd";
 import DataTable from "~/components/base/DataTable";
 import AdminLayout from "~/components/layout/AdminLayout";
+import { DEFAULT_PAGE_SIZE } from "~/config/commonConfig";
 import { type RouterInputs, api } from "~/utils/api";
 
 function Index() {
@@ -29,7 +30,7 @@ function Index() {
 
   const [paginationState, setPaginationState] = useState<
     RouterInputs["category"]["getAll"]
-  >({ cursor: 1, limit: 2 });
+  >({ cursor: 1, limit: DEFAULT_PAGE_SIZE });
 
   const { data, refetch, isLoading } = api.category.getAll.useQuery({
     ...paginationState,

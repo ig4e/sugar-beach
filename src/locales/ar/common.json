@@ -74,8 +74,11 @@
     "CANCELLED": "تم الإلغاء"
   },
   "paymentStatus": {
-    "PAID": "تم الدفع",
+    "PAID": "مدفوعة",
     "PENDING": "قيد الانتظار",
-    "CANCELLED": "تم الإلغاء"
-  }
+    "CANCELLED": "ملغاة",
+    "REFUNDED": "تم استردادها",
+    "REFUND_PENDING": "في انتظار الأسترداد"
+  },  
+  "view-more": "أعرض المزيد"
 }

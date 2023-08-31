@@ -28,6 +28,7 @@ import { api } from "~/utils/api";
 import Input from "../base/Input";
 import { LogoLargeDynamicPath } from "../logos";
 import ManageStaff from "./ManageStaff";
+import { trim } from "lodash";
 
 const FormSchema = z.object({
   email: z
@@ -39,8 +40,6 @@ const FormSchema = z.object({
 
 function AddStaff(props: { trigger: ReactElement; onRefetch: () => void }) {
   const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   const {
     register,
     handleSubmit,
@@ -51,29 +50,34 @@ function AddStaff(props: { trigger: ReactElement; onRefetch: () => void }) {
     resolver: zodResolver(FormSchema),
     mode: "onChange",
   });
+  const { isOpen, onOpen, onClose } = useDisclosure({
+    onClose() {
+      reset();
+    },
+  });
+
+  const emailValue = trim(getValues().email);
 
   const {
     data: user,
     isLoading,
-    isError,
     isPaused,
-    error,
     refetch,
   } = api.user.get.useQuery(
     {
-      email: getValues().email,
+      email: emailValue,
     },
-    { enabled: false, retry: false }
-  );
-
-  useEffect(() => {
-    if (isError) {
-      toast({
-        title: "Error loading user",
-        description: error.message,
-      });
+    {
+      onError: (error) => {
+        if (!errors.email && emailValue) {
+          toast({
+            title: "Error loading user",
+            description: error.message,
+          });
+        }
+      },
     }
-  }, [isError, error, toast]);
+  );
 
   const userImage = user?.media?.url ?? user?.image ?? LogoLargeDynamicPath;
 
@@ -94,7 +98,7 @@ function AddStaff(props: { trigger: ReactElement; onRefetch: () => void }) {
             <VStack alignItems={"start"} spacing={4} w={"full"}>
               <form
                 onSubmit={(e) => void onSubmit(e)}
-                className="flex w-full flex-col gap-2"
+                className="flex w-full flex-col gap-4"
               >
                 <FormControl isInvalid={!!errors.email}>
                   <FormLabel>Staff email</FormLabel>
@@ -116,8 +120,8 @@ function AddStaff(props: { trigger: ReactElement; onRefetch: () => void }) {
               <Divider />
 
               <div className="relative min-h-[5rem] w-full">
-                {isLoading && !isPaused && (
-                  <LoadingOverlay visible></LoadingOverlay>
+                {emailValue && isLoading && !isPaused  && (
+                  <LoadingOverlay visible overlayBlur={2}></LoadingOverlay>
                 )}
                 {user ? (
                   <HStack justifyContent={"space-between"}>
@@ -137,17 +141,27 @@ function AddStaff(props: { trigger: ReactElement; onRefetch: () => void }) {
 
                     {user.role === "USER" ? (
                       <ManageStaff
-                        trigger={<Button>Add</Button>}
+                        trigger={<Button size="sm">Add</Button>}
                         userId={user.id}
                         onRefetch={props.onRefetch}
                       ></ManageStaff>
                     ) : (
-                      <Button isDisabled={true}>Add</Button>
+                      <Button isDisabled={true} size="sm">
+                        Add
+                      </Button>
                     )}
                   </HStack>
                 ) : (
-                  <div>
-                    <Text>No user found</Text>
+                  <div className="grid h-full w-full place-items-center min-h-[2.5rem]">
+                    {emailValue ? (
+                      <div>
+                        <Text>No user found</Text>
+                      </div>
+                    ) : (
+                      <div>
+                        <Text>Please enter user email</Text>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

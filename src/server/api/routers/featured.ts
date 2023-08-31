@@ -19,8 +19,7 @@ export const featuredRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      const limit = input.limit ?? 50;
-      const { cursor } = input;
+      const limit = input.limit ?? PAGE_SIZE;
 
       const itemsCount = await ctx.prisma.featured.count({});
 
