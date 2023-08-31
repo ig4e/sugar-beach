@@ -2,10 +2,11 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { InputGroup } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
-import Input from "../base/Input";
 
 import useTranslation from "next-translate/useTranslation";
 import { useSearchStore } from "~/store/search";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { Input } from "@mantine/core";
 
 function Search() {
   const router = useRouter();
@@ -24,34 +25,22 @@ function Search() {
 
   return (
     <form className="relative flex w-full" onSubmit={handleSubmit}>
-      <div className="group flex w-full items-center rounded-full border-2 focus-within:border-pink-500">
-        <InputGroup width={"full"}>
-          <Input
-            variant="filled"
-            id="search"
-            name="search"
-            borderRadius={"full"}
-            placeholder={t("Search.search")}
-            width={"full"}
-            type="search"
-            border={"0px"}
-            borderColor={"gray.400"}
-            focusBorderColor="pink.400"
-            borderEndRadius={"0"}
-          ></Input>
-        </InputGroup>
+      <div className="relative flex w-full items-center">
         <button
           type="submit"
-          className="h-full rounded-e-full bg-[#EDF2F7] transition group-focus-within:bg-white"
           name="Submit search"
+          className="absolute end-1 z-50 flex items-center justify-center rounded-full p-[0.35rem] hover:bg-gray-200"
         >
-          <div className="flex h-full items-center justify-center rounded-full bg-[#EDF2F7] pe-4 ps-4 group-focus-within:bg-pink-400">
-            <SearchIcon
-              color="gray.400"
-              className="group-focus-within:text-white"
-            />
-          </div>
+          <SearchIcon color="gray.400" />
         </button>
+        <Input
+          id="search"
+          name="search"
+          w={"100%"}
+          sx={{ minWidth: "16rem"}}
+          placeholder={t("Search.search")}
+          type="search"
+        ></Input>
       </div>
     </form>
   );

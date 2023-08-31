@@ -15,7 +15,11 @@ import { useRouter } from "next/router";
 import { useCartStore } from "~/store/cart";
 import AddToCart from "../base/AddToCart";
 import type { Locale } from "~/types/locale";
-import { LogoSmallTransparent } from "../logos";
+import {
+  LogoLarge,
+  LogoLargeDynamicPath,
+  LogoSmallTransparent,
+} from "../logos";
 
 import useTranslation from "next-translate/useTranslation";
 import useCurrency from "~/hooks/useCurrency";
@@ -55,13 +59,20 @@ function ProductCard({
                 width={256}
                 height={128}
                 alt={product.name[locale]}
-                className="h-full max-h-40 w-full rounded-md object-cover"
+                className="h-full w-full rounded-md object-cover"
+                fetchPriority="high"
+                onError={(e) => {
+                  e.currentTarget.src = LogoLargeDynamicPath;
+                  e.currentTarget.srcset = LogoLargeDynamicPath;
+                }}
               />
             </div>
 
-            <Heading size="md" className="line-clamp-2">
-              {product.name[locale]}
-            </Heading>
+            <div>
+              <Heading size="md" className="line-clamp-2">
+                {product.name[locale]}
+              </Heading>
+            </div>
 
             <HStack flexWrap={"wrap"}>
               {product.compareAtPrice && (
@@ -72,7 +83,9 @@ function ProductCard({
               ))}
             </HStack>
           </VStack>
+
           <Text className="line-clamp-2">{product.description[locale]}</Text>
+
           <VStack alignItems={"start"} spacing={0}>
             {product.compareAtPrice && (
               <span className="text-sm text-red-500 line-through">

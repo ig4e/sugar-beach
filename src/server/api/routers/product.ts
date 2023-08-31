@@ -91,8 +91,7 @@ export const productRouter = createTRPCRouter({
                   index: "productSearch",
                   text: {
                     query: input.searchQuery,
-                    path: { wildcard: "*" },
-                    fuzzy: {},
+                    path: ["name.ar", "name.en"],
                   },
                 },
               },

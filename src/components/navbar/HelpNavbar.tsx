@@ -32,6 +32,7 @@ import { Command } from "cmdk";
 import { useRouter } from "next/router";
 import { HELP_CENTER_PAGES } from "~/config/helpCenterConfig";
 import { Locale } from "~/types/locale";
+import { on } from "events";
 
 function HelpNavbar() {
   const { t, lang } = useTranslation("common");
@@ -129,6 +130,8 @@ export function HelpSearch() {
         w={"100%"}
         placeholder={t("common:Search.search")}
         onClick={onOpen}
+        onChange={onOpen}
+        value={""}
       ></Input>
 
       <Modal

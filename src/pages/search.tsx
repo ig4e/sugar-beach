@@ -1,16 +1,14 @@
 import { ArrowDownIcon, ArrowUpIcon, SearchIcon } from "@chakra-ui/icons";
 import {
+  Button,
   Checkbox,
   Divider,
   HStack,
   IconButton,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Stack,
   VStack,
 } from "@chakra-ui/react";
-import { LoadingOverlay, Select } from "@mantine/core";
+import { LoadingOverlay, Select, Input } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDebounce } from "usehooks-ts";
@@ -25,13 +23,13 @@ import { useSearchStore } from "~/store/search";
 
 import useTranslation from "next-translate/useTranslation";
 import { ORDER_BY_KEYS } from "~/config/searchConfig";
+import SearchFilters from "~/components/search/SearchFilters";
+import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 
 function SearchPage() {
-  const { t, lang } = useTranslation("search");
-  const locale = lang as Locale;
+  const { t } = useTranslation("search");
   const router = useRouter();
   const searchStore = useSearchStore();
-  const categoriesQuery = api.category.getAll.useQuery({ limit: 100 });
   const debouncedSearchQuery = useDebounce(searchStore.searchQuery, 500);
 
   useEffect(() => {
@@ -66,171 +64,69 @@ function SearchPage() {
         openGraphType="website"
         image={LogoLargeDynamicPath}
       ></SEO>
-      <div className="my-4 grid gap-8 md:my-10 md:[grid-template-columns:15rem_1fr] lg:[grid-template-columns:18rem_1fr]">
-        <div className="flex h-full flex-col gap-4 border-b pb-6 md:border-e md:pe-6">
+      <div className="my-4 grid gap-4 md:my-10 md:gap-8 md:[grid-template-columns:15rem_1fr] lg:[grid-template-columns:18rem_1fr]">
+        <div className="flex h-full flex-col gap-4 border-b md:border-e md:pb-6 md:pe-6">
           <div className="">
-            <InputGroup width={"full"}>
-              <InputLeftElement pointerEvents="none">
-                <SearchIcon color="gray.400" />
-              </InputLeftElement>
-              <Input
-                variant="filled"
-                id="search"
-                name="search"
-                borderRadius={"full"}
-                placeholder={t("search")}
-                paddingStart={"9"}
-                width={"full"}
-                type="search"
-                tabIndex={1}
-                border={"2px"}
-                borderColor={"gray.400"}
-                focusBorderColor="pink.400"
-                onChange={(e) => searchStore.setSearchQuery(e.target.value)}
-                value={searchStore.searchQuery}
-              ></Input>
-            </InputGroup>
+            <Input
+              id="search"
+              name="search"
+              w={"100%"}
+              placeholder={t("search")}
+              type="search"
+              onChange={(e) => searchStore.setSearchQuery(e.target.value)}
+              value={searchStore.searchQuery}
+              icon={<SearchIcon />}
+            ></Input>
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="hidden w-full flex-col gap-2 md:flex">
             <h2 className="font-bold">{t("category")}</h2>
-            <VStack alignItems={"unset"} position={"relative"}>
-              {categoriesQuery.isLoading ? (
-                <LoadingOverlay visible overlayBlur={3}></LoadingOverlay>
-              ) : (
-                categoriesQuery.data?.items.map((category) => {
-                  return (
-                    <div
-                      className="flex items-center justify-between"
-                      key={category.id}
-                    >
-                      <div className="flex items-center gap-2">
-                        <Checkbox
-                          isChecked={searchStore.categoryIDs.includes(
-                            category.id
-                          )}
-                          onChange={(e) =>
-                            e.target.checked
-                              ? searchStore.addCategory(category.id)
-                              : searchStore.removeCategory(category.id)
-                          }
-                          value={category.id}
-                        ></Checkbox>
-                        <span className="text-sm font-semibold">
-                          {category.name[locale]}
-                        </span>
-                      </div>
-                      <span className="text-xs text-zinc-500">
-                        ({category._count.products})
-                      </span>
-                    </div>
-                  );
-                })
-              )}
-            </VStack>
-            {/* <h2 className="font-bold">{t("shop-by-price")}</h2>
-            {data && (
-              <VStack>
-                <RangeSlider
-                  // eslint-disable-next-line jsx-a11y/aria-proptypes
-                  aria-label={["min", "max"]}
-                  value={[
-                    searchStore.priceRange.min,
-                    searchStore.priceRange.max,
-                  ]}
-                  onChange={(val) =>
-                    searchStore.setPriceRange({
-                      min: val[0] ?? data.meta.priceRange.min ?? 0,
-                      max: val[1] ?? data.meta.priceRange.max ?? 0,
-                    })
-                  }
-                  max={data.meta.priceRange.max || undefined}
-                >
-                  <RangeSliderTrack>
-                    <RangeSliderFilledTrack />
-                  </RangeSliderTrack>
-                  <RangeSliderThumb index={0} />
-                  <RangeSliderThumb index={1} />
-                </RangeSlider>
-
-                <HStack>
-                  <NumberInput
-                    value={searchStore.priceRange.min}
-                    onChange={(value) =>
-                      searchStore.setPriceRange({
-                        min: Number(value) ?? undefined,
-                      })
-                    }
-                    formatter={(value) => currency(Number(value)).format()}
-                  ></NumberInput>
-                  <Text>To</Text>
-                  <NumberInput
-                    value={searchStore.priceRange.max}
-                    onChange={(value) =>
-                      searchStore.setPriceRange({
-                        max: Number(value) ?? undefined,
-                      })
-                    }
-                    formatter={(value) => currency(Number(value)).format()}
-                  ></NumberInput>
-                </HStack>
-              </VStack>
-            )} */}
+            <SearchCategories></SearchCategories>
           </div>
         </div>
         <div className="relative flex flex-col gap-4">
+          <div className="fixed inset-x-0 bottom-4 z-[99] flex justify-center md:hidden">
+            <SearchFilters
+              trigger={
+                <Button
+                  size="sm"
+                  leftIcon={
+                    <AdjustmentsHorizontalIcon className="h-5 w-5"></AdjustmentsHorizontalIcon>
+                  }
+                >
+                  {t("search-filters")}
+                </Button>
+              }
+            >
+              <VStack alignItems={"start"}>
+                <SearchSort></SearchSort>
+                <div className="flex w-full flex-col gap-2">
+                  <h2 className="font-bold">{t("category")}</h2>
+                  <SearchCategories></SearchCategories>
+                </div>
+              </VStack>
+            </SearchFilters>
+          </div>
           <Stack
             direction={["column", "row"]}
             alignItems={"start"}
             justifyContent={"space-between"}
           >
-            <div>
-              <h2 className="text-2xl">
-                {t("search-results")}{" "}
-                {debouncedSearchQuery?.length > 0 && (
-                  <span>
-                    {t("for")}{" "}
-                    <span className="font-bold text-pink-400">
-                      &quot;{debouncedSearchQuery}&quot;
-                    </span>
+            <h2 className="text-2xl">
+              {t("search-results")}{" "}
+              {debouncedSearchQuery?.length > 0 && (
+                <span>
+                  {t("for")}{" "}
+                  <span className="font-bold text-pink-400">
+                    &quot;{debouncedSearchQuery}&quot;
                   </span>
-                )}
-              </h2>
-            </div>
-
-            <HStack alignItems={"end"}>
-              {typeof window !== "undefined" && (
-                <Select
-                  label={t("sort-by")}
-                  data={ORDER_BY_KEYS}
-                  w={"fit"}
-                  value={searchStore.orderBy.key}
-                  onChange={(val) =>
-                    searchStore.setOrderBy({
-                      key: val as "id" | "price" | "createdAt" | "updatedAt",
-                    })
-                  }
-                ></Select>
+                </span>
               )}
-              <IconButton
-                aria-label="sort"
-                size="sm"
-                borderRadius={"full"}
-                colorScheme="gray"
-                onClick={() =>
-                  searchStore.setOrderBy({
-                    type: searchStore.orderBy.type === "desc" ? "asc" : "desc",
-                  })
-                }
-                icon={
-                  searchStore.orderBy.type === "desc" ? (
-                    <ArrowDownIcon className="h-6 w-6"></ArrowDownIcon>
-                  ) : (
-                    <ArrowUpIcon className="h-6 w-6"></ArrowUpIcon>
-                  )
-                }
-                mb="1"
-              ></IconButton>
-            </HStack>
+              <span>({data?.meta.totalCount ?? 0})</span>
+            </h2>
+
+            <div className="hidden md:block">
+              <SearchSort></SearchSort>
+            </div>
           </Stack>
 
           <Divider></Divider>
@@ -255,6 +151,99 @@ function SearchPage() {
         </div>
       </div>
     </Layout>
+  );
+}
+
+function SearchSort() {
+  const { t } = useTranslation("search");
+  const storeSetOrderBy = useSearchStore((state) => state.setOrderBy);
+  const storeOrderBy = useSearchStore((state) => state.orderBy);
+
+  return (
+    <HStack
+      alignItems={"end"}
+      justifyContent={{ base: "space-between", md: "initial" }}
+      w={{ base: "full", md: "fit-content" }}
+      suppressHydrationWarning
+    >
+      {typeof window !== "undefined" && (
+        <Select
+          label={t("sort-by")}
+          data={ORDER_BY_KEYS}
+          w={"100%"}
+          value={storeOrderBy.key}
+          onChange={(val) =>
+            storeSetOrderBy({
+              key: val as "id" | "price" | "createdAt" | "updatedAt",
+            })
+          }
+        ></Select>
+      )}
+      <IconButton
+        aria-label="sort"
+        size="sm"
+        borderRadius={"full"}
+        colorScheme="gray"
+        onClick={() =>
+          storeSetOrderBy({
+            type: storeOrderBy.type === "desc" ? "asc" : "desc",
+          })
+        }
+        icon={
+          storeOrderBy.type === "desc" ? (
+            <ArrowDownIcon className="h-6 w-6"></ArrowDownIcon>
+          ) : (
+            <ArrowUpIcon className="h-6 w-6"></ArrowUpIcon>
+          )
+        }
+        mb="1"
+      ></IconButton>
+    </HStack>
+  );
+}
+
+function SearchCategories() {
+  const { lang } = useTranslation();
+  const locale = lang as Locale;
+
+  const categoriesQuery = api.category.getAll.useQuery({ limit: 100 });
+  const storeCategoryIDs = useSearchStore((state) => state.categoryIDs);
+  const storeAddCategory = useSearchStore((state) => state.addCategory);
+  const storeRemoveCategory = useSearchStore((state) => state.removeCategory);
+
+  return (
+    <VStack alignItems={"unset"} position={"relative"}>
+      {categoriesQuery.isLoading ? (
+        <LoadingOverlay visible overlayBlur={3}></LoadingOverlay>
+      ) : (
+        categoriesQuery.data?.items.map((category) => {
+          return (
+            <div
+              className="flex items-center justify-between"
+              key={category.id}
+            >
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  isChecked={storeCategoryIDs.includes(category.id)}
+                  onChange={(e) =>
+                    e.target.checked
+                      ? storeAddCategory(category.id)
+                      : storeRemoveCategory(category.id)
+                  }
+                  value={category.id}
+                ></Checkbox>
+                <span className="text-sm font-semibold">
+                  {category.name[locale]}
+                </span>
+              </div>
+              <span className="text-xs text-zinc-500">
+                ({category._count.products})
+              </span>
+            </div>
+          );
+        })
+      )}
+    </VStack>
   );
 }
 
